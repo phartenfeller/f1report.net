@@ -1,0 +1,24 @@
+name: Upgrade NPM Dependencies
+
+on:
+  schedule:
+  - cron: 0 8 * * 2
+
+jobs:
+  package-update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: set remote url
+      run: git remote set-url --push origin https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+    - name: package-update
+      uses: taichi/actions-package-update@master
+      env:
+        AUTHOR_EMAIL: philipp@example.com
+        AUTHOR_NAME: Philipp
+        EXECUTE: "true"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        UPDATE_COMMAND: yarn
+      with:
+        args: upgrade --latest
