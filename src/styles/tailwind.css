@@ -3,5 +3,15 @@
 @tailwind utilities;
 
 html {
-  @apply antialiased bg-gray-200;
+  @apply antialiased bg-blueGray-100;
+}
+
+@layer components {
+  .table-cell {
+    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-500;
+  }
+
+  .table-heading {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+  }
 }

@@ -27,7 +27,8 @@
       {
         "assert": "htmlFor"
       }
-    ]
+    ],
+    "camelcase": 0
   },
   "plugins": ["prettier", "react-hooks", "jsx-a11y"],
   "settings": {

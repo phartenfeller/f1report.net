@@ -33,5 +33,84 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
+    {
+      // Querying to a SQLite database
+      resolve: `gatsby-source-sql`,
+      options: {
+        typeName: 'races',
+        // This is the field under which the data will be accessible in a future version
+        fieldName: 'races',
+        dbEngine: {
+          client: 'sqlite3',
+          connection: {
+            filename: './data/f1data.sqlite',
+          },
+          useNullAsDefault: true,
+        },
+        queryChain(x) {
+          return x
+            .select(
+              'raceId',
+              'race_slug',
+              'year',
+              'round',
+              'race_name',
+              'date',
+              'time',
+              'race_url',
+              'circuit_name',
+              'location',
+              'country',
+              'circuit_url'
+            )
+            .from('races_v');
+        },
+      },
+    },
+    {
+      // Querying to a SQLite database
+      resolve: `gatsby-source-sql`,
+      options: {
+        typeName: 'raceResult',
+        // This is the field under which the data will be accessible in a future version
+        fieldName: 'raceResult',
+        dbEngine: {
+          client: 'sqlite3',
+          connection: {
+            filename: './data/f1data.sqlite',
+          },
+          useNullAsDefault: true,
+        },
+        queryChain(x) {
+          return x
+            .select(
+              'resultId',
+              'raceId',
+              'number',
+              'grid',
+              'position',
+              'positionOrder',
+              'points',
+              'laps',
+              'time',
+              'milliseconds',
+              'fastestLap',
+              'rank',
+              'fastestLapTime',
+              'fastestLapSpeed',
+              'status',
+              'driver_number',
+              'driver_forename',
+              'driver_surname',
+              'driver_nationality',
+              'driver_url',
+              'constructor_name',
+              'constructor_nationality',
+              'constructor_url'
+            )
+            .from('race_results_v');
+        },
+      },
+    },
   ],
 };
