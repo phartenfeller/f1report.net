@@ -5,8 +5,20 @@ import allAvgLapTimesType from '../../types/allAvgLapTimesType';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getColor(obj) {
-  console.log({ obj });
   return getTeamColor(obj.data.constructor_name);
+}
+
+function tooltip(obj) {
+  console.log(obj);
+  return (
+    <div className="inline-flex items-center">
+      <div
+        className="rounded-full h-4 w-4 mr-2"
+        style={{ background: obj.color }}
+      />
+      <span>{`${obj.value}s | ${obj.indexValue}  (${obj.data.constructor_name})`}</span>
+    </div>
+  );
 }
 
 const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations }) => {
@@ -25,6 +37,7 @@ const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations }) => {
       </div>
       <div className="" style={{ height: '450px' }}>
         <ResponsiveBar
+          tooltip={tooltip}
           layout="horizontal"
           minValue={chartMinTime}
           data={data}

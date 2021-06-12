@@ -65,6 +65,18 @@ function getColor(obj) {
   return getTeamColor(obj.constructor_name);
 }
 
+function tooltip(obj) {
+  return (
+    <div className="p-2 rounded shadow bg-white inline-flex items-center">
+      <div
+        className="rounded-full h-4 w-4 mr-2"
+        style={{ background: obj.serie.color }}
+      />
+      <span>{`${obj.serie.id} (${obj.serie.constructor_name})`}</span>
+    </div>
+  );
+}
+
 const PositionChart = ({ allLapTimes }) => {
   const laps = allLapTimes.nodes.map((l) => l.lap);
   const relevantLaps = getLaps(Math.max(...laps), 12);
@@ -74,6 +86,7 @@ const PositionChart = ({ allLapTimes }) => {
   return (
     <div style={{ height: '500px' }}>
       <ResponsiveBump
+        tooltip={tooltip}
         data={data}
         margin={{ top: 40, right: 100, bottom: 40, left: 60 }}
         colors={getColor}
