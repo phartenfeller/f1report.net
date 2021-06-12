@@ -14,4 +14,8 @@ html {
   .table-heading {
     @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
   }
+
+  .standard-link {
+    @apply p-1 rounded text-blue-500 underline hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
 }

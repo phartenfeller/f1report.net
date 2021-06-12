@@ -102,7 +102,9 @@ const RaceDetailsTable = ({ allRaces, year }) => {
                   </td>
                   <td className="table-cell">{date}</td>
                   <td className="table-cell">
-                    <Link to={`/races/${race_slug}`}>Details</Link>
+                    <Link to={`/races/${race_slug}`} className="standard-link">
+                      Details
+                    </Link>
                   </td>
                 </tr>
               )

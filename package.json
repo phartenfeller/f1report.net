@@ -4,6 +4,9 @@
   "dependencies": {
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
+    "@nivo/bar": "^0.70.1",
+    "@nivo/bump": "^0.70.1",
+    "@nivo/core": "^0.70.1",
     "gatsby": "^3.6.2",
     "gatsby-image": "^3.6.0",
     "gatsby-plugin-image": "^1.6.0",
