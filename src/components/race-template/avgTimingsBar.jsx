@@ -29,7 +29,7 @@ const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations }) => {
           minValue={chartMinTime}
           data={data}
           keys={[key]}
-          indexBy="driver_surname"
+          indexBy="driver_name"
           margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
           padding={0.3}
           valueScale={{ type: 'linear' }}

@@ -32,6 +32,7 @@ export const query = graphql`
         driver_forename
         driver_number
         driver_surname
+        driver_name
         fastestLap
         fastestLapSpeed
         fastestLapTime
@@ -55,6 +56,7 @@ export const query = graphql`
         driver_forename
         driver_number
         driver_surname
+        driver_name
         avg_lapTime_s
         median_lapTime_s
       }
@@ -69,6 +71,7 @@ export const query = graphql`
         driver_forename
         driver_number
         driver_surname
+        driver_name
         avg_lapTime_s
         relevant_lap_count
       }
@@ -80,6 +83,7 @@ export const query = graphql`
         driver_forename
         constructor_name
         driver_surname
+        driver_name
         driver_number
         position
       }

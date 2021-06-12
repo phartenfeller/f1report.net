@@ -24,10 +24,10 @@ function getCharData(arr, relevantLaps) {
 
   const data = arr.reduce((prev, curr) => {
     if (!relevantLaps.includes(curr.lap)) return prev;
-    if (!drivers.includes(curr.driver_surname)) {
-      drivers.push(curr.driver_surname);
+    if (!drivers.includes(curr.driver_name)) {
+      drivers.push(curr.driver_name);
       const newObj = {
-        id: curr.driver_surname,
+        id: curr.driver_name,
         constructor_name: curr.constructor_name,
         data: [
           {
@@ -38,7 +38,7 @@ function getCharData(arr, relevantLaps) {
       };
       prev.push(newObj);
     } else {
-      const index = prev.findIndex((e) => e.id === curr.driver_surname);
+      const index = prev.findIndex((e) => e.id === curr.driver_name);
       prev[index].data.push({ y: curr.position, x: curr.lap });
     }
     return prev;

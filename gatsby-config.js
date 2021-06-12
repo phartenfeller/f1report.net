@@ -102,6 +102,7 @@ module.exports = {
               'driver_number',
               'driver_forename',
               'driver_surname',
+              'driver_name',
               'driver_nationality',
               'driver_url',
               'constructor_name',
@@ -136,6 +137,7 @@ module.exports = {
               'milliseconds',
               'driver_forename',
               'driver_surname',
+              'driver_name',
               'driver_number',
               'constructor_name'
             )
@@ -165,6 +167,7 @@ module.exports = {
               'median_lapTime_s',
               'driver_forename',
               'driver_surname',
+              'driver_name',
               'driver_number',
               'constructor_name'
             )
@@ -193,6 +196,7 @@ module.exports = {
               'driver_forename',
               'driver_surname',
               'driver_number',
+              'driver_name',
               'constructor_name',
               'driverId',
               'relevant_lap_count',
