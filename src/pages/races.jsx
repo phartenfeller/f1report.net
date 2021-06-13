@@ -55,22 +55,22 @@ const RaceDetailsTable = ({ allRaces, year }) => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th scope="col" className="table-heading">
+              <th scope="col" className="table-heading hidden lg:table-cell">
                 #
               </th>
               <th scope="col" className="table-heading">
                 Race
               </th>
-              <th scope="col" className="table-heading">
+              <th scope="col" className="table-heading hidden lg:table-cell">
                 Circuit
               </th>
-              <th scope="col" className="table-heading">
+              <th scope="col" className="table-heading hidden md:table-cell">
                 Location
               </th>
-              <th scope="col" className="table-heading">
+              <th scope="col" className="table-heading hidden md:table-cell">
                 Date
               </th>
-              <th scope="col" className="table-heading">
+              <th scope="col" className="table-heading hidden md:table-cell">
                 &nbsp;
               </th>
             </tr>
@@ -94,13 +94,13 @@ const RaceDetailsTable = ({ allRaces, year }) => {
                   key={raceId}
                   className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
                 >
-                  <td className="table-cell font-medium">{round}</td>
+                  <td className="hidden lg:table-cell font-medium">{round}</td>
                   <td className="table-cell font-medium">{race_name}</td>
-                  <td className="table-cell">{circuit_name}</td>
-                  <td className="table-cell">
+                  <td className="hidden lg:table-cell">{circuit_name}</td>
+                  <td className="hidden md:table-cell">
                     {location} - {country}
                   </td>
-                  <td className="table-cell">{date}</td>
+                  <td className="hidden md:table-cell">{date}</td>
                   <td className="table-cell">
                     <Link to={`/races/${race_slug}`} className="standard-link">
                       Details
@@ -133,32 +133,38 @@ const Races = ({ data }) => {
   return (
     <Layout>
       <SEO title="Races" />
-      <div>
-        {uniqueYears.map((y) => (
-          <Disclosure as="div" key={y} className="pt-6">
-            {({ open }) => (
-              <>
-                <dt className="text-lg">
-                  <Disclosure.Button className="text-left w-full flex justify-between items-start text-gray-400">
-                    <span className="font-medium text-gray-900">{y}</span>
-                    <span className="ml-6 h-7 flex items-center">
-                      <ChevronDownIcon
-                        className={classNames(
-                          open ? '-rotate-180' : 'rotate-0',
-                          'h-6 w-6 transform'
-                        )}
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </Disclosure.Button>
-                </dt>
-                <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                  <RaceDetailsTable allRaces={allRaces} year={y} />
-                </Disclosure.Panel>
-              </>
-            )}
-          </Disclosure>
-        ))}
+      <div className="mx-8">
+        <h2 className="mt-2 mb-12 text-3xl font-semibold tracking-wide">
+          All Races
+        </h2>
+
+        <div>
+          {uniqueYears.map((y) => (
+            <Disclosure as="div" key={y} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt className="text-lg">
+                    <Disclosure.Button className="text-left bg-white rounded shadow p-4 w-full flex justify-between items-start text-gray-400 hover:shadow-lg focus:outline-none focus:ring focus:ring-red-300">
+                      <span className="font-medium text-gray-900">{y}</span>
+                      <span className="ml-6 h-7 flex items-center">
+                        <ChevronDownIcon
+                          className={classNames(
+                            open ? '-rotate-180' : 'rotate-0',
+                            'h-6 w-6 transform'
+                          )}
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <RaceDetailsTable allRaces={allRaces} year={y} />
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+          ))}
+        </div>
       </div>
     </Layout>
   );

@@ -19,7 +19,10 @@ const TimingsTabs = ({ allAvgLapTimes, allAvgLapTimesTop70Pct }) => {
     <div>
       <div className="">
         <div className="border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+          <nav
+            className="-mb-px flex flex-wrap space-x-2 md:space-x-4 lg:space-x-8"
+            aria-label="Tabs"
+          >
             {tabs.map((tab) => (
               <button
                 type="button"
@@ -29,7 +32,7 @@ const TimingsTabs = ({ allAvgLapTimes, allAvgLapTimesTop70Pct }) => {
                   tab === active
                     ? 'border-red-400 text-red-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                  'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-1 focus:ring-red-300'
+                  'whitespace-nowrap py-4 px-1 border-b-2 font-xs lg:font-medium text-sm focus:outline-none focus:ring-1 focus:ring-red-300'
                 )}
                 aria-current={tab === active ? 'page' : undefined}
               >

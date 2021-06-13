@@ -8,6 +8,7 @@
 import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Footer from './footer';
 import Header from './header';
 
 const Layout = ({ children }) => {
@@ -22,21 +23,16 @@ const Layout = ({ children }) => {
   `);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header siteTitle={data.site.siteMetadata.title} />
-      <div>
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
-    </>
+      <main className="flex-grow">{children}</main>
+      <Footer />
+    </div>
   );
 };
 
 Layout.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default Layout;

@@ -1,6 +1,8 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Infobox from '../components/alerts/infobox';
+import Warningbox from '../components/alerts/warningbox';
 import Layout from '../components/layout';
 import PositionChart from '../components/race-template/positionChart';
 import TimingsTabs from '../components/race-template/timingsTabs';
@@ -132,11 +134,14 @@ const RaceTemplate = ({ data }) => {
             Wikipedia Article
           </a>
         </div>
-        <div className="mt-5">
+        <div className="md:hidden my-6 rounded border-2 border-gray-400">
+          <Infobox text="For a better experience and more Info please use a bigger screen" />
+        </div>
+        <div className="hidden md:block mt-5">
           <h2 className="text-2xl font-semibold tracking-wide mb-3">
             Race Results
           </h2>
-          <div className="py-2 align-middle inline-block min-w-full">
+          <div className="py-2 align-middle min-w-full">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
@@ -236,7 +241,12 @@ const RaceTemplate = ({ data }) => {
             </div>
           </div>
         ) : (
-          <div>No data...</div>
+          <div className="m-0 lg:m-16 rounded border-2 border-gray-300">
+            <Warningbox
+              title="No data found"
+              text="Either the race did not take place yet or there was an errror."
+            />
+          </div>
         )}
       </div>
     </Layout>
