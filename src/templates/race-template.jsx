@@ -114,7 +114,7 @@ const RaceTemplate = ({ data }) => {
 
   return (
     <Layout>
-      <SEO title="Page two" />
+      <SEO title={`${race_name} (${year})`} />
       <div className="mt-5 mx-6">
         <h1 className="text-3xl font-bold tracking-wide mb-3" data-id={raceId}>
           {race_name} ({year})
