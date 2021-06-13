@@ -1,8 +1,9 @@
 module.exports = {
   siteMetadata: {
     title: `F1 Report`,
-    description: `Data for every F1 race ever`,
-    author: `@phartenfeller`,
+    description: `Data for every Formula 1 race ever`,
+    author: `Philipp Hartenfeller`,
+    siteUrl: `https://f1report.xyz`,
   },
   plugins: [
     `gatsby-plugin-postcss`,
@@ -20,11 +21,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `Formula 1 Report`,
+        short_name: `f1 report`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#EF4444`,
+        theme_color: `#EF4444`,
         display: `minimal-ui`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
@@ -33,6 +34,13 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
+    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-canonical-urls`,
+      options: {
+        siteUrl: `https://f1report.xyz/`,
+      },
+    },
     {
       // Querying to a SQLite database
       resolve: `gatsby-source-sql`,
