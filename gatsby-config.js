@@ -214,5 +214,57 @@ module.exports = {
         },
       },
     },
+    {
+      // Querying to a SQLite database
+      resolve: `gatsby-source-sql`,
+      options: {
+        typeName: 'avgConstructorLapTimes',
+        // This is the field under which the data will be accessible in a future version
+        fieldName: 'avgConstructorLapTimes',
+        dbEngine: {
+          client: 'sqlite3',
+          connection: {
+            filename: './data/f1data.sqlite',
+          },
+          useNullAsDefault: true,
+        },
+        queryChain(x) {
+          return x
+            .select(
+              'raceId',
+              'avg_lapTime_s',
+              'median_lapTime_s',
+              'constructor_name'
+            )
+            .from('avg_constructor_lap_times');
+        },
+      },
+    },
+    {
+      // Querying to a SQLite database
+      resolve: `gatsby-source-sql`,
+      options: {
+        typeName: 'avgConstructorLapTimes70Pct',
+        // This is the field under which the data will be accessible in a future version
+        fieldName: 'avgConstructorLapTimes70Pct',
+        dbEngine: {
+          client: 'sqlite3',
+          connection: {
+            filename: './data/f1data.sqlite',
+          },
+          useNullAsDefault: true,
+        },
+        queryChain(x) {
+          return x
+            .select(
+              'raceId',
+              'relevant_lap_count',
+              'avg_lapTime_s',
+              'constructor_name'
+            )
+            .from('avg_constructor_lap_times_top_70_pct');
+        },
+      },
+    },
   ],
 };

@@ -8,25 +8,28 @@ function getColor(obj) {
   return getTeamColor(obj.data.constructor_name);
 }
 
-function tooltip(obj) {
-  console.log(obj);
-  return (
-    <div className="inline-flex items-center">
-      <div
-        className="rounded-full h-4 w-4 mr-2"
-        style={{ background: obj.color }}
-      />
-      <span>{`${obj.value}s | ${obj.indexValue}  (${obj.data.constructor_name})`}</span>
-    </div>
-  );
-}
-
-const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations }) => {
+const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations, index }) => {
   const key = mode === 'avg' ? 'avg_lapTime_s' : 'median_lapTime_s';
   const data = allAvgLapTimes.nodes.sort((a, b) => a[key] - b[key]);
 
   const times = allAvgLapTimes.nodes.map((t) => t[key]);
   const chartMinTime = Math.min(...times).toFixed(0) - 1;
+
+  function tooltip(obj) {
+    return (
+      <div className="inline-flex items-center">
+        <div
+          className="rounded-full h-4 w-4 mr-2"
+          style={{ background: obj.color }}
+        />
+        {index === 'constructor_name' ? (
+          <span>{`${obj.value}s | ${obj.indexValue}`}</span>
+        ) : (
+          <span>{`${obj.value}s | ${obj.indexValue}  (${obj.data.constructor_name})`}</span>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="">
@@ -42,7 +45,7 @@ const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations }) => {
           minValue={chartMinTime}
           data={data}
           keys={[key]}
-          indexBy="driver_name"
+          indexBy={index}
           margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
           padding={0.3}
           valueScale={{ type: 'linear' }}
@@ -55,7 +58,7 @@ const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'Driver',
+            legend: 'Seconds',
             legendPosition: 'middle',
             legendOffset: 32,
           }}
@@ -84,6 +87,7 @@ AvgTimingsBar.propTypes = {
   mode: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
   annotations: PropTypes.arrayOf(PropTypes.string),
+  index: PropTypes.string.isRequired,
 };
 
 AvgTimingsBar.defaultProps = {

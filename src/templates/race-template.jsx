@@ -5,11 +5,13 @@ import Infobox from '../components/alerts/infobox';
 import Warningbox from '../components/alerts/warningbox';
 import Layout from '../components/layout';
 import PositionChart from '../components/race-template/positionChart';
-import TimingsTabs from '../components/race-template/timingsTabs';
+import DriverLapTimes from '../components/race-template/driverLapTimes';
 import SEO from '../components/seo';
 import allAvgLapTimesType from '../types/allAvgLapTimesType';
 import allLapTimesType from '../types/allLapTimesType';
 import allRaceResultType from '../types/allRaceResultType';
+import allAvgConstructorLapTimesType from '../types/allAvgConstructorLapTimesType';
+import ConstructorLapTimes from '../components/race-template/constructorLapTimes';
 
 export const query = graphql`
   query raceData($id: Int!) {
@@ -90,6 +92,25 @@ export const query = graphql`
         position
       }
     }
+
+    allAvgConstructorLapTimes(filter: { raceId: { eq: $id } }) {
+      nodes {
+        avg_lapTime_s
+        constructor_name
+        median_lapTime_s
+      }
+    }
+
+    allAvgConstructorLapTimes70Pct(
+      filter: { raceId: { eq: $id } }
+      sort: { fields: avg_lapTime_s }
+    ) {
+      nodes {
+        constructor_name
+        avg_lapTime_s
+        relevant_lap_count
+      }
+    }
   }
 `;
 
@@ -100,6 +121,8 @@ const RaceTemplate = ({ data }) => {
     allAvgLapTimes,
     allAvgLapTimesTop70Pct,
     allLapTimes,
+    allAvgConstructorLapTimes,
+    allAvgConstructorLapTimes70Pct,
   } = data;
   const {
     race_name,
@@ -230,15 +253,31 @@ const RaceTemplate = ({ data }) => {
               </h2>
               <PositionChart allLapTimes={allLapTimes} />
             </div>
-            <div>
-              <h2 className="text-2xl font-semibold tracking-wide mb-3">
-                Lap Time Statistics
-              </h2>
-              <TimingsTabs
-                allAvgLapTimes={allAvgLapTimes}
-                allAvgLapTimesTop70Pct={allAvgLapTimesTop70Pct}
-              />
-            </div>
+            {allAvgLapTimes.nodes && allAvgLapTimes.nodes.length > 0 ? (
+              <div>
+                <h2 className="text-2xl font-semibold tracking-wide mb-3">
+                  Driver Lap Time Statistics
+                </h2>
+                <DriverLapTimes
+                  allAvgLapTimes={allAvgLapTimes}
+                  allAvgLapTimesTop70Pct={allAvgLapTimesTop70Pct}
+                />
+              </div>
+            ) : null}
+            {allAvgConstructorLapTimes.nodes &&
+            allAvgConstructorLapTimes.nodes.length > 0 ? (
+              <div>
+                <h2 className="text-2xl font-semibold tracking-wide mb-3">
+                  Constructor Lap Time Statistics
+                </h2>
+                <ConstructorLapTimes
+                  allAvgConstructorLapTimes={allAvgConstructorLapTimes}
+                  allAvgConstructorLapTimes70Pct={
+                    allAvgConstructorLapTimes70Pct
+                  }
+                />
+              </div>
+            ) : null}
           </div>
         ) : (
           <div className="m-0 lg:m-16 rounded border-2 border-gray-300">
@@ -269,6 +308,8 @@ RaceTemplate.propTypes = {
     allAvgLapTimes: allAvgLapTimesType.isRequired,
     allAvgLapTimesTop70Pct: allAvgLapTimesType.isRequired,
     allLapTimes: allLapTimesType.isRequired,
+    allAvgConstructorLapTimes: allAvgConstructorLapTimesType.isRequired,
+    allAvgConstructorLapTimes70Pct: allAvgConstructorLapTimesType.isRequired,
   }).isRequired,
 };
 
