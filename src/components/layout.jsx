@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Footer from './footer';
 import Header from './header';
+import '../styles/tailwind.css';
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`

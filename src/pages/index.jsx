@@ -4,7 +4,6 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import Infobox from '../components/alerts/infobox';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
-import '../styles/tailwind.css';
 
 const IndexPage = () => (
   <Layout>
