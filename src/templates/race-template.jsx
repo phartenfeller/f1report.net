@@ -7,15 +7,15 @@ import Layout from '../components/layout';
 import PositionChart from '../components/race-template/positionChart';
 import DriverLapTimes from '../components/race-template/driverLapTimes';
 import SEO from '../components/seo';
-import allAvgLapTimesType from '../types/allAvgLapTimesType';
-import allLapTimesType from '../types/allLapTimesType';
-import allRaceResultType from '../types/allRaceResultType';
-import allAvgConstructorLapTimesType from '../types/allAvgConstructorLapTimesType';
+import avgLapTimesType from '../types/avgLapTimesType';
+import lapTimesType from '../types/lapTimesType';
+import raceResultsType from '../types/raceResultsType';
+import avgConstructorLapTimesType from '../types/avgConstructorLapTimesType';
 import ConstructorLapTimes from '../components/race-template/constructorLapTimes';
 
 export const query = graphql`
   query raceData($id: Int!) {
-    races(raceId: { eq: $id }) {
+    sqliteRaces(raceId: { eq: $id }) {
       circuit_name
       circuit_url
       country
@@ -28,10 +28,7 @@ export const query = graphql`
       time
       year
       raceId
-    }
-
-    allRaceResult(filter: { raceId: { eq: $id } }, sort: { fields: position }) {
-      nodes {
+      raceResults {
         constructor_name
         driver_forename
         driver_number
@@ -49,40 +46,7 @@ export const query = graphql`
         status
         time
       }
-    }
-
-    allAvgLapTimes(
-      filter: { raceId: { eq: $id } }
-      sort: { fields: avg_lapTime_s }
-    ) {
-      nodes {
-        constructor_name
-        driver_forename
-        driver_number
-        driver_surname
-        driver_name
-        avg_lapTime_s
-        median_lapTime_s
-      }
-    }
-
-    allAvgLapTimesTop70Pct(
-      filter: { raceId: { eq: $id } }
-      sort: { fields: avg_lapTime_s }
-    ) {
-      nodes {
-        constructor_name
-        driver_forename
-        driver_number
-        driver_surname
-        driver_name
-        avg_lapTime_s
-        relevant_lap_count
-      }
-    }
-
-    allLapTimes(filter: { raceId: { eq: $id } }) {
-      nodes {
+      lapTimes {
         lap
         driver_forename
         constructor_name
@@ -91,21 +55,30 @@ export const query = graphql`
         driver_number
         position
       }
-    }
-
-    allAvgConstructorLapTimes(filter: { raceId: { eq: $id } }) {
-      nodes {
+      avgLapTimes {
+        constructor_name
+        driver_forename
+        driver_number
+        driver_surname
+        driver_name
+        avg_lapTime_s
+        median_lapTime_s
+      }
+      avgLapTimesTop70Pcts {
+        constructor_name
+        driver_forename
+        driver_number
+        driver_surname
+        driver_name
+        avg_lapTime_s
+        relevant_lap_count
+      }
+      avgConstructorLapTimes {
         avg_lapTime_s
         constructor_name
         median_lapTime_s
       }
-    }
-
-    allAvgConstructorLapTimes70Pct(
-      filter: { raceId: { eq: $id } }
-      sort: { fields: avg_lapTime_s }
-    ) {
-      nodes {
+      avgConstructorLapTimes70Pcts {
         constructor_name
         avg_lapTime_s
         relevant_lap_count
@@ -115,15 +88,8 @@ export const query = graphql`
 `;
 
 const RaceTemplate = ({ data }) => {
-  const {
-    races,
-    allRaceResult,
-    allAvgLapTimes,
-    allAvgLapTimesTop70Pct,
-    allLapTimes,
-    allAvgConstructorLapTimes,
-    allAvgConstructorLapTimes70Pct,
-  } = data;
+  const { sqliteRaces } = data;
+
   const {
     race_name,
     year,
@@ -133,7 +99,13 @@ const RaceTemplate = ({ data }) => {
     circuit_url,
     race_url,
     raceId,
-  } = races;
+    raceResults,
+    lapTimes,
+    avgLapTimes,
+    avgLapTimesTop70Pcts,
+    avgConstructorLapTimes,
+    avgConstructorLapTimes70Pcts,
+  } = sqliteRaces;
 
   return (
     <Layout>
@@ -196,7 +168,7 @@ const RaceTemplate = ({ data }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {allRaceResult.nodes.map(
+                  {raceResults.map(
                     (
                       {
                         constructor_name,
@@ -245,36 +217,33 @@ const RaceTemplate = ({ data }) => {
             </div>
           </div>
         </div>
-        {allRaceResult.nodes && allRaceResult.nodes.length > 0 ? (
+        {raceResults && raceResults.length > 0 ? (
           <div>
             <div>
               <h2 className="text-2xl font-semibold tracking-wide mb-3">
                 Positions
               </h2>
-              <PositionChart allLapTimes={allLapTimes} />
+              <PositionChart lapTimes={lapTimes} />
             </div>
-            {allAvgLapTimes.nodes && allAvgLapTimes.nodes.length > 0 ? (
+            {avgLapTimes && avgLapTimes.length > 0 ? (
               <div>
                 <h2 className="text-2xl font-semibold tracking-wide mb-3">
                   Driver Lap Time Statistics
                 </h2>
                 <DriverLapTimes
-                  allAvgLapTimes={allAvgLapTimes}
-                  allAvgLapTimesTop70Pct={allAvgLapTimesTop70Pct}
+                  avgLapTimes={avgLapTimes}
+                  avgLapTimesTop70Pcts={avgLapTimesTop70Pcts}
                 />
               </div>
             ) : null}
-            {allAvgConstructorLapTimes.nodes &&
-            allAvgConstructorLapTimes.nodes.length > 0 ? (
+            {avgConstructorLapTimes && avgConstructorLapTimes.length > 0 ? (
               <div>
                 <h2 className="text-2xl font-semibold tracking-wide mb-3">
                   Constructor Lap Time Statistics
                 </h2>
                 <ConstructorLapTimes
-                  allAvgConstructorLapTimes={allAvgConstructorLapTimes}
-                  allAvgConstructorLapTimes70Pct={
-                    allAvgConstructorLapTimes70Pct
-                  }
+                  avgConstructorLapTimes={avgConstructorLapTimes}
+                  avgConstructorLapTimes70Pcts={avgConstructorLapTimes70Pcts}
                 />
               </div>
             ) : null}
@@ -294,7 +263,7 @@ const RaceTemplate = ({ data }) => {
 
 RaceTemplate.propTypes = {
   data: PropTypes.shape({
-    races: PropTypes.shape({
+    sqliteRaces: PropTypes.shape({
       race_name: PropTypes.string.isRequired,
       year: PropTypes.number.isRequired,
       circuit_name: PropTypes.string.isRequired,
@@ -303,13 +272,13 @@ RaceTemplate.propTypes = {
       circuit_url: PropTypes.string.isRequired,
       race_url: PropTypes.string.isRequired,
       raceId: PropTypes.number.isRequired,
+      raceResults: raceResultsType.isRequired,
+      avgLapTimes: avgLapTimesType.isRequired,
+      avgLapTimesTop70Pcts: avgLapTimesType.isRequired,
+      lapTimes: lapTimesType.isRequired,
+      avgConstructorLapTimes: avgConstructorLapTimesType.isRequired,
+      avgConstructorLapTimes70Pcts: avgConstructorLapTimesType.isRequired,
     }).isRequired,
-    allRaceResult: allRaceResultType.isRequired,
-    allAvgLapTimes: allAvgLapTimesType.isRequired,
-    allAvgLapTimesTop70Pct: allAvgLapTimesType.isRequired,
-    allLapTimes: allLapTimesType.isRequired,
-    allAvgConstructorLapTimes: allAvgConstructorLapTimesType.isRequired,
-    allAvgConstructorLapTimes70Pct: allAvgConstructorLapTimesType.isRequired,
   }).isRequired,
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import allAvgLapTimesType from '../../types/allAvgLapTimesType';
+import avgLapTimesType from '../../types/avgLapTimesType';
 import TabsContainer from '../tabsContainer';
 import AvgTimingsBar from './avgTimingsBar';
 
@@ -7,14 +7,14 @@ const AVG = 'Average Lap Times';
 const MEDIAN = 'Median Lap Times';
 const TOP70 = 'Average Top 70% Laps';
 
-const DriverLapTimes = ({ allAvgLapTimes, allAvgLapTimesTop70Pct }) => {
+const DriverLapTimes = ({ avgLapTimes, avgLapTimesTop70Pcts }) => {
   const tabs = [
     {
       tabId: 1,
       tabName: AVG,
       component: (
         <AvgTimingsBar
-          allAvgLapTimes={allAvgLapTimes}
+          avgLapTimes={avgLapTimes}
           mode="avg"
           desc={AVG}
           annotations={[
@@ -30,7 +30,7 @@ const DriverLapTimes = ({ allAvgLapTimes, allAvgLapTimesTop70Pct }) => {
       tabName: MEDIAN,
       component: (
         <AvgTimingsBar
-          allAvgLapTimes={allAvgLapTimes}
+          avgLapTimes={avgLapTimes}
           mode="median"
           desc={MEDIAN}
           annotations={[
@@ -46,12 +46,12 @@ const DriverLapTimes = ({ allAvgLapTimes, allAvgLapTimesTop70Pct }) => {
       tabName: TOP70,
       component: (
         <AvgTimingsBar
-          allAvgLapTimes={allAvgLapTimesTop70Pct}
+          avgLapTimes={avgLapTimesTop70Pcts}
           mode="avg"
           desc={TOP70}
           annotations={[
             // eslint-disable-next-line dot-notation
-            `of the drivers who drove ${allAvgLapTimesTop70Pct.nodes[0]['relevant_lap_count']} Laps`,
+            `of the drivers who drove ${avgLapTimesTop70Pcts[0]['relevant_lap_count']} Laps`,
           ]}
           index="driver_name"
         />
@@ -67,8 +67,8 @@ const DriverLapTimes = ({ allAvgLapTimes, allAvgLapTimesTop70Pct }) => {
 };
 
 DriverLapTimes.propTypes = {
-  allAvgLapTimes: allAvgLapTimesType.isRequired,
-  allAvgLapTimesTop70Pct: allAvgLapTimesType.isRequired,
+  avgLapTimes: avgLapTimesType.isRequired,
+  avgLapTimesTop70Pcts: avgLapTimesType.isRequired,
 };
 
 export default DriverLapTimes;

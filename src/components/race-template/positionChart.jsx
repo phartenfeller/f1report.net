@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveBump } from '@nivo/bump';
-import allLapTimesType from '../../types/allLapTimesType';
+import lapTimesType from '../../types/lapTimesType';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getLaps(count, amount) {
@@ -77,11 +77,11 @@ function tooltip(obj) {
   );
 }
 
-const PositionChart = ({ allLapTimes }) => {
-  const laps = allLapTimes.nodes.map((l) => l.lap);
+const PositionChart = ({ lapTimes }) => {
+  const laps = lapTimes.map((l) => l.lap);
   const relevantLaps = getLaps(Math.max(...laps), 12);
 
-  const data = getCharData(allLapTimes.nodes, relevantLaps);
+  const data = getCharData(lapTimes, relevantLaps);
 
   return (
     <div style={{ height: '500px' }}>
@@ -132,7 +132,7 @@ const PositionChart = ({ allLapTimes }) => {
 };
 
 PositionChart.propTypes = {
-  allLapTimes: allLapTimesType.isRequired,
+  lapTimes: lapTimesType.isRequired,
 };
 
 export default PositionChart;

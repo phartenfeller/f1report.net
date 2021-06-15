@@ -1,5 +1,5 @@
 import React from 'react';
-import allAvgConstructorLapTimesType from '../../types/allAvgConstructorLapTimesType';
+import avgConstructorLapTimesType from '../../types/avgConstructorLapTimesType';
 import TabsContainer from '../tabsContainer';
 import AvgTimingsBar from './avgTimingsBar';
 
@@ -8,8 +8,8 @@ const MEDIAN = 'Median Lap Times';
 const TOP70 = 'Average Top 70% Laps';
 
 const ConstructorLapTimes = ({
-  allAvgConstructorLapTimes,
-  allAvgConstructorLapTimes70Pct,
+  avgConstructorLapTimes,
+  avgConstructorLapTimes70Pcts,
 }) => {
   const tabs = [
     {
@@ -17,7 +17,7 @@ const ConstructorLapTimes = ({
       tabName: AVG,
       component: (
         <AvgTimingsBar
-          allAvgLapTimes={allAvgConstructorLapTimes}
+          avgLapTimes={avgConstructorLapTimes}
           mode="avg"
           desc={AVG}
           annotations={[
@@ -33,7 +33,7 @@ const ConstructorLapTimes = ({
       tabName: MEDIAN,
       component: (
         <AvgTimingsBar
-          allAvgLapTimes={allAvgConstructorLapTimes}
+          avgLapTimes={avgConstructorLapTimes}
           mode="median"
           desc={MEDIAN}
           annotations={[
@@ -49,14 +49,14 @@ const ConstructorLapTimes = ({
       tabName: TOP70,
       component: (
         <AvgTimingsBar
-          allAvgLapTimes={allAvgConstructorLapTimes70Pct}
+          avgLapTimes={avgConstructorLapTimes70Pcts}
           mode="avg"
           desc={TOP70}
           annotations={[
             // eslint-disable-next-line dot-notation
-            `Best ${allAvgConstructorLapTimes70Pct.nodes[0]['relevant_lap_count']} Laps of both drivers`,
+            `Best ${avgConstructorLapTimes70Pcts[0]['relevant_lap_count']} Laps of both drivers`,
             // eslint-disable-next-line dot-notation
-            `Only Teams that completed ${allAvgConstructorLapTimes70Pct.nodes[0]['relevant_lap_count']} Laps`,
+            `Only Teams that completed ${avgConstructorLapTimes70Pcts[0]['relevant_lap_count']} Laps`,
           ]}
           index="constructor_name"
         />
@@ -72,8 +72,8 @@ const ConstructorLapTimes = ({
 };
 
 ConstructorLapTimes.propTypes = {
-  allAvgConstructorLapTimes: allAvgConstructorLapTimesType.isRequired,
-  allAvgConstructorLapTimes70Pct: allAvgConstructorLapTimesType.isRequired,
+  avgConstructorLapTimes: avgConstructorLapTimesType.isRequired,
+  avgConstructorLapTimes70Pcts: avgConstructorLapTimesType.isRequired,
 };
 
 export default ConstructorLapTimes;

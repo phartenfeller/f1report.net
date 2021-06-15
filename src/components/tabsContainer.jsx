@@ -35,7 +35,10 @@ const TabsContainer = ({ tabs, defaultTabId }) => {
           </nav>
         </div>
       </div>
-      {tabs.map(({ component, tabId }) => active === tabId && component)}
+      {tabs.map(
+        ({ component, tabId }) =>
+          active === tabId && <div key={tabId}>{component}</div>
+      )}
     </div>
   );
 };
@@ -44,7 +47,8 @@ TabsContainer.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       component: PropTypes.element.isRequired,
-      tabId: PropTypes.string.isRequired,
+      tabId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
       tabName: PropTypes.string.isRequired,
     })
   ).isRequired,

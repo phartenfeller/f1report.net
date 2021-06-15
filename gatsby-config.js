@@ -43,227 +43,64 @@ module.exports = {
     },
     {
       // Querying to a SQLite database
-      resolve: `gatsby-source-sql`,
+      resolve: `gatsby-source-sqlite`,
       options: {
-        typeName: 'races',
-        // This is the field under which the data will be accessible in a future version
-        fieldName: 'races',
-        dbEngine: {
-          client: 'sqlite3',
-          connection: {
-            filename: './data/f1data.sqlite',
+        fileName: './data/f1data.sqlite',
+        queries: [
+          {
+            statement: `select * from races_v`,
+            idFieldName: `raceId`,
+            name: 'races',
           },
-          useNullAsDefault: true,
-        },
-        queryChain(x) {
-          return x
-            .select(
-              'raceId',
-              'race_slug',
-              'year',
-              'round',
-              'race_name',
-              'date',
-              'time',
-              'race_url',
-              'circuit_name',
-              'location',
-              'country',
-              'circuit_url'
-            )
-            .from('races_v');
-        },
-      },
-    },
-    {
-      // Querying to a SQLite database
-      resolve: `gatsby-source-sql`,
-      options: {
-        typeName: 'raceResult',
-        // This is the field under which the data will be accessible in a future version
-        fieldName: 'raceResult',
-        dbEngine: {
-          client: 'sqlite3',
-          connection: {
-            filename: './data/f1data.sqlite',
+          {
+            statement: `select * from race_results_v`,
+            idFieldName: `resultId`,
+            name: `raceResult`,
+            parentName: 'races',
+            foreignKey: 'raceId',
+            cardinality: 'OneToMany',
           },
-          useNullAsDefault: true,
-        },
-        queryChain(x) {
-          return x
-            .select(
-              'resultId',
-              'raceId',
-              'number',
-              'grid',
-              'position',
-              'positionOrder',
-              'points',
-              'laps',
-              'time',
-              'milliseconds',
-              'fastestLap',
-              'rank',
-              'fastestLapTime',
-              'fastestLapSpeed',
-              'status',
-              'driver_number',
-              'driver_forename',
-              'driver_surname',
-              'driver_name',
-              'driver_nationality',
-              'driver_url',
-              'constructor_name',
-              'constructor_nationality',
-              'constructor_url'
-            )
-            .from('race_results_v');
-        },
-      },
-    },
-    {
-      // Querying to a SQLite database
-      resolve: `gatsby-source-sql`,
-      options: {
-        typeName: 'lapTimes',
-        // This is the field under which the data will be accessible in a future version
-        fieldName: 'lapTimes',
-        dbEngine: {
-          client: 'sqlite3',
-          connection: {
-            filename: './data/f1data.sqlite',
+          {
+            statement: `select * from lap_times_v`,
+            idFieldName: `lapId`,
+            name: `lapTimes`,
+            parentName: 'races',
+            foreignKey: 'raceId',
+            cardinality: 'OneToMany',
           },
-          useNullAsDefault: true,
-        },
-        queryChain(x) {
-          return x
-            .select(
-              'raceId',
-              'lap',
-              'position',
-              'time',
-              'milliseconds',
-              'driver_forename',
-              'driver_surname',
-              'driver_name',
-              'driver_number',
-              'constructor_name'
-            )
-            .from('lap_times_v');
-        },
-      },
-    },
-    {
-      // Querying to a SQLite database
-      resolve: `gatsby-source-sql`,
-      options: {
-        typeName: 'avgLapTimes',
-        // This is the field under which the data will be accessible in a future version
-        fieldName: 'avgLapTimes',
-        dbEngine: {
-          client: 'sqlite3',
-          connection: {
-            filename: './data/f1data.sqlite',
+          {
+            statement: `select * from avg_lap_times`,
+            idFieldName: `num_id`,
+            name: `avgLapTimes`,
+            parentName: 'races',
+            foreignKey: 'raceId',
+            cardinality: 'OneToMany',
           },
-          useNullAsDefault: true,
-        },
-        queryChain(x) {
-          return x
-            .select(
-              'raceId',
-              'avg_lapTime_s',
-              'median_lapTime_s',
-              'driver_forename',
-              'driver_surname',
-              'driver_name',
-              'driver_number',
-              'constructor_name'
-            )
-            .from('avg_lap_times');
-        },
-      },
-    },
-    {
-      // Querying to a SQLite database
-      resolve: `gatsby-source-sql`,
-      options: {
-        typeName: 'avgLapTimesTop70Pct',
-        // This is the field under which the data will be accessible in a future version
-        fieldName: 'avgLapTimesTop70Pct',
-        dbEngine: {
-          client: 'sqlite3',
-          connection: {
-            filename: './data/f1data.sqlite',
+          {
+            statement: `select * from avg_lap_times_top_70_pct`,
+            idFieldName: `num_id`,
+            name: `avgLapTimesTop70Pct`,
+            parentName: 'races',
+            foreignKey: 'raceId',
+            cardinality: 'OneToMany',
           },
-          useNullAsDefault: true,
-        },
-        queryChain(x) {
-          return x
-            .select(
-              'raceId',
-              'driver_forename',
-              'driver_surname',
-              'driver_number',
-              'driver_name',
-              'constructor_name',
-              'driverId',
-              'relevant_lap_count',
-              'avg_lapTime_s'
-            )
-            .from('avg_lap_times_top_70_pct');
-        },
-      },
-    },
-    {
-      // Querying to a SQLite database
-      resolve: `gatsby-source-sql`,
-      options: {
-        typeName: 'avgConstructorLapTimes',
-        // This is the field under which the data will be accessible in a future version
-        fieldName: 'avgConstructorLapTimes',
-        dbEngine: {
-          client: 'sqlite3',
-          connection: {
-            filename: './data/f1data.sqlite',
+          {
+            statement: `select * from avg_constructor_lap_times`,
+            idFieldName: `num_id`,
+            name: `avgConstructorLapTimes`,
+            parentName: 'races',
+            foreignKey: 'raceId',
+            cardinality: 'OneToMany',
           },
-          useNullAsDefault: true,
-        },
-        queryChain(x) {
-          return x
-            .select(
-              'raceId',
-              'avg_lapTime_s',
-              'median_lapTime_s',
-              'constructor_name'
-            )
-            .from('avg_constructor_lap_times');
-        },
-      },
-    },
-    {
-      // Querying to a SQLite database
-      resolve: `gatsby-source-sql`,
-      options: {
-        typeName: 'avgConstructorLapTimes70Pct',
-        // This is the field under which the data will be accessible in a future version
-        fieldName: 'avgConstructorLapTimes70Pct',
-        dbEngine: {
-          client: 'sqlite3',
-          connection: {
-            filename: './data/f1data.sqlite',
+          {
+            statement: `select * from avg_constructor_lap_times_top_70_pct`,
+            idFieldName: `num_id`,
+            name: `avgConstructorLapTimes70Pct`,
+            parentName: 'races',
+            foreignKey: 'raceId',
+            cardinality: 'OneToMany',
           },
-          useNullAsDefault: true,
-        },
-        queryChain(x) {
-          return x
-            .select(
-              'raceId',
-              'relevant_lap_count',
-              'avg_lapTime_s',
-              'constructor_name'
-            )
-            .from('avg_constructor_lap_times_top_70_pct');
-        },
+        ],
       },
     },
   ],

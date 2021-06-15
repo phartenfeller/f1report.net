@@ -10,7 +10,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const allRacesType = PropTypes.shape({
+const allSqliteRacesType = PropTypes.shape({
   nodes: PropTypes.arrayOf(
     PropTypes.shape({
       circuit_name: PropTypes.string.isRequired,
@@ -28,7 +28,7 @@ const allRacesType = PropTypes.shape({
 
 export const query = graphql`
   {
-    allRaces(sort: { fields: year, order: DESC }) {
+    allSqliteRaces(sort: { fields: year, order: DESC }) {
       nodes {
         circuit_name
         country
@@ -44,8 +44,8 @@ export const query = graphql`
   }
 `;
 
-const RaceDetailsTable = ({ allRaces, year }) => {
-  const yearRaces = allRaces.nodes
+const RaceDetailsTable = ({ allSqliteRaces, year }) => {
+  const yearRaces = allSqliteRaces.nodes
     .filter((r) => r.year === year)
     .sort((a, b) => a.round - b.round);
 
@@ -117,16 +117,16 @@ const RaceDetailsTable = ({ allRaces, year }) => {
 };
 
 RaceDetailsTable.propTypes = {
-  allRaces: allRacesType.isRequired,
+  allSqliteRaces: allSqliteRacesType.isRequired,
   year: PropTypes.number.isRequired,
 };
 
 const Races = ({ data }) => {
-  const { allRaces } = data;
+  const { allSqliteRaces } = data;
 
   const yearsArr = [];
-  for (let i = 0; i < allRaces.nodes.length; i += 1) {
-    yearsArr.push(allRaces.nodes[i].year);
+  for (let i = 0; i < allSqliteRaces.nodes.length; i += 1) {
+    yearsArr.push(allSqliteRaces.nodes[i].year);
   }
   const uniqueYears = [...new Set(yearsArr)];
 
@@ -158,7 +158,10 @@ const Races = ({ data }) => {
                     </Disclosure.Button>
                   </dt>
                   <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                    <RaceDetailsTable allRaces={allRaces} year={y} />
+                    <RaceDetailsTable
+                      allSqliteRaces={allSqliteRaces}
+                      year={y}
+                    />
                   </Disclosure.Panel>
                 </>
               )}
@@ -172,7 +175,7 @@ const Races = ({ data }) => {
 
 Races.propTypes = {
   data: PropTypes.shape({
-    allRaces: allRacesType,
+    allSqliteRaces: allSqliteRacesType,
   }).isRequired,
 };
 

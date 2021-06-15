@@ -1,18 +1,29 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import allAvgLapTimesType from '../../types/allAvgLapTimesType';
 import getTeamColor from '../../util/f1TeamColors';
+
+const lapTimesType = PropTypes.arrayOf(
+  PropTypes.shape({
+    constructor_name: PropTypes.string.isRequired,
+    driver_forename: PropTypes.string,
+    driver_surname: PropTypes.string,
+    driver_name: PropTypes.string,
+    driver_number: PropTypes.number,
+    avg_lapTime_s: PropTypes.number,
+    median_lapTime_s: PropTypes.number,
+  })
+);
 
 function getColor(obj) {
   return getTeamColor(obj.data.constructor_name);
 }
 
-const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations, index }) => {
+const AvgTimingsBar = ({ avgLapTimes, mode, desc, annotations, index }) => {
   const key = mode === 'avg' ? 'avg_lapTime_s' : 'median_lapTime_s';
-  const data = allAvgLapTimes.nodes.sort((a, b) => a[key] - b[key]);
+  const data = avgLapTimes.sort((a, b) => a[key] - b[key]);
 
-  const times = allAvgLapTimes.nodes.map((t) => t[key]);
+  const times = avgLapTimes.map((t) => t[key]);
   const chartMinTime = Math.min(...times).toFixed(0) - 1;
 
   function tooltip(obj) {
@@ -83,7 +94,7 @@ const AvgTimingsBar = ({ allAvgLapTimes, mode, desc, annotations, index }) => {
 };
 
 AvgTimingsBar.propTypes = {
-  allAvgLapTimes: allAvgLapTimesType.isRequired,
+  avgLapTimes: lapTimesType.isRequired,
   mode: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
   annotations: PropTypes.arrayOf(PropTypes.string),
