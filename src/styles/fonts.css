@@ -1,0 +1,31 @@
+/* yrsa-regular - latin */
+@font-face {
+  font-family: 'Yrsa';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/yrsa-v6-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+    url('/fonts/yrsa-v6-latin-regular.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('/fonts/yrsa-v6-latin-regular.woff2') format('woff2'),
+    /* Super Modern Browsers */ url('/fonts/yrsa-v6-latin-regular.woff')
+      format('woff'),
+    /* Modern Browsers */ url('/fonts/yrsa-v6-latin-regular.ttf')
+      format('truetype'),
+    /* Safari, Android, iOS */ url('/fonts/yrsa-v6-latin-regular.svg#Yrsa')
+      format('svg'); /* Legacy iOS */
+}
+/* yrsa-500 - latin */
+@font-face {
+  font-family: 'Yrsa';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/yrsa-v6-latin-500.eot'); /* IE9 Compat Modes */
+  src: local(''),
+    url('/fonts/yrsa-v6-latin-500.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('/fonts/yrsa-v6-latin-500.woff2') format('woff2'),
+    /* Super Modern Browsers */ url('/fonts/yrsa-v6-latin-500.woff')
+      format('woff'),
+    /* Modern Browsers */ url('/fonts/yrsa-v6-latin-500.ttf') format('truetype'),
+    /* Safari, Android, iOS */ url('/fonts/yrsa-v6-latin-500.svg#Yrsa')
+      format('svg'); /* Legacy iOS */
+}

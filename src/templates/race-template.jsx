@@ -16,6 +16,7 @@ import {
   driAvgLaptType,
 } from '../types';
 import ConstructorLapTimes from '../components/race-template/constructorLapTimes';
+import LinkableH2 from '../components/linkableH2';
 
 export const query = graphql`
   query raceData($raceid: PostGraphile_BigInt!) {
@@ -166,9 +167,7 @@ const RaceTemplate = ({ data }) => {
           <Infobox text="For a better experience and more Info please use a bigger screen" />
         </div>
         <div className="hidden md:block mt-5">
-          <h2 className="text-2xl font-semibold tracking-wide mb-3">
-            Race Results
-          </h2>
+          <LinkableH2 text="Race Results" />
           <div className="py-2 align-middle min-w-full">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
@@ -254,9 +253,7 @@ const RaceTemplate = ({ data }) => {
         {resultsByRaceidList && resultsByRaceidList.length > 0 ? (
           <div>
             <div>
-              <h2 className="text-2xl font-semibold tracking-wide mb-3">
-                Positions
-              </h2>
+              <LinkableH2 text="Positions" />
               <PositionChart
                 laptimesByRaceidList={laptimesByRaceidList}
                 driverMap={driverMap}
@@ -264,9 +261,7 @@ const RaceTemplate = ({ data }) => {
             </div>
             {driAvgLaptsByRaceidList && driAvgLaptsByRaceidList.length > 0 ? (
               <div>
-                <h2 className="text-2xl font-semibold tracking-wide mb-3">
-                  Driver Lap Time Statistics
-                </h2>
+                <LinkableH2 text="Driver Lap Time Statistics" />
                 <DriverLapTimes
                   driAvgLaptsByRaceidList={driAvgLaptsByRaceidList}
                   driAvgLapt70PsByRaceidList={driAvgLapt70PsByRaceidList}
@@ -276,9 +271,7 @@ const RaceTemplate = ({ data }) => {
             ) : null}
             {conAvgLaptsByRaceidList && conAvgLaptsByRaceidList.length > 0 ? (
               <div>
-                <h2 className="text-2xl font-semibold tracking-wide mb-3">
-                  Constructor Lap Time Statistics
-                </h2>
+                <LinkableH2 text="Constructor Lap Time Statistics" />
                 <ConstructorLapTimes
                   conAvgLaptsByRaceidList={conAvgLaptsByRaceidList}
                   conAvgLapt70PsByRaceidList={conAvgLapt70PsByRaceidList}

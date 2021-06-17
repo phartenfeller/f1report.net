@@ -10,6 +10,9 @@ module.exports = {
       colors: {
         ...colors,
       },
+      fontFamily: {
+        yrsa: ['Yrsa', 'ui-serif', 'serif'],
+      },
     },
   },
   variants: {
