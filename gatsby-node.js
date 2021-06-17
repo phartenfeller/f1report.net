@@ -13,33 +13,22 @@ exports.createPages = async ({ graphql, actions }) => {
   const raceTemplate = path.resolve(`src/templates/race-template.jsx`);
   const result = await graphql(`
     {
-      allSqliteRaces {
-        edges {
-          node {
-            circuit_name
-            circuit_url
-            country
-            date
-            location
-            raceId
-            race_name
-            race_slug
-            race_url
-            round
-            time
-            year
-            id
+      postgres {
+        allRaces {
+          nodes {
+            raceid
+            raceSlug
           }
         }
       }
     }
   `);
-  result.data.allSqliteRaces.edges.forEach((edge) => {
+  result.data.postgres.allRaces.nodes.forEach((node) => {
     createPage({
-      path: `races/${edge.node.race_slug}`,
+      path: `races/${node.raceSlug}`,
       component: raceTemplate,
       context: {
-        id: edge.node.raceId,
+        raceid: node.raceid,
       },
     });
   });

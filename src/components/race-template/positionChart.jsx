@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveBump } from '@nivo/bump';
-import lapTimesType from '../../types/lapTimesType';
+import { driverMapType, lapTimesType } from '../../types';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getLaps(count, amount) {
@@ -19,16 +19,18 @@ function getLaps(count, amount) {
   return laps.map((l) => Math.round(l));
 }
 
-function getCharData(arr, relevantLaps) {
+function getChartData(arr, relevantLaps, driverMap) {
   const drivers = [];
 
   const data = arr.reduce((prev, curr) => {
-    if (!relevantLaps.includes(curr.lap)) return prev;
-    if (!drivers.includes(curr.driver_name)) {
-      drivers.push(curr.driver_name);
+    const { driverid, driverDisplayName } = curr.driverByDriverid;
+
+    if (!relevantLaps.includes(parseInt(curr.lap))) return prev;
+    if (!drivers.includes(driverid)) {
+      drivers.push(driverid);
       const newObj = {
-        id: curr.driver_name,
-        constructor_name: curr.constructor_name,
+        id: driverDisplayName,
+        constructor_name: driverMap[driverid].constructor,
         data: [
           {
             y: curr.position,
@@ -38,7 +40,7 @@ function getCharData(arr, relevantLaps) {
       };
       prev.push(newObj);
     } else {
-      const index = prev.findIndex((e) => e.id === curr.driver_name);
+      const index = prev.findIndex((e) => e.id === driverDisplayName);
       prev[index].data.push({ y: curr.position, x: curr.lap });
     }
     return prev;
@@ -77,11 +79,11 @@ function tooltip(obj) {
   );
 }
 
-const PositionChart = ({ lapTimes }) => {
-  const laps = lapTimes.map((l) => l.lap);
+const PositionChart = ({ laptimesByRaceidList, driverMap }) => {
+  const laps = laptimesByRaceidList.map((l) => l.lap);
   const relevantLaps = getLaps(Math.max(...laps), 12);
 
-  const data = getCharData(lapTimes, relevantLaps);
+  const data = getChartData(laptimesByRaceidList, relevantLaps, driverMap);
 
   return (
     <div style={{ height: '500px' }}>
@@ -132,7 +134,8 @@ const PositionChart = ({ lapTimes }) => {
 };
 
 PositionChart.propTypes = {
-  lapTimes: lapTimesType.isRequired,
+  laptimesByRaceidList: lapTimesType.isRequired,
+  driverMap: driverMapType.isRequired,
 };
 
 export default PositionChart;

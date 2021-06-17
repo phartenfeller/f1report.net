@@ -1,3 +1,7 @@
+require('dotenv').config({
+  path: `.env`,
+});
+
 module.exports = {
   siteMetadata: {
     title: `F1 Report`,
@@ -42,66 +46,74 @@ module.exports = {
       },
     },
     {
-      // Querying to a SQLite database
-      resolve: `gatsby-source-sqlite`,
+      resolve: 'gatsby-source-pg',
       options: {
-        fileName: './data/f1data.sqlite',
-        queries: [
-          {
-            statement: `select * from races_v`,
-            idFieldName: `raceId`,
-            name: 'races',
-          },
-          {
-            statement: `select * from race_results_v`,
-            idFieldName: `resultId`,
-            name: `raceResult`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
-          },
-          {
-            statement: `select * from lap_times_v`,
-            idFieldName: `lapId`,
-            name: `lapTimes`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
-          },
-          {
-            statement: `select * from avg_lap_times`,
-            idFieldName: `num_id`,
-            name: `avgLapTimes`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
-          },
-          {
-            statement: `select * from avg_lap_times_top_70_pct`,
-            idFieldName: `num_id`,
-            name: `avgLapTimesTop70Pct`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
-          },
-          {
-            statement: `select * from avg_constructor_lap_times`,
-            idFieldName: `num_id`,
-            name: `avgConstructorLapTimes`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
-          },
-          {
-            statement: `select * from avg_constructor_lap_times_top_70_pct`,
-            idFieldName: `num_id`,
-            name: `avgConstructorLapTimes70Pct`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
-          },
-        ],
+        connectionString: `postgres://${process.env.PG_STRING}`,
+        schema: 'public',
+        refetchInterval: 1800, // Refetch data every 180060 seconds
       },
     },
+    // {
+    //   // Querying to a SQLite database
+    //   resolve: `gatsby-source-sqlite`,
+    //   options: {
+    //     fileName: './data/f1data.sqlite',
+    //     queries: [
+    //       {
+    //         statement: `select * from races_v`,
+    //         idFieldName: `raceId`,
+    //         name: 'races',
+    //       },
+    //       {
+    //         statement: `select * from race_results_v`,
+    //         idFieldName: `resultId`,
+    //         name: `raceResult`,
+    //         parentName: 'races',
+    //         foreignKey: 'raceId',
+    //         cardinality: 'OneToMany',
+    //       },
+    //       {
+    //         statement: `select * from lap_times_v`,
+    //         idFieldName: `lapId`,
+    //         name: `lapTimes`,
+    //         parentName: 'races',
+    //         foreignKey: 'raceId',
+    //         cardinality: 'OneToMany',
+    //       },
+    //       {
+    //         statement: `select * from avg_lap_times`,
+    //         idFieldName: `num_id`,
+    //         name: `avgLapTimes`,
+    //         parentName: 'races',
+    //         foreignKey: 'raceId',
+    //         cardinality: 'OneToMany',
+    //       },
+    //       {
+    //         statement: `select * from avg_lap_times_top_70_pct`,
+    //         idFieldName: `num_id`,
+    //         name: `avgLapTimesTop70Pct`,
+    //         parentName: 'races',
+    //         foreignKey: 'raceId',
+    //         cardinality: 'OneToMany',
+    //       },
+    //       {
+    //         statement: `select * from avg_constructor_lap_times`,
+    //         idFieldName: `num_id`,
+    //         name: `avgConstructorLapTimes`,
+    //         parentName: 'races',
+    //         foreignKey: 'raceId',
+    //         cardinality: 'OneToMany',
+    //       },
+    //       {
+    //         statement: `select * from avg_constructor_lap_times_top_70_pct`,
+    //         idFieldName: `num_id`,
+    //         name: `avgConstructorLapTimes70Pct`,
+    //         parentName: 'races',
+    //         foreignKey: 'raceId',
+    //         cardinality: 'OneToMany',
+    //       },
+    //     ],
+    //   },
+    // },
   ],
 };

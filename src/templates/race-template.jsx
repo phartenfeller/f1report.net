@@ -7,117 +7,150 @@ import Layout from '../components/layout';
 import PositionChart from '../components/race-template/positionChart';
 import DriverLapTimes from '../components/race-template/driverLapTimes';
 import SEO from '../components/seo';
-import avgLapTimesType from '../types/avgLapTimesType';
-import lapTimesType from '../types/lapTimesType';
-import raceResultsType from '../types/raceResultsType';
-import avgConstructorLapTimesType from '../types/avgConstructorLapTimesType';
+import {
+  lapTimesType,
+  raceResultsType,
+  conAvgLapt70PType,
+  conAvgLaptType,
+  driAvgLapt70PType,
+  driAvgLaptType,
+} from '../types';
 import ConstructorLapTimes from '../components/race-template/constructorLapTimes';
 
 export const query = graphql`
-  query raceData($id: Int!) {
-    sqliteRaces(raceId: { eq: $id }) {
-      circuit_name
-      circuit_url
-      country
-      date
-      location
-      race_name
-      race_slug
-      race_url
-      round
-      time
-      year
-      raceId
-      raceResults {
-        constructor_name
-        driver_forename
-        driver_number
-        driver_surname
-        driver_name
-        fastestLap
-        fastestLapSpeed
-        fastestLapTime
-        grid
-        laps
-        number
-        points
-        position
-        resultId
-        status
+  query raceData($raceid: PostGraphile_BigInt!) {
+    postgres {
+      raceByRaceid(raceid: $raceid) {
+        circuitByCircuitid {
+          country
+          location
+          name
+          url
+        }
+        round
+        raceid
         time
-      }
-      lapTimes {
-        lap
-        driver_forename
-        constructor_name
-        driver_surname
-        driver_name
-        driver_number
-        position
-      }
-      avgLapTimes {
-        constructor_name
-        driver_forename
-        driver_number
-        driver_surname
-        driver_name
-        avg_lapTime_s
-        median_lapTime_s
-      }
-      avgLapTimesTop70Pcts {
-        constructor_name
-        driver_forename
-        driver_number
-        driver_surname
-        driver_name
-        avg_lapTime_s
-        relevant_lap_count
-      }
-      avgConstructorLapTimes {
-        avg_lapTime_s
-        constructor_name
-        median_lapTime_s
-      }
-      avgConstructorLapTimes70Pcts {
-        constructor_name
-        avg_lapTime_s
-        relevant_lap_count
+        url
+        year
+        name
+        date
+        laptimesByRaceidList {
+          lap
+          milliseconds
+          position
+          time
+          driverByDriverid {
+            driverDisplayName
+            driverid
+          }
+        }
+        driAvgLapt70PsByRaceidList {
+          avglaptimes
+          relevantLapCount
+          driverid
+        }
+        driAvgLaptsByRaceidList {
+          avglaptimes
+          medianlaptimes
+          driverid
+        }
+        conAvgLapt70PsByRaceidList {
+          relevantLapCount
+          avglaptimes
+          constructorTeamByConstructorid {
+            name
+          }
+        }
+        conAvgLaptsByRaceidList {
+          avglaptimes
+          medianlaptimes
+          constructorTeamByConstructorid {
+            name
+          }
+        }
+        resultsByRaceidList {
+          resultid
+          fastestlap
+          constructorTeamByConstructorid {
+            name
+          }
+          driverByDriverid {
+            forename
+            surname
+            number
+            driverDisplayName
+            driverid
+          }
+          grid
+          laps
+          points
+          number
+          position
+          statusByStatusid {
+            status
+          }
+          time
+          fastestlapspeed
+          fastestlaptime
+        }
       }
     }
   }
 `;
 
+const getDriverMap = (resultsByRaceidList) => {
+  const map = {};
+
+  resultsByRaceidList.forEach((res) => {
+    map[res.driverByDriverid.driverid] = {
+      constructor: res.constructorTeamByConstructorid.name,
+      forename: res.driverByDriverid.forename,
+      surname: res.driverByDriverid.surname,
+      displayName: res.driverByDriverid.driverDisplayName,
+      number: res.driverByDriverid.number,
+    };
+  });
+
+  return map;
+};
+
 const RaceTemplate = ({ data }) => {
-  const { sqliteRaces } = data;
+  const { raceByRaceid } = data.postgres;
 
   const {
-    race_name,
+    circuitByCircuitid,
+    raceid,
+    url,
     year,
-    circuit_name,
+    name,
+    laptimesByRaceidList,
+    driAvgLapt70PsByRaceidList,
+    driAvgLaptsByRaceidList,
+    conAvgLapt70PsByRaceidList,
+    conAvgLaptsByRaceidList,
+    resultsByRaceidList,
+  } = raceByRaceid;
+
+  const {
     country,
     location,
-    circuit_url,
-    race_url,
-    raceId,
-    raceResults,
-    lapTimes,
-    avgLapTimes,
-    avgLapTimesTop70Pcts,
-    avgConstructorLapTimes,
-    avgConstructorLapTimes70Pcts,
-  } = sqliteRaces;
+    name: curcuit,
+    url: circuitUrl,
+  } = circuitByCircuitid;
+
+  const driverMap = getDriverMap(resultsByRaceidList);
 
   return (
     <Layout>
-      <SEO title={`${race_name} (${year})`} />
+      <SEO title={`${name} (${year})`} />
       <div className="mt-5 mx-6">
-        <h1 className="text-3xl font-bold tracking-wide mb-3" data-id={raceId}>
-          {race_name} ({year})
+        <h1 className="text-3xl font-bold tracking-wide mb-3" data-id={raceid}>
+          {name} ({year})
         </h1>
         <div>
           <span>Track: </span>
-          <a href={circuit_url} className="standard-link">
-            {circuit_name}
+          <a href={circuitUrl} className="standard-link">
+            {curcuit}
           </a>
           <span>
             {' '}
@@ -125,7 +158,7 @@ const RaceTemplate = ({ data }) => {
           </span>
         </div>
         <div>
-          <a href={race_url} className="standard-link">
+          <a href={url} className="standard-link">
             Wikipedia Article
           </a>
         </div>
@@ -168,45 +201,46 @@ const RaceTemplate = ({ data }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {raceResults.map(
+                  {resultsByRaceidList.map(
                     (
                       {
-                        constructor_name,
-                        driver_forename,
-                        driver_surname,
-                        fastestLap,
-                        fastestLapSpeed,
-                        fastestLapTime,
+                        resultid,
+                        fastestlap,
+                        constructorTeamByConstructorid,
+                        driverByDriverid,
                         grid,
                         laps,
-                        number,
                         points,
                         position,
-                        resultId,
-                        status,
-                        time,
+                        statusByStatusid,
+                        time: finishTime,
+                        fastestlapspeed,
+                        fastestlaptime,
                       },
                       i
                     ) => (
                       <tr
-                        key={resultId}
+                        key={resultid}
                         className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
                       >
                         <td className="table-cell font-medium">{position}</td>
                         <td className="table-cell">
-                          {driver_forename} {driver_surname} ({number})
+                          {driverByDriverid.forename} {driverByDriverid.surname}{' '}
+                          ({driverByDriverid.number})
                         </td>
-                        <td className="table-cell">{constructor_name}</td>
+                        <td className="table-cell">
+                          {constructorTeamByConstructorid.name}
+                        </td>
                         <td className="table-cell">{points}</td>
-                        <td className="table-cell">{time}</td>
+                        <td className="table-cell">{finishTime}</td>
                         <td className="table-cell" title={`Laps: ${laps}`}>
-                          {status}
+                          {statusByStatusid.status}
                         </td>
                         <td
                           className="table-cell"
-                          title={`Lap: ${fastestLap}, Speed: ${fastestLapSpeed}`}
+                          title={`Lap: ${fastestlap}, Speed: ${fastestlapspeed}`}
                         >
-                          {fastestLapTime}
+                          {fastestlaptime}
                         </td>
                         <td className="table-cell">{grid}</td>
                       </tr>
@@ -217,33 +251,38 @@ const RaceTemplate = ({ data }) => {
             </div>
           </div>
         </div>
-        {raceResults && raceResults.length > 0 ? (
+        {resultsByRaceidList && resultsByRaceidList.length > 0 ? (
           <div>
             <div>
               <h2 className="text-2xl font-semibold tracking-wide mb-3">
                 Positions
               </h2>
-              <PositionChart lapTimes={lapTimes} />
+              <PositionChart
+                laptimesByRaceidList={laptimesByRaceidList}
+                driverMap={driverMap}
+              />
             </div>
-            {avgLapTimes && avgLapTimes.length > 0 ? (
+            {driAvgLaptsByRaceidList && driAvgLaptsByRaceidList.length > 0 ? (
               <div>
                 <h2 className="text-2xl font-semibold tracking-wide mb-3">
                   Driver Lap Time Statistics
                 </h2>
                 <DriverLapTimes
-                  avgLapTimes={avgLapTimes}
-                  avgLapTimesTop70Pcts={avgLapTimesTop70Pcts}
+                  driAvgLaptsByRaceidList={driAvgLaptsByRaceidList}
+                  driAvgLapt70PsByRaceidList={driAvgLapt70PsByRaceidList}
+                  driverMap={driverMap}
                 />
               </div>
             ) : null}
-            {avgConstructorLapTimes && avgConstructorLapTimes.length > 0 ? (
+            {conAvgLaptsByRaceidList && conAvgLaptsByRaceidList.length > 0 ? (
               <div>
                 <h2 className="text-2xl font-semibold tracking-wide mb-3">
                   Constructor Lap Time Statistics
                 </h2>
                 <ConstructorLapTimes
-                  avgConstructorLapTimes={avgConstructorLapTimes}
-                  avgConstructorLapTimes70Pcts={avgConstructorLapTimes70Pcts}
+                  conAvgLaptsByRaceidList={conAvgLaptsByRaceidList}
+                  conAvgLapt70PsByRaceidList={conAvgLapt70PsByRaceidList}
+                  driverMap={driverMap}
                 />
               </div>
             ) : null}
@@ -263,23 +302,51 @@ const RaceTemplate = ({ data }) => {
 
 RaceTemplate.propTypes = {
   data: PropTypes.shape({
-    sqliteRaces: PropTypes.shape({
-      race_name: PropTypes.string.isRequired,
-      year: PropTypes.number.isRequired,
-      circuit_name: PropTypes.string.isRequired,
-      country: PropTypes.string.isRequired,
-      location: PropTypes.string.isRequired,
-      circuit_url: PropTypes.string.isRequired,
-      race_url: PropTypes.string.isRequired,
-      raceId: PropTypes.number.isRequired,
-      raceResults: raceResultsType.isRequired,
-      avgLapTimes: avgLapTimesType.isRequired,
-      avgLapTimesTop70Pcts: avgLapTimesType.isRequired,
-      lapTimes: lapTimesType.isRequired,
-      avgConstructorLapTimes: avgConstructorLapTimesType.isRequired,
-      avgConstructorLapTimes70Pcts: avgConstructorLapTimesType.isRequired,
+    postgres: PropTypes.shape({
+      raceByRaceid: PropTypes.shape({
+        circuitByCircuitid: PropTypes.shape({
+          country: PropTypes.string.isRequired,
+          location: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          url: PropTypes.string.isRequired,
+        }).isRequired,
+        conAvgLapt70PsByRaceidList: conAvgLapt70PType.isRequired,
+        conAvgLaptsByRaceidList: conAvgLaptType.isRequired,
+        date: PropTypes.string.isRequired,
+        driAvgLapt70PsByRaceidList: driAvgLapt70PType.isRequired,
+        driAvgLaptsByRaceidList: driAvgLaptType.isRequired,
+        laptimesByRaceidList: lapTimesType.isRequired,
+        name: PropTypes.string.isRequired,
+        raceid: PropTypes.string.isRequired,
+        resultsByRaceidList: raceResultsType.isRequired,
+        round: PropTypes.string.isRequired,
+        time: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        year: PropTypes.string.isRequired,
+      }).isRequired,
     }).isRequired,
   }).isRequired,
 };
+
+// RaceTemplate.propTypes = {
+//   data: PropTypes.shape({
+//     sqliteRaces: PropTypes.shape({
+//       race_name: PropTypes.string.isRequired,
+//       year: PropTypes.number.isRequired,
+//       circuit_name: PropTypes.string.isRequired,
+//       country: PropTypes.string.isRequired,
+//       location: PropTypes.string.isRequired,
+//       circuit_url: PropTypes.string.isRequired,
+//       race_url: PropTypes.string.isRequired,
+//       raceId: PropTypes.number.isRequired,
+//       raceResults: raceResultsType.isRequired,
+//       avgLapTimes: avgLapTimesType.isRequired,
+//       avgLapTimesTop70Pcts: avgLapTimesType.isRequired,
+//       lapTimes: lapTimesType.isRequired,
+//       avgConstructorLapTimes: avgConstructorLapTimesType.isRequired,
+//       avgConstructorLapTimes70Pcts: avgConstructorLapTimesType.isRequired,
+//     }).isRequired,
+//   }).isRequired,
+// };
 
 export default RaceTemplate;

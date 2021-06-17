@@ -10,42 +10,46 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const allSqliteRacesType = PropTypes.shape({
+const allRacesType = PropTypes.shape({
   nodes: PropTypes.arrayOf(
     PropTypes.shape({
-      circuit_name: PropTypes.string.isRequired,
-      country: PropTypes.string.isRequired,
+      circuitByCircuitid: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        country: PropTypes.string.isRequired,
+        location: PropTypes.string.isRequired,
+      }).isRequired,
       date: PropTypes.string.isRequired,
-      location: PropTypes.string.isRequired,
-      raceId: PropTypes.number.isRequired,
-      race_name: PropTypes.string.isRequired,
-      race_slug: PropTypes.string.isRequired,
-      round: PropTypes.number.isRequired,
-      year: PropTypes.number.isRequired,
+      raceid: PropTypes.string.isRequired,
+      race: PropTypes.string.isRequired,
+      round: PropTypes.string.isRequired,
+      year: PropTypes.string.isRequired,
     })
   ),
 });
 
 export const query = graphql`
   {
-    allSqliteRaces(sort: { fields: year, order: DESC }) {
-      nodes {
-        circuit_name
-        country
-        date
-        location
-        raceId
-        race_name
-        race_slug
-        round
-        year
+    postgres {
+      allRaces(orderBy: YEAR_DESC) {
+        nodes {
+          circuitByCircuitid {
+            name
+            country
+            location
+          }
+          date
+          raceid
+          raceSlug
+          round
+          year
+        }
       }
     }
   }
 `;
 
-const RaceDetailsTable = ({ allSqliteRaces, year }) => {
-  const yearRaces = allSqliteRaces.nodes
+const RaceDetailsTable = ({ allRaces, year }) => {
+  const yearRaces = allRaces.nodes
     .filter((r) => r.year === year)
     .sort((a, b) => a.round - b.round);
 
@@ -78,16 +82,7 @@ const RaceDetailsTable = ({ allSqliteRaces, year }) => {
           <tbody>
             {yearRaces.map(
               (
-                {
-                  circuit_name,
-                  country,
-                  date,
-                  location,
-                  raceId,
-                  race_name,
-                  race_slug,
-                  round,
-                },
+                { circuitByCircuitid, date, raceId, raceSlug, round, name },
                 i
               ) => (
                 <tr
@@ -95,14 +90,16 @@ const RaceDetailsTable = ({ allSqliteRaces, year }) => {
                   className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
                 >
                   <td className="hidden lg:table-cell font-medium">{round}</td>
-                  <td className="table-cell font-medium">{race_name}</td>
-                  <td className="hidden lg:table-cell">{circuit_name}</td>
+                  <td className="table-cell font-medium">{name}</td>
+                  <td className="hidden lg:table-cell">
+                    {circuitByCircuitid.name}
+                  </td>
                   <td className="hidden md:table-cell">
-                    {location} - {country}
+                    {circuitByCircuitid.location} - {circuitByCircuitid.country}
                   </td>
                   <td className="hidden md:table-cell">{date}</td>
                   <td className="table-cell">
-                    <Link to={`/races/${race_slug}`} className="standard-link">
+                    <Link to={`/races/${raceSlug}`} className="standard-link">
                       Details
                     </Link>
                   </td>
@@ -117,16 +114,16 @@ const RaceDetailsTable = ({ allSqliteRaces, year }) => {
 };
 
 RaceDetailsTable.propTypes = {
-  allSqliteRaces: allSqliteRacesType.isRequired,
+  allRaces: allRacesType.isRequired,
   year: PropTypes.number.isRequired,
 };
 
 const Races = ({ data }) => {
-  const { allSqliteRaces } = data;
+  const { allRaces } = data.postgres;
 
   const yearsArr = [];
-  for (let i = 0; i < allSqliteRaces.nodes.length; i += 1) {
-    yearsArr.push(allSqliteRaces.nodes[i].year);
+  for (let i = 0; i < allRaces.nodes.length; i += 1) {
+    yearsArr.push(allRaces.nodes[i].year);
   }
   const uniqueYears = [...new Set(yearsArr)];
 
@@ -158,10 +155,7 @@ const Races = ({ data }) => {
                     </Disclosure.Button>
                   </dt>
                   <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                    <RaceDetailsTable
-                      allSqliteRaces={allSqliteRaces}
-                      year={y}
-                    />
+                    <RaceDetailsTable allRaces={allRaces} year={y} />
                   </Disclosure.Panel>
                 </>
               )}
@@ -175,7 +169,9 @@ const Races = ({ data }) => {
 
 Races.propTypes = {
   data: PropTypes.shape({
-    allSqliteRaces: allSqliteRacesType,
+    postgres: PropTypes.shape({
+      allRaces: allRacesType.isRequired,
+    }).isRequired,
   }).isRequired,
 };
 

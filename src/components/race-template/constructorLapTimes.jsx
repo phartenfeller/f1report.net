@@ -1,5 +1,5 @@
 import React from 'react';
-import avgConstructorLapTimesType from '../../types/avgConstructorLapTimesType';
+import { conAvgLapt70PType, conAvgLaptType } from '../../types';
 import TabsContainer from '../tabsContainer';
 import AvgTimingsBar from './avgTimingsBar';
 
@@ -8,23 +8,42 @@ const MEDIAN = 'Median Lap Times';
 const TOP70 = 'Average Top 70% Laps';
 
 const ConstructorLapTimes = ({
-  avgConstructorLapTimes,
-  avgConstructorLapTimes70Pcts,
+  conAvgLaptsByRaceidList,
+  conAvgLapt70PsByRaceidList,
 }) => {
+  const avgTimes = conAvgLaptsByRaceidList.map((time) => ({
+    id: time.constructorTeamByConstructorid.name,
+    time: parseFloat(time.avglaptimes),
+    tooltip: `${time.avglaptimes} | ${time.constructorTeamByConstructorid.name} `,
+    constructor: time.constructorTeamByConstructorid.name,
+  }));
+
+  const mediumTimes = conAvgLaptsByRaceidList.map((time) => ({
+    id: time.constructorTeamByConstructorid.name,
+    time: parseFloat(time.medianlaptimes),
+    tooltip: `${time.medianlaptimes} | ${time.constructorTeamByConstructorid.name} `,
+    constructor: time.constructorTeamByConstructorid.name,
+  }));
+
+  const top70Times = conAvgLapt70PsByRaceidList.map((time) => ({
+    id: time.constructorTeamByConstructorid.name,
+    time: parseFloat(time.avglaptimes),
+    tooltip: `${time.avglaptimes} | ${time.constructorTeamByConstructorid.name} `,
+    constructor: time.constructorTeamByConstructorid.name,
+  }));
+
   const tabs = [
     {
       tabId: 1,
       tabName: AVG,
       component: (
         <AvgTimingsBar
-          avgLapTimes={avgConstructorLapTimes}
-          mode="avg"
+          times={avgTimes}
           desc={AVG}
           annotations={[
             'of the drivers which finished',
             'without extreme laps (time < 1.5 * fastest lap)',
           ]}
-          index="constructor_name"
         />
       ),
     },
@@ -33,14 +52,12 @@ const ConstructorLapTimes = ({
       tabName: MEDIAN,
       component: (
         <AvgTimingsBar
-          avgLapTimes={avgConstructorLapTimes}
-          mode="median"
+          times={mediumTimes}
           desc={MEDIAN}
           annotations={[
             'of the drivers which finished',
             'without extreme laps (time < 1.5 * fastest lap)',
           ]}
-          index="constructor_name"
         />
       ),
     },
@@ -49,16 +66,14 @@ const ConstructorLapTimes = ({
       tabName: TOP70,
       component: (
         <AvgTimingsBar
-          avgLapTimes={avgConstructorLapTimes70Pcts}
-          mode="avg"
+          times={top70Times}
           desc={TOP70}
           annotations={[
             // eslint-disable-next-line dot-notation
-            `Best ${avgConstructorLapTimes70Pcts[0]['relevant_lap_count']} Laps of both drivers`,
+            `Best ${conAvgLapt70PsByRaceidList[0]['relevantLapCount']} Laps of both drivers`,
             // eslint-disable-next-line dot-notation
-            `Only Teams that completed ${avgConstructorLapTimes70Pcts[0]['relevant_lap_count']} Laps`,
+            `Only Teams that completed ${conAvgLapt70PsByRaceidList[0]['relevantLapCount']} Laps`,
           ]}
-          index="constructor_name"
         />
       ),
     },
@@ -72,8 +87,8 @@ const ConstructorLapTimes = ({
 };
 
 ConstructorLapTimes.propTypes = {
-  avgConstructorLapTimes: avgConstructorLapTimesType.isRequired,
-  avgConstructorLapTimes70Pcts: avgConstructorLapTimesType.isRequired,
+  conAvgLapt70PsByRaceidList: conAvgLapt70PType.isRequired,
+  conAvgLaptsByRaceidList: conAvgLaptType.isRequired,
 };
 
 export default ConstructorLapTimes;

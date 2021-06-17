@@ -1,5 +1,5 @@
 import React from 'react';
-import avgLapTimesType from '../../types/avgLapTimesType';
+import { driAvgLapt70PType, driAvgLaptType, driverMapType } from '../../types';
 import TabsContainer from '../tabsContainer';
 import AvgTimingsBar from './avgTimingsBar';
 
@@ -7,21 +7,50 @@ const AVG = 'Average Lap Times';
 const MEDIAN = 'Median Lap Times';
 const TOP70 = 'Average Top 70% Laps';
 
-const DriverLapTimes = ({ avgLapTimes, avgLapTimesTop70Pcts }) => {
+const DriverLapTimes = ({
+  driAvgLaptsByRaceidList,
+  driAvgLapt70PsByRaceidList,
+  driverMap,
+}) => {
+  const avgTimes = driAvgLaptsByRaceidList.map((time) => ({
+    id: driverMap[time.driverid].displayName,
+    time: parseFloat(time.avglaptimes),
+    tooltip: `${time.avglaptimes} | ${driverMap[time.driverid].displayName} (${
+      driverMap[time.driverid].constructor
+    })`,
+    constructor: driverMap[time.driverid].constructor,
+  }));
+
+  const medianTimes = driAvgLaptsByRaceidList.map((time) => ({
+    id: driverMap[time.driverid].displayName,
+    time: parseFloat(time.medianlaptimes),
+    tooltip: `${time.medianlaptimes}  |  ${
+      driverMap[time.driverid].displayName
+    } (${driverMap[time.driverid].constructor})`,
+    constructor: driverMap[time.driverid].constructor,
+  }));
+
+  const top70Times = driAvgLapt70PsByRaceidList.map((time) => ({
+    id: driverMap[time.driverid].displayName,
+    time: parseFloat(time.avglaptimes),
+    tooltip: `${time.avglaptimes}  |  ${
+      driverMap[time.driverid].displayName
+    } (${driverMap[time.driverid].constructor})`,
+    constructor: driverMap[time.driverid].constructor,
+  }));
+
   const tabs = [
     {
       tabId: 1,
       tabName: AVG,
       component: (
         <AvgTimingsBar
-          avgLapTimes={avgLapTimes}
-          mode="avg"
+          times={avgTimes}
           desc={AVG}
           annotations={[
             'of the drivers which finished',
             'without extreme laps (time < 1.5 * fastest lap)',
           ]}
-          index="driver_name"
         />
       ),
     },
@@ -30,14 +59,12 @@ const DriverLapTimes = ({ avgLapTimes, avgLapTimesTop70Pcts }) => {
       tabName: MEDIAN,
       component: (
         <AvgTimingsBar
-          avgLapTimes={avgLapTimes}
-          mode="median"
+          times={medianTimes}
           desc={MEDIAN}
           annotations={[
             'of the drivers which finished',
             'without extreme laps (time < 1.5 * fastest lap)',
           ]}
-          index="driver_name"
         />
       ),
     },
@@ -46,14 +73,12 @@ const DriverLapTimes = ({ avgLapTimes, avgLapTimesTop70Pcts }) => {
       tabName: TOP70,
       component: (
         <AvgTimingsBar
-          avgLapTimes={avgLapTimesTop70Pcts}
-          mode="avg"
+          times={top70Times}
           desc={TOP70}
           annotations={[
             // eslint-disable-next-line dot-notation
-            `of the drivers who drove ${avgLapTimesTop70Pcts[0]['relevant_lap_count']} Laps`,
+            `of the drivers who drove ${driAvgLapt70PsByRaceidList[0]['relevantLapCount']} Laps`,
           ]}
-          index="driver_name"
         />
       ),
     },
@@ -67,8 +92,9 @@ const DriverLapTimes = ({ avgLapTimes, avgLapTimesTop70Pcts }) => {
 };
 
 DriverLapTimes.propTypes = {
-  avgLapTimes: avgLapTimesType.isRequired,
-  avgLapTimesTop70Pcts: avgLapTimesType.isRequired,
+  driAvgLapt70PsByRaceidList: driAvgLapt70PType.isRequired,
+  driAvgLaptsByRaceidList: driAvgLaptType.isRequired,
+  driverMap: driverMapType.isRequired,
 };
 
 export default DriverLapTimes;

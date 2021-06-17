@@ -3,28 +3,15 @@ import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import getTeamColor from '../../util/f1TeamColors';
 
-const lapTimesType = PropTypes.arrayOf(
-  PropTypes.shape({
-    constructor_name: PropTypes.string.isRequired,
-    driver_forename: PropTypes.string,
-    driver_surname: PropTypes.string,
-    driver_name: PropTypes.string,
-    driver_number: PropTypes.number,
-    avg_lapTime_s: PropTypes.number,
-    median_lapTime_s: PropTypes.number,
-  })
-);
-
 function getColor(obj) {
-  return getTeamColor(obj.data.constructor_name);
+  return getTeamColor(obj.data.constructor);
 }
 
-const AvgTimingsBar = ({ avgLapTimes, mode, desc, annotations, index }) => {
-  const key = mode === 'avg' ? 'avg_lapTime_s' : 'median_lapTime_s';
-  const data = avgLapTimes.sort((a, b) => a[key] - b[key]);
+const AvgTimingsBar = ({ times, desc, annotations }) => {
+  const data = times.sort((a, b) => a.time - b.time);
 
-  const times = avgLapTimes.map((t) => t[key]);
-  const chartMinTime = Math.min(...times).toFixed(0) - 1;
+  const onlyTimes = times.map((t) => t.time);
+  const chartMinTime = Math.min(...onlyTimes).toFixed(0) - 1;
 
   function tooltip(obj) {
     return (
@@ -33,11 +20,7 @@ const AvgTimingsBar = ({ avgLapTimes, mode, desc, annotations, index }) => {
           className="rounded-full h-4 w-4 mr-2"
           style={{ background: obj.color }}
         />
-        {index === 'constructor_name' ? (
-          <span>{`${obj.value}s | ${obj.indexValue}`}</span>
-        ) : (
-          <span>{`${obj.value}s | ${obj.indexValue}  (${obj.data.constructor_name})`}</span>
-        )}
+        <span>{obj.data.tooltip}</span>
       </div>
     );
   }
@@ -55,8 +38,8 @@ const AvgTimingsBar = ({ avgLapTimes, mode, desc, annotations, index }) => {
           layout="horizontal"
           minValue={chartMinTime}
           data={data}
-          keys={[key]}
-          indexBy={index}
+          keys={['time']}
+          indexBy="id"
           margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
           padding={0.3}
           valueScale={{ type: 'linear' }}
@@ -94,11 +77,16 @@ const AvgTimingsBar = ({ avgLapTimes, mode, desc, annotations, index }) => {
 };
 
 AvgTimingsBar.propTypes = {
-  avgLapTimes: lapTimesType.isRequired,
-  mode: PropTypes.string.isRequired,
+  times: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      time: PropTypes.number.isRequired,
+      tooltip: PropTypes.string.isRequired,
+      constructor: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   desc: PropTypes.string.isRequired,
   annotations: PropTypes.arrayOf(PropTypes.string),
-  index: PropTypes.string.isRequired,
 };
 
 AvgTimingsBar.defaultProps = {
