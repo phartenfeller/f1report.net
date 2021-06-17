@@ -43,9 +43,13 @@ module.exports = {
     },
     {
       // Querying to a SQLite database
-      resolve: `gatsby-source-sqlite`,
+      resolve: require.resolve(
+        `/home/philipp/Code/_gatsby-sutff/gatsby-source-sqlite`
+      ), // `gatsby-source-sqlite`,
       options: {
         fileName: './data/f1data.sqlite',
+        cacheQueryResults: true,
+        cacheTransformationByRowcount: false,
         queries: [
           {
             statement: `select * from races_v`,
@@ -53,52 +57,88 @@ module.exports = {
             name: 'races',
           },
           {
+            statement: `select * from drivers`,
+            idFieldName: `driverId`,
+            name: 'drivers',
+            parents: [
+              {
+                parentName: 'lapTimes',
+                foreignKey: 'driverId',
+                cardinality: 'OneToOne',
+              },
+            ],
+          },
+          {
             statement: `select * from race_results_v`,
             idFieldName: `resultId`,
             name: `raceResult`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
+            parents: [
+              {
+                parentName: 'races',
+                foreignKey: 'raceId',
+                cardinality: 'OneToMany',
+              },
+            ],
           },
           {
             statement: `select * from lap_times_v`,
             idFieldName: `lapId`,
             name: `lapTimes`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
+            parents: [
+              {
+                parentName: 'races',
+                foreignKey: 'raceId',
+                cardinality: 'OneToMany',
+              },
+            ],
           },
           {
             statement: `select * from avg_lap_times`,
             idFieldName: `num_id`,
             name: `avgLapTimes`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
+            parents: [
+              {
+                parentName: 'races',
+                foreignKey: 'raceId',
+                cardinality: 'OneToMany',
+              },
+            ],
           },
           {
             statement: `select * from avg_lap_times_top_70_pct`,
             idFieldName: `num_id`,
             name: `avgLapTimesTop70Pct`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
+            parents: [
+              {
+                parentName: 'races',
+                foreignKey: 'raceId',
+                cardinality: 'OneToMany',
+              },
+            ],
           },
           {
             statement: `select * from avg_constructor_lap_times`,
             idFieldName: `num_id`,
             name: `avgConstructorLapTimes`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
+            parents: [
+              {
+                parentName: 'races',
+                foreignKey: 'raceId',
+                cardinality: 'OneToMany',
+              },
+            ],
           },
           {
             statement: `select * from avg_constructor_lap_times_top_70_pct`,
             idFieldName: `num_id`,
             name: `avgConstructorLapTimes70Pct`,
-            parentName: 'races',
-            foreignKey: 'raceId',
-            cardinality: 'OneToMany',
+            parents: [
+              {
+                parentName: 'races',
+                foreignKey: 'raceId',
+                cardinality: 'OneToMany',
+              },
+            ],
           },
         ],
       },
