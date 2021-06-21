@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
-    "eslint": "^7.28.0",
+    "eslint": "^7.29.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
@@ -39,10 +39,10 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "gatsby-plugin-postcss": "^4.6.0",
-    "postcss": "^8.3.0",
+    "gatsby-plugin-postcss": "^4.7.1",
+    "postcss": "^8.3.5",
     "prettier": "^2.3.1",
-    "tailwindcss": "^2.1.4"
+    "tailwindcss": "^2.2.2"
   },
   "keywords": [
     "gatsby",
