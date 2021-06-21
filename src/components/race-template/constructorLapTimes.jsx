@@ -32,6 +32,13 @@ const ConstructorLapTimes = ({
     constructor: time.constructorTeamByConstructorid.name,
   }));
 
+  const relevantLapCount =
+    conAvgLapt70PsByRaceidList &&
+    conAvgLapt70PsByRaceidList[0] &&
+    conAvgLapt70PsByRaceidList[0].relevantLapCount
+      ? conAvgLapt70PsByRaceidList[0].relevantLapCount
+      : '?';
+
   const tabs = [
     {
       tabId: 1,
@@ -69,10 +76,8 @@ const ConstructorLapTimes = ({
           times={top70Times}
           desc={TOP70}
           annotations={[
-            // eslint-disable-next-line dot-notation
-            `Best ${conAvgLapt70PsByRaceidList[0]['relevantLapCount']} Laps of both drivers`,
-            // eslint-disable-next-line dot-notation
-            `Only Teams that completed ${conAvgLapt70PsByRaceidList[0]['relevantLapCount']} Laps`,
+            `Best ${relevantLapCount} Laps of both drivers`,
+            `Only Teams that completed ${relevantLapCount} Laps`,
           ]}
         />
       ),
