@@ -39,6 +39,13 @@ const DriverLapTimes = ({
     constructor: driverMap[time.driverid].constructor,
   }));
 
+  const relevantLapCount =
+    driAvgLapt70PsByRaceidList &&
+    driAvgLapt70PsByRaceidList[0] &&
+    driAvgLapt70PsByRaceidList[0].relevantLapCount
+      ? driAvgLapt70PsByRaceidList[0].relevantLapCount
+      : '?';
+
   const tabs = [
     {
       tabId: 1,
@@ -77,7 +84,7 @@ const DriverLapTimes = ({
           desc={TOP70}
           annotations={[
             // eslint-disable-next-line dot-notation
-            `of the drivers who drove ${driAvgLapt70PsByRaceidList[0]['relevantLapCount']} Laps`,
+            `of the drivers who drove ${relevantLapCount} Laps`,
           ]}
         />
       ),
