@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+import classNames from '../util/classNames';
 
 const TabsContainer = ({ tabs, defaultTabId }) => {
   const [active, setActive] = useState(defaultTabId);

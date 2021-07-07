@@ -30,6 +30,11 @@ const colors = {
   Jordan: '#CCCC00',
   Minardi: '#E9C010',
   Toyota: '#E71837',
+  Jaguar: '#004225',
+  Arrows: '#CF6304',
+  Prost: '#0B1740',
+  Benetton: '#008860',
+  BAR: '#B7082F',
 };
 
 function getTeamColor(team) {

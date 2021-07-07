@@ -12,8 +12,9 @@ import Footer from './footer';
 import Header from './header';
 import '../styles/fonts.css';
 import '../styles/tailwind.css';
+import classNames from '../util/classNames';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, noMarginTop = false }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -27,7 +28,14 @@ const Layout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header siteTitle={data.site.siteMetadata.title} />
-      <main className="flex-grow">{children}</main>
+      <main
+        className={classNames(
+          'flex-grow mx-6 mb-24',
+          noMarginTop ? '' : 'mt-5'
+        )}
+      >
+        {children}
+      </main>
       <Footer />
     </div>
   );
@@ -35,6 +43,11 @@ const Layout = ({ children }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  noMarginTop: PropTypes.bool,
+};
+
+Layout.defaultProps = {
+  noMarginTop: false,
 };
 
 export default Layout;

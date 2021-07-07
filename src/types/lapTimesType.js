@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
+import driverType from './driverType';
 
 export default PropTypes.arrayOf(
   PropTypes.shape({
-    driverByDriverid: PropTypes.shape({
-      driverid: PropTypes.string.isRequired,
-      driverDisplayName: PropTypes.string.isRequired,
-    }).isRequired,
+    driverByDriverid: driverType.isRequired,
     lap: PropTypes.string.isRequired,
     milliseconds: PropTypes.string.isRequired,
     position: PropTypes.string.isRequired,

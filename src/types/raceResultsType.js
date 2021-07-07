@@ -1,29 +1,22 @@
 import PropTypes from 'prop-types';
+import driverType from './driverType';
 
-export default PropTypes.arrayOf(
-  PropTypes.shape({
-    constructorTeamByConstructorid: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }).isRequired,
-    driverByDriverid: PropTypes.shape({
-      driverDisplayName: PropTypes.string.isRequired,
-      driverid: PropTypes.string.isRequired,
-      forename: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-      surname: PropTypes.string.isRequired,
-    }).isRequired,
-    fastestlap: PropTypes.string.isRequired,
-    fastestlapspeed: PropTypes.string.isRequired,
-    fastestlaptime: PropTypes.string.isRequired,
-    grid: PropTypes.string.isRequired,
-    laps: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
-    points: PropTypes.number.isRequired,
-    position: PropTypes.string,
-    resultid: PropTypes.string.isRequired,
-    statusByStatusid: PropTypes.shape({
-      status: PropTypes.string.isRequired,
-    }).isRequired,
-    time: PropTypes.string,
-  })
-);
+export default PropTypes.shape({
+  constructorTeamByConstructorid: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  driverByDriverid: driverType,
+  fastestlap: PropTypes.string,
+  fastestlapspeed: PropTypes.string,
+  fastestlaptime: PropTypes.string,
+  grid: PropTypes.string,
+  laps: PropTypes.string,
+  number: PropTypes.string,
+  points: PropTypes.number,
+  position: PropTypes.string,
+  resultid: PropTypes.string,
+  statusByStatusid: PropTypes.shape({
+    status: PropTypes.string,
+  }),
+  time: PropTypes.string,
+});

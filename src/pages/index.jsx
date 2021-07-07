@@ -39,7 +39,7 @@ const IndexPage = ({ data }) => {
   )[0];
 
   return (
-    <Layout>
+    <Layout noMarginTop>
       <SEO title="Home" />
       <div className="flex justify-center">
         <div className="bg-white lg:w-2/3 mx-4 shadow">
