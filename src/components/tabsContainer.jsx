@@ -32,10 +32,15 @@ const TabsContainer = ({ tabs, defaultTabId }) => {
           </nav>
         </div>
       </div>
-      {tabs.map(
-        ({ component, tabId }) =>
-          active === tabId && <div key={tabId}>{component}</div>
-      )}
+      {tabs.map(({ component, tabId }) => (
+        <div
+          key={tabId}
+          data-tab={tabId}
+          className={active === tabId ? 'block' : 'hidden'}
+        >
+          {component}
+        </div>
+      ))}
     </div>
   );
 };
