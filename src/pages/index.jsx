@@ -1,10 +1,10 @@
 import { graphql, Link } from 'gatsby';
 import React from 'react';
-import { ChevronRightIcon } from '@heroicons/react/solid';
 import PropTypes from 'prop-types';
 import Infobox from '../components/alerts/infobox';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
+import LinkList from '../components/index/LinkList';
 
 export const query = graphql`
   {
@@ -71,29 +71,16 @@ const IndexPage = ({ data }) => {
                 .
               </p>
             </div>
-            <div className="mt-5">
-              <Link
-                to={`/races/${lastRace.raceSlug}`}
-                className="p-6 rounded shadow flex items-center justify-between w-full bg-f1red text-white text-lg tracking-wide font-semibold hover:bg-f1red/[0.65] focus:outline-none focus:ring focus:ring-offset-2 focus:ring-red-400"
-              >
-                Last Race: {lastRace.name}
-                <ChevronRightIcon
-                  className="h-7 w-7 text-red-200"
-                  aria-hidden="true"
-                />
-              </Link>
-            </div>
-            <div className="mt-5 mb-8">
-              <Link
-                to="/races/"
-                className="p-6 rounded shadow flex items-center justify-between w-full bg-black text-white text-lg tracking-wide font-semibold hover:bg-gray-800 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-gray-600"
-              >
-                All Races
-                <ChevronRightIcon
-                  className="h-7 w-7 text-gray-400"
-                  aria-hidden="true"
-                />
-              </Link>
+            <div className="mt-5 mb-16 space-y-2">
+              <LinkList
+                target={`/races/${lastRace.raceSlug}`}
+                display={`Last Race: ${lastRace.name}`}
+              />
+              <LinkList
+                target={`/seasons/${data.postgres.allSeasons.nodes[0].year}`}
+                display={`Current Season: ${data.postgres.allSeasons.nodes[0].year}`}
+              />
+              <LinkList target="/races/" display="All Races" />
             </div>
           </div>
         </div>
