@@ -6,6 +6,7 @@ import LinkableH2 from '../components/linkableH2';
 import RaceDetailsTable from '../components/raceDetailsTable';
 import StandingsTable from '../components/season-template/standingTable';
 import SEO from '../components/seo';
+import TabsContainer from '../components/tabsContainer';
 
 export const query = graphql`
   query seasonData($year: PostGraphile_BigInt!) {
@@ -64,6 +65,19 @@ const SeasonTemplate = ({ data }) => {
   const { raceByLastraceid } = seasonlastracesByYearList[0];
   const { driverstandingsByRaceidList, resultsByRaceidList } = raceByLastraceid;
 
+  const driverTabs = [
+    {
+      tabId: 1,
+      tabName: 'Table',
+      component: (
+        <StandingsTable
+          standings={driverstandingsByRaceidList}
+          resultsByRaceidList={resultsByRaceidList}
+        />
+      ),
+    },
+  ];
+
   return (
     <Layout>
       <h1 className="text-3xl font-bold tracking-wide mb-3">{`${year} Season`}</h1>
@@ -75,10 +89,7 @@ const SeasonTemplate = ({ data }) => {
       </div>
       <div>
         <LinkableH2 text="Driver Standings" />
-        <StandingsTable
-          standings={driverstandingsByRaceidList}
-          resultsByRaceidList={resultsByRaceidList}
-        />
+        <TabsContainer tabs={driverTabs} defaultTabId={1} />
       </div>
       <div>
         <LinkableH2 text="Races" />
