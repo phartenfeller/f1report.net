@@ -21,7 +21,9 @@ const DriverStandingsBar = ({ standings, resultsByRaceidList }) => {
     const constr = resultsByRaceidList.find(
       (r) => r.driverid === data[i].driverId
     );
-    data[i].constructor = constr.constructorTeamByConstructorid.name;
+    if (constr) {
+      data[i].constructor = constr.constructorTeamByConstructorid.name;
+    }
   }
 
   function tooltip(obj) {

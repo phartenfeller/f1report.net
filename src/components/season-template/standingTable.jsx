@@ -10,19 +10,19 @@ const StandingsTable = ({ standings, resultsByRaceidList }) => (
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th scope="col" className="table-heading hidden lg:table-cell">
+            <th scope="col" className="table-heading">
               #
             </th>
             <th scope="col" className="table-heading">
               Driver
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="table-heading hidden md:table-cell">
               Team
             </th>
             <th scope="col" className="table-heading hidden lg:table-cell">
               Wins
             </th>
-            <th scope="col" className="table-heading hidden md:table-cell">
+            <th scope="col" className="table-heading">
               Points
             </th>
           </tr>
@@ -34,18 +34,20 @@ const StandingsTable = ({ standings, resultsByRaceidList }) => (
                 key={driverid}
                 className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
               >
-                <td className="hidden lg:table-cell font-medium">{position}</td>
+                <td className="table-cell font-medium">{position}</td>
                 <td className="table-cell font-medium">
                   {driverByDriverid.driverDisplayName}
                 </td>
-                <td className="hidden lg:table-cell">
+                <td className="hidden md:table-cell">
                   <TeamDisplay
                     driverId={driverid}
                     resultsByRaceidList={resultsByRaceidList}
                   />
                 </td>
                 <td className="hidden lg:table-cell">{wins}</td>
-                <td className="hidden md:table-cell">{points}</td>
+                <td className="table-cell text-right pr-4 md:text-left md:pr-0">
+                  {points}
+                </td>
               </tr>
             )
           )}
