@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { seasonDriverMainConsType } from '../types';
 import getTeamColor from '../util/f1TeamColors';
 
-const TeamDisplay = ({ driverId, resultsByRaceidList }) => {
-  const driverTeam = resultsByRaceidList.find(
+const TeamDisplay = ({ driverId, seasondrivermainconsByYearList }) => {
+  const driverTeam = seasondrivermainconsByYearList.find(
     (e) => parseInt(e.driverid) === parseInt(driverId)
   );
 
@@ -26,14 +27,8 @@ const TeamDisplay = ({ driverId, resultsByRaceidList }) => {
 
 TeamDisplay.propTypes = {
   driverId: PropTypes.string.isRequired,
-  resultsByRaceidList: PropTypes.arrayOf(
-    PropTypes.shape({
-      driverid: PropTypes.string.isRequired,
-      constructorTeamByConstructorid: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired
-  ).isRequired,
+  seasondrivermainconsByYearList: PropTypes.arrayOf(seasonDriverMainConsType)
+    .isRequired,
 };
 
 export default TeamDisplay;

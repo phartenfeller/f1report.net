@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { raceResultsType } from '../../types';
+import { seasonDriverMainConsType } from '../../types';
 import standingsType from '../../types/standingsType';
 import TeamDisplay from '../teamDisplay';
 
-const StandingsTable = ({ standings, resultsByRaceidList }) => (
+const StandingsTable = ({ standings, seasondrivermainconsByYearList }) => (
   <div className="py-2 align-middle inline-block min-w-full">
     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
       <table className="min-w-full divide-y divide-gray-200">
@@ -41,7 +41,9 @@ const StandingsTable = ({ standings, resultsByRaceidList }) => (
                 <td className="hidden md:table-cell">
                   <TeamDisplay
                     driverId={driverid}
-                    resultsByRaceidList={resultsByRaceidList}
+                    seasondrivermainconsByYearList={
+                      seasondrivermainconsByYearList
+                    }
                   />
                 </td>
                 <td className="hidden lg:table-cell">{wins}</td>
@@ -59,7 +61,8 @@ const StandingsTable = ({ standings, resultsByRaceidList }) => (
 
 StandingsTable.propTypes = {
   standings: PropTypes.arrayOf(standingsType).isRequired,
-  resultsByRaceidList: PropTypes.arrayOf(raceResultsType).isRequired,
+  seasondrivermainconsByYearList: PropTypes.arrayOf(seasonDriverMainConsType)
+    .isRequired,
 };
 
 export default StandingsTable;

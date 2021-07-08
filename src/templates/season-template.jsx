@@ -97,7 +97,7 @@ const SeasonTemplate = ({ data }) => {
       component: (
         <StandingsTable
           standings={driverstandingsByRaceidList}
-          resultsByRaceidList={resultsByRaceidList}
+          seasondrivermainconsByYearList={seasondrivermainconsByYearList}
         />
       ),
     },
