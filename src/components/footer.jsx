@@ -1,8 +1,15 @@
 import { Link } from 'gatsby';
 import React from 'react';
 
+function getBuildTime() {
+  let date = new Date().toISOString();
+  [date] = date.split(':');
+  date = date.replace(`T`, '.');
+  return date;
+}
+
 const Footer = () => (
-  <footer className="bg-blueGray-200 px-8 pt-5 pb-2">
+  <footer className="bg-blueGray-200 px-8 pt-5 pb-2 text-sm text-gray-700">
     <div className="flex items-center justify-between">
       <div>
         © {new Date().getFullYear()}, Built by{' '}
@@ -13,6 +20,7 @@ const Footer = () => (
       <Link className="block black-link" to="/about/">
         About
       </Link>
+      <div className="hidden md:block">Build {getBuildTime()}</div>
     </div>
     <div className="mt-2 flex items-center justify-between">
       <span>This website does not use Cookies!</span>
