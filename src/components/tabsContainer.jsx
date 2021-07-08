@@ -9,11 +9,8 @@ const TabsContainer = ({ tabs, defaultTabId }) => {
     <div>
       <div>
         <div className="border-b border-gray-200">
-          <nav
-            className="-mb-px flex flex-wrap space-x-2 md:space-x-4 lg:space-x-8"
-            aria-label="Tabs"
-          >
-            {tabs.map(({ tabId, tabName }) => (
+          <nav className="-mb-px flex flex-wrap" aria-label="Tabs">
+            {tabs.map(({ tabId, tabName }, i) => (
               <button
                 type="button"
                 key={tabId}
@@ -22,6 +19,7 @@ const TabsContainer = ({ tabs, defaultTabId }) => {
                   tabId === active
                     ? 'border-red-400 text-red-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                  i === 0 ? 'pr-2 lg:pr-4' : 'px-2 lg:px-4',
                   'whitespace-nowrap py-4 px-1 border-b-2 font-xs lg:font-medium text-sm focus:outline-none focus:ring-1 focus:ring-red-300'
                 )}
                 aria-current={tabId === active ? 'page' : undefined}

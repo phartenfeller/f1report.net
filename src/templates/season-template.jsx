@@ -5,6 +5,7 @@ import Layout from '../components/layout';
 import LinkableH2 from '../components/linkableH2';
 import RaceDetailsTable from '../components/raceDetailsTable';
 import DriverStandingsBar from '../components/season-template/driverStandingsBar';
+import SeasonProgressStream from '../components/season-template/seasonProgrssSteam';
 import StandingsTable from '../components/season-template/standingTable';
 import SEO from '../components/seo';
 import TabsContainer from '../components/tabsContainer';
@@ -15,6 +16,16 @@ export const query = graphql`
       seasonByYear(year: $year) {
         url
         year
+        seasondrivermainconsByYearList {
+          year
+          constructorTeamByConstructorid {
+            name
+          }
+          driverid
+          driverByDriverid {
+            driverDisplayName
+          }
+        }
         seasonlastracesByYearList {
           raceByLastraceid {
             driverstandingsByRaceidList(orderBy: POSITION_ASC) {
@@ -52,6 +63,14 @@ export const query = graphql`
               name
             }
           }
+          driverstandingsByRaceidList {
+            driverid
+            points
+          }
+          resultsByRaceidList {
+            driverid
+            points
+          }
         }
       }
     }
@@ -60,8 +79,13 @@ export const query = graphql`
 
 const SeasonTemplate = ({ data }) => {
   const { seasonByYear } = data.postgres;
-  const { url, year, racesByYearList, seasonlastracesByYearList } =
-    seasonByYear;
+  const {
+    url,
+    year,
+    racesByYearList,
+    seasonlastracesByYearList,
+    seasondrivermainconsByYearList,
+  } = seasonByYear;
 
   const { raceByLastraceid } = seasonlastracesByYearList[0];
   const { driverstandingsByRaceidList, resultsByRaceidList } = raceByLastraceid;
@@ -84,6 +108,17 @@ const SeasonTemplate = ({ data }) => {
         <DriverStandingsBar
           standings={driverstandingsByRaceidList}
           resultsByRaceidList={resultsByRaceidList}
+        />
+      ),
+    },
+    {
+      tabId: 3,
+      tabName: 'Point Distribution per Race',
+      component: (
+        <SeasonProgressStream
+          racesByYearList={racesByYearList}
+          seasondrivermainconsByYearList={seasondrivermainconsByYearList}
+          driverstandingsByRaceidList={driverstandingsByRaceidList}
         />
       ),
     },

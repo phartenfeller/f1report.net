@@ -28,7 +28,7 @@ const DriverStandingsBar = ({ standings, resultsByRaceidList }) => {
 
   function tooltip(obj) {
     return (
-      <div className="inline-flex items-center">
+      <div className="inline-flex items-center bg-white px-3 py-1 rounded shadow-lg">
         <div
           className="rounded-full h-4 w-4 mr-2"
           style={{ background: obj.color }}

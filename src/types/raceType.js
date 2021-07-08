@@ -5,12 +5,12 @@ const raceType = PropTypes.shape({
     name: PropTypes.string.isRequired,
     country: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
-  }).isRequired,
-  date: PropTypes.string.isRequired,
-  raceid: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  round: PropTypes.string.isRequired,
-  year: PropTypes.string.isRequired,
+  }),
+  date: PropTypes.string,
+  raceid: PropTypes.string,
+  name: PropTypes.string,
+  round: PropTypes.string,
+  year: PropTypes.string,
 });
 
 export default raceType;
