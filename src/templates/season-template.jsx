@@ -4,6 +4,7 @@ import React from 'react';
 import Layout from '../components/layout';
 import LinkableH2 from '../components/linkableH2';
 import RaceDetailsTable from '../components/raceDetailsTable';
+import DriverStandingsBar from '../components/season-template/driverStandingsBar';
 import StandingsTable from '../components/season-template/standingTable';
 import SEO from '../components/seo';
 import TabsContainer from '../components/tabsContainer';
@@ -71,6 +72,16 @@ const SeasonTemplate = ({ data }) => {
       tabName: 'Table',
       component: (
         <StandingsTable
+          standings={driverstandingsByRaceidList}
+          resultsByRaceidList={resultsByRaceidList}
+        />
+      ),
+    },
+    {
+      tabId: 2,
+      tabName: 'Bar Chart',
+      component: (
+        <DriverStandingsBar
           standings={driverstandingsByRaceidList}
           resultsByRaceidList={resultsByRaceidList}
         />
