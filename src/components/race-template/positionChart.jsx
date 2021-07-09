@@ -47,7 +47,7 @@ function getChartData(arr, relevantLaps, driverMap) {
   }, []);
 
   // set last pos of retired drivers to null
-  // otherwise e. g. first one crashes halfway -> chart still first because no data update
+  // otherwise e. g. first one crashes halfway -> chart still same pos because no data update
   for (let i = 0; i < data.length; i += 1) {
     if (data[i].data.length < relevantLaps.length) {
       const nextLapEntry = relevantLaps[data[i].data.length];

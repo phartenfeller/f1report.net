@@ -5,6 +5,7 @@ import Layout from '../components/layout';
 import LinkableH2 from '../components/linkableH2';
 import RaceDetailsTable from '../components/raceDetailsTable';
 import DriverStandingsBar from '../components/season-template/driverStandingsBar';
+import SeasonPositionBump from '../components/season-template/seasonPositionBump';
 import SeasonProgressStream from '../components/season-template/seasonProgrssSteam';
 import StandingsTable from '../components/season-template/standingTable';
 import SEO from '../components/seo';
@@ -66,6 +67,7 @@ export const query = graphql`
           driverstandingsByRaceidList {
             driverid
             points
+            position
           }
           resultsByRaceidList {
             driverid
@@ -119,6 +121,16 @@ const SeasonTemplate = ({ data }) => {
           racesByYearList={racesByYearList}
           seasondrivermainconsByYearList={seasondrivermainconsByYearList}
           driverstandingsByRaceidList={driverstandingsByRaceidList}
+        />
+      ),
+    },
+    {
+      tabId: 4,
+      tabName: 'Position Changes',
+      component: (
+        <SeasonPositionBump
+          racesByYearList={racesByYearList}
+          seasondrivermainconsByYearList={seasondrivermainconsByYearList}
         />
       ),
     },
