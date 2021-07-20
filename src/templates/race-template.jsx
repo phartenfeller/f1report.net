@@ -18,6 +18,8 @@ import {
 import ConstructorLapTimes from '../components/race-template/constructorLapTimes';
 import LinkableH2 from '../components/linkableH2';
 import conAvgPitstopsByRaceidListType from '../types/conAvgPitstopsByRaceidListType';
+import HighlightVideos from '../components/race-template/highlightVideos';
+import RaceNotes from '../components/race-template/raceNotes';
 
 export const query = graphql`
   query raceData($raceid: PostGraphile_BigInt!) {
@@ -36,6 +38,8 @@ export const query = graphql`
         year
         name
         date
+        highlightlinks
+        racenotes
         laptimesByRaceidList {
           lap
           milliseconds
@@ -137,6 +141,8 @@ const RaceTemplate = ({ data }) => {
     conAvgLapt70PsByRaceidList,
     conAvgLaptsByRaceidList,
     resultsByRaceidList,
+    highlightlinks,
+    racenotes,
   } = raceByRaceid;
 
   const {
@@ -151,7 +157,10 @@ const RaceTemplate = ({ data }) => {
   return (
     <Layout>
       <SEO title={`${name} (${year})`} />
-      <h1 className="text-3xl font-bold tracking-wide mb-3" data-id={raceid}>
+      <h1
+        className="font-yrsa text-5xl font-bold tracking-wide mb-3"
+        data-id={raceid}
+      >
         {name} ({year})
       </h1>
       <div>
@@ -172,7 +181,7 @@ const RaceTemplate = ({ data }) => {
       <div className="md:hidden my-6 rounded border-2 border-gray-400">
         <Infobox text="For a better experience and more Info please use a bigger screen" />
       </div>
-      <div className="hidden md:block mt-5">
+      <div className="mt-5">
         <LinkableH2 text="Race Results" />
         <div className="py-2 align-middle min-w-full">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -260,6 +269,8 @@ const RaceTemplate = ({ data }) => {
         <Link to={`/seasons/${year}`} className="standard-link">
           Season overview
         </Link>
+        <RaceNotes racenotes={racenotes} />
+        <HighlightVideos highlightlinks={highlightlinks} />
       </div>
       {resultsByRaceidList && resultsByRaceidList.length > 0 ? (
         <div>
@@ -330,6 +341,8 @@ RaceTemplate.propTypes = {
         time: PropTypes.string.isRequired,
         url: PropTypes.string.isRequired,
         year: PropTypes.string.isRequired,
+        highlightlinks: PropTypes.string,
+        racenotes: PropTypes.string,
         conAvgPitstopsByRaceidList: conAvgPitstopsByRaceidListType.isRequired,
       }).isRequired,
     }).isRequired,

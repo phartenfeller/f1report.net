@@ -12,7 +12,7 @@ const LinkableH2 = ({ text }) => {
       >
         <h2
           id={id}
-          className="font-yrsa font-mediumtext-gray-900 group-hover:decoration-gray-400 group-hover:underline"
+          className="font-yrsa font-medium text-gray-900 group-hover:decoration-gray-400 group-hover:underline"
           style={{ fontSize: '42px', textDecorationThickness: '0.075em' }}
         >
           {text}
