@@ -15,7 +15,7 @@ const AvgTimingsBar = ({ times, desc, annotations }) => {
 
   function tooltip(obj) {
     return (
-      <div className="inline-flex items-center">
+      <div className="inline-flex items-center bg-white p-2 shadow rounded">
         <div
           className="rounded-full h-4 w-4 mr-2"
           style={{ background: obj.color }}
