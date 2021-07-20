@@ -2,15 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import getTeamColor from '../../util/f1TeamColors';
-import { raceType, seasonDriverMainConsType, standingsType } from '../../types';
+import { raceType, teamStandingsType } from '../../types';
 
-const SeasonProgressStream = ({
-  racesByYearList,
-  seasondrivermainconsByYearList,
-  driverstandingsByRaceidList,
-}) => {
+const ConstructorProgressStream = ({ racesByYearList, teamStandings }) => {
   // sorted by position
-  const drivers = driverstandingsByRaceidList.map((s) => s.driverid);
+  const teams = teamStandings.map((t) => t.constructorid);
 
   const map = {};
   const pointsInRound = {};
@@ -19,22 +15,27 @@ const SeasonProgressStream = ({
     const race = racesByYearList[i];
     if (!map[race.round]) {
       map[race.round] = {};
-      drivers.forEach((d) => {
-        map[race.round][d] = 0;
+      teams.forEach((t) => {
+        map[race.round][t] = 0;
       });
       pointsInRound[race.round] = 0;
-      for (let j = 0; j < race.driverstandingsByRaceidList.length; j += 1) {
-        pointsInRound[race.round] += race.driverstandingsByRaceidList[j].points;
+      for (
+        let j = 0;
+        j < race.constructorstandingsByRaceidList.length;
+        j += 1
+      ) {
+        pointsInRound[race.round] +=
+          race.constructorstandingsByRaceidList[j].points;
       }
     }
 
-    for (let j = 0; j < race.driverstandingsByRaceidList.length; j += 1) {
-      const result = race.driverstandingsByRaceidList[j];
+    for (let j = 0; j < race.constructorstandingsByRaceidList.length; j += 1) {
+      const result = race.constructorstandingsByRaceidList[j];
       if (result.points && typeof result.points === 'number') {
         const pctOfAllPoints = Math.round(
           (result.points / pointsInRound[race.round]) * 100
         );
-        map[race.round][result.driverid] = pctOfAllPoints;
+        map[race.round][result.constructorid] = pctOfAllPoints;
       }
     }
   }
@@ -47,24 +48,21 @@ const SeasonProgressStream = ({
   });
 
   function getColor({ index }) {
-    const driverid = drivers[index];
-    const info = seasondrivermainconsByYearList.find(
-      (s) => s.driverid === driverid
-    );
-
+    const id = teams[index];
+    const info = teamStandings.find((t) => t.constructorid === id);
     return getTeamColor(info?.constructorTeamByConstructorid?.name);
   }
 
   function getDriverById({ id }) {
-    const info = seasondrivermainconsByYearList.find((s) => s.driverid === id);
-    return info?.driverByDriverid?.driverDisplayName;
+    const info = teamStandings.find((t) => t.constructorid === id);
+    return info?.constructorTeamByConstructorid?.name;
   }
 
   return (
     <div style={{ height: '600px' }}>
       <ResponsiveStream
         data={data}
-        keys={drivers}
+        keys={teams}
         margin={{ top: 10, right: 110, bottom: 20, left: 5 }}
         axisTop={null}
         axisRight={null}
@@ -100,11 +98,9 @@ const SeasonProgressStream = ({
   );
 };
 
-SeasonProgressStream.propTypes = {
+ConstructorProgressStream.propTypes = {
   racesByYearList: PropTypes.arrayOf(raceType).isRequired,
-  driverstandingsByRaceidList: PropTypes.arrayOf(standingsType).isRequired,
-  seasondrivermainconsByYearList: PropTypes.arrayOf(seasonDriverMainConsType)
-    .isRequired,
+  teamStandings: PropTypes.arrayOf(teamStandingsType).isRequired,
 };
 
-export default SeasonProgressStream;
+export default ConstructorProgressStream;

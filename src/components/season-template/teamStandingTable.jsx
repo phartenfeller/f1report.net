@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { seasonDriverMainConsType } from '../../types';
-import standingsType from '../../types/standingsType';
-import TeamDisplay from '../teamDisplay';
+import { teamStandingsType } from '../../types';
+import TeamDisplay from '../teamDisplay/teamDisplay';
 
-const StandingsTable = ({ standings, seasondrivermainconsByYearList }) => (
+const TeamStandingsTable = ({ teamStandings }) => (
   <div className="py-2 align-middle inline-block min-w-full">
     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
       <table className="min-w-full divide-y divide-gray-200">
@@ -14,9 +13,6 @@ const StandingsTable = ({ standings, seasondrivermainconsByYearList }) => (
               #
             </th>
             <th scope="col" className="table-heading">
-              Driver
-            </th>
-            <th scope="col" className="table-heading hidden md:table-cell">
               Team
             </th>
             <th scope="col" className="table-heading hidden lg:table-cell">
@@ -28,23 +24,24 @@ const StandingsTable = ({ standings, seasondrivermainconsByYearList }) => (
           </tr>
         </thead>
         <tbody>
-          {standings.map(
-            ({ position, points, wins, driverByDriverid, driverid }, i) => (
+          {teamStandings.map(
+            (
+              {
+                position,
+                points,
+                wins,
+                constructorTeamByConstructorid,
+                constructorid,
+              },
+              i
+            ) => (
               <tr
-                key={driverid}
+                key={constructorid}
                 className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
               >
                 <td className="table-cell font-medium">{position}</td>
-                <td className="table-cell font-medium">
-                  {driverByDriverid.driverDisplayName}
-                </td>
                 <td className="hidden md:table-cell">
-                  <TeamDisplay
-                    driverId={driverid}
-                    seasondrivermainconsByYearList={
-                      seasondrivermainconsByYearList
-                    }
-                  />
+                  <TeamDisplay teamName={constructorTeamByConstructorid.name} />
                 </td>
                 <td className="hidden lg:table-cell">{wins}</td>
                 <td className="table-cell text-right pr-4 md:text-left md:pr-0">
@@ -59,10 +56,8 @@ const StandingsTable = ({ standings, seasondrivermainconsByYearList }) => (
   </div>
 );
 
-StandingsTable.propTypes = {
-  standings: PropTypes.arrayOf(standingsType).isRequired,
-  seasondrivermainconsByYearList: PropTypes.arrayOf(seasonDriverMainConsType)
-    .isRequired,
+TeamStandingsTable.propTypes = {
+  teamStandings: PropTypes.arrayOf(teamStandingsType).isRequired,
 };
 
-export default StandingsTable;
+export default TeamStandingsTable;

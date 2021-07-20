@@ -1,29 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import { raceResultsType, driverStandingsType } from '../../types';
+import { teamStandingsType } from '../../types';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getColor(obj) {
   return getTeamColor(obj.data.constructor);
 }
 
-const DriverStandingsBar = ({ standings, resultsByRaceidList }) => {
-  const data = standings.map((s) => ({
+const TeamStandingsBar = ({ teamStandings }) => {
+  const data = teamStandings.map((s) => ({
     points: s.points,
-    driver: s.driverByDriverid.driverDisplayName,
-    driverId: s.driverid,
-    tooltip: `${s.driverByDriverid.driverDisplayName}: ${s.points}`,
+    constructor: s.constructorTeamByConstructorid.name,
+    constructorid: s.constructorid,
+    tooltip: `${s.constructorTeamByConstructorid.name}: ${s.points}`,
+    color: getTeamColor(s.constructorTeamByConstructorid.name),
   }));
-
-  for (let i = 0; i < data.length; i += 1) {
-    const constr = resultsByRaceidList.find(
-      (r) => r.driverid === data[i].driverId
-    );
-    if (constr) {
-      data[i].constructor = constr.constructorTeamByConstructorid.name;
-    }
-  }
 
   function tooltip(obj) {
     return (
@@ -46,7 +38,7 @@ const DriverStandingsBar = ({ standings, resultsByRaceidList }) => {
           minValue={0}
           data={data}
           keys={['points']}
-          indexBy="driver"
+          indexBy="constructor"
           margin={{ top: 2, right: 130 }}
           padding={0.3}
           valueScale={{ type: 'linear' }}
@@ -65,7 +57,7 @@ const DriverStandingsBar = ({ standings, resultsByRaceidList }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'Drivers',
+            legend: 'Constructors',
             legendPosition: 'middle',
             legendOffset: -40,
           }}
@@ -81,9 +73,8 @@ const DriverStandingsBar = ({ standings, resultsByRaceidList }) => {
   );
 };
 
-DriverStandingsBar.propTypes = {
-  standings: PropTypes.arrayOf(driverStandingsType).isRequired,
-  resultsByRaceidList: PropTypes.arrayOf(raceResultsType).isRequired,
+TeamStandingsBar.propTypes = {
+  teamStandings: PropTypes.arrayOf(teamStandingsType).isRequired,
 };
 
-export default DriverStandingsBar;
+export default TeamStandingsBar;

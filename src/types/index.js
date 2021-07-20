@@ -5,12 +5,13 @@ import constructorType from './constructorType';
 import driAvgLapt70PType from './driAvgLapt70PType';
 import driAvgLaptType from './driAvgLaptType';
 import driverMapType from './driverMapType';
+import driverStandingsType from './driverStandingsType';
 import driverType from './driverType';
 import lapTimesType from './lapTimesType';
 import raceResultsType from './raceResultsType';
 import raceType from './raceType';
 import seasonDriverMainConsType from './seasonDriverMainConsType';
-import standingsType from './standingsType';
+import teamStandingsType from './teamStandingsType';
 
 export {
   lapTimesType,
@@ -25,5 +26,6 @@ export {
   driverType,
   constructorType,
   seasonDriverMainConsType,
-  standingsType,
+  driverStandingsType,
+  teamStandingsType,
 };

@@ -6,10 +6,13 @@ import LinkableH2 from '../components/linkableH2';
 import RaceDetailsTable from '../components/raceDetailsTable';
 import DriverStandingsBar from '../components/season-template/driverStandingsBar';
 import SeasonPositionBump from '../components/season-template/seasonPositionBump';
-import SeasonProgressStream from '../components/season-template/seasonProgrssSteam';
-import StandingsTable from '../components/season-template/standingTable';
+import DriverProgressStream from '../components/season-template/driverProgressStream';
+import DriverStandingsTable from '../components/season-template/driverStandingTable';
 import SEO from '../components/seo';
 import TabsContainer from '../components/tabsContainer';
+import TeamStandingsTable from '../components/season-template/teamStandingTable';
+import TeamStandingsBar from '../components/season-template/teamStandingsBar';
+import ConstructorProgressStream from '../components/season-template/constructorProgressStream';
 
 export const query = graphql`
   query seasonData($year: PostGraphile_BigInt!) {
@@ -44,6 +47,15 @@ export const query = graphql`
                 name
               }
             }
+            constructorstandingsByRaceidList(orderBy: POSITION_ASC) {
+              points
+              position
+              constructorid
+              wins
+              constructorTeamByConstructorid {
+                name
+              }
+            }
           }
         }
         racesByYearList(orderBy: DATE_ASC) {
@@ -59,7 +71,10 @@ export const query = graphql`
           year
           name
           constructorstandingsByRaceidList {
+            points
             position
+            constructorid
+            wins
             constructorTeamByConstructorid {
               name
             }
@@ -90,14 +105,18 @@ const SeasonTemplate = ({ data }) => {
   } = seasonByYear;
 
   const { raceByLastraceid } = seasonlastracesByYearList[0];
-  const { driverstandingsByRaceidList, resultsByRaceidList } = raceByLastraceid;
+  const {
+    driverstandingsByRaceidList,
+    resultsByRaceidList,
+    constructorstandingsByRaceidList,
+  } = raceByLastraceid;
 
   const driverTabs = [
     {
       tabId: 1,
       tabName: 'Table',
       component: (
-        <StandingsTable
+        <DriverStandingsTable
           standings={driverstandingsByRaceidList}
           seasondrivermainconsByYearList={seasondrivermainconsByYearList}
         />
@@ -117,7 +136,7 @@ const SeasonTemplate = ({ data }) => {
       tabId: 3,
       tabName: 'Point Distribution per Race',
       component: (
-        <SeasonProgressStream
+        <DriverProgressStream
           racesByYearList={racesByYearList}
           seasondrivermainconsByYearList={seasondrivermainconsByYearList}
           driverstandingsByRaceidList={driverstandingsByRaceidList}
@@ -136,6 +155,33 @@ const SeasonTemplate = ({ data }) => {
     },
   ];
 
+  const constructorTabs = [
+    {
+      tabId: 1,
+      tabName: 'Table',
+      component: (
+        <TeamStandingsTable teamStandings={constructorstandingsByRaceidList} />
+      ),
+    },
+    {
+      tabId: 2,
+      tabName: 'Bar Chart',
+      component: (
+        <TeamStandingsBar teamStandings={constructorstandingsByRaceidList} />
+      ),
+    },
+    {
+      tabId: 3,
+      tabName: 'Point Distribution per Race',
+      component: (
+        <ConstructorProgressStream
+          racesByYearList={racesByYearList}
+          teamStandings={constructorstandingsByRaceidList}
+        />
+      ),
+    },
+  ];
+
   return (
     <Layout>
       <h1 className="text-3xl font-bold tracking-wide mb-3">{`${year} Season`}</h1>
@@ -148,6 +194,10 @@ const SeasonTemplate = ({ data }) => {
       <div>
         <LinkableH2 text="Driver Standings" />
         <TabsContainer tabs={driverTabs} defaultTabId={1} />
+      </div>
+      <div>
+        <LinkableH2 text="Constructor Standings" />
+        <TabsContainer tabs={constructorTabs} defaultTabId={1} />
       </div>
       <div>
         <LinkableH2 text="Races" />

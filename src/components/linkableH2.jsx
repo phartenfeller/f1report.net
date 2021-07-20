@@ -17,7 +17,7 @@ const LinkableH2 = ({ text }) => {
         >
           {text}
         </h2>
-        <span className="font-mono text-gray-700 ml-2 text-4xl hidden group-hover:block">
+        <span className="font-mono text-gray-400 ml-2 text-4xl hidden group-hover:block">
           #
         </span>
       </a>
