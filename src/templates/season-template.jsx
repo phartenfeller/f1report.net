@@ -4,7 +4,7 @@ import React from 'react';
 import Layout from '../components/layout';
 import RaceDetailsTable from '../components/raceDetailsTable';
 import DriverStandingsBar from '../components/season-template/driverStandingsBar';
-import SeasonPositionBump from '../components/season-template/seasonPositionBump';
+import DriverPositionBump from '../components/season-template/driverPositionBump';
 import DriverProgressStream from '../components/season-template/driverProgressStream';
 import DriverStandingsTable from '../components/season-template/driverStandingTable';
 import SEO from '../components/seo';
@@ -13,6 +13,7 @@ import TeamStandingsTable from '../components/season-template/teamStandingTable'
 import TeamStandingsBar from '../components/season-template/teamStandingsBar';
 import ConstructorProgressStream from '../components/season-template/constructorProgressStream';
 import { Header1, LinkableH2 } from '../components/headers';
+import ConstructorPositionBump from '../components/season-template/constructorPositionBump';
 
 export const query = graphql`
   query seasonData($year: PostGraphile_BigInt!) {
@@ -147,7 +148,7 @@ const SeasonTemplate = ({ data }) => {
       tabId: 4,
       tabName: 'Position Changes',
       component: (
-        <SeasonPositionBump
+        <DriverPositionBump
           racesByYearList={racesByYearList}
           seasondrivermainconsByYearList={seasondrivermainconsByYearList}
         />
@@ -179,6 +180,11 @@ const SeasonTemplate = ({ data }) => {
           teamStandings={constructorstandingsByRaceidList}
         />
       ),
+    },
+    {
+      tabId: 4,
+      tabName: 'Position Changes',
+      component: <ConstructorPositionBump racesByYearList={racesByYearList} />,
     },
   ];
 

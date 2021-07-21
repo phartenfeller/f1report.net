@@ -20,7 +20,7 @@ function tooltip({ serie }) {
   );
 }
 
-const SeasonPositionBump = ({
+const DriverPositionBump = ({
   racesByYearList,
   seasondrivermainconsByYearList,
 }) => {
@@ -112,10 +112,10 @@ const SeasonPositionBump = ({
   );
 };
 
-SeasonPositionBump.propTypes = {
+DriverPositionBump.propTypes = {
   racesByYearList: PropTypes.arrayOf(raceType).isRequired,
   seasondrivermainconsByYearList: PropTypes.arrayOf(seasonDriverMainConsType)
     .isRequired,
 };
 
-export default SeasonPositionBump;
+export default DriverPositionBump;
