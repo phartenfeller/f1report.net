@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const LinkableH2 = ({ text }) => {
-  const id = text.replace(/ /g, '-').toLowerCase();
+const LinkableH2 = ({ children }) => {
+  const id = children.replace(/ /g, '-').toLowerCase();
 
   return (
     <div>
@@ -15,7 +15,7 @@ const LinkableH2 = ({ text }) => {
           className="font-yrsa font-medium text-gray-900 group-hover:decoration-gray-400 group-hover:underline"
           style={{ fontSize: '42px', textDecorationThickness: '0.075em' }}
         >
-          {text}
+          {children}
         </h2>
         <span className="font-mono text-gray-400 ml-2 text-4xl hidden group-hover:block">
           #
@@ -26,7 +26,7 @@ const LinkableH2 = ({ text }) => {
 };
 
 LinkableH2.propTypes = {
-  text: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 export default LinkableH2;

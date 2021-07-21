@@ -16,10 +16,10 @@ import {
   driAvgLaptType,
 } from '../types';
 import ConstructorLapTimes from '../components/race-template/constructorLapTimes';
-import LinkableH2 from '../components/linkableH2';
 import conAvgPitstopsByRaceidListType from '../types/conAvgPitstopsByRaceidListType';
 import HighlightVideos from '../components/race-template/highlightVideos';
 import RaceNotes from '../components/race-template/raceNotes';
+import { Header1, LinkableH2 } from '../components/headers';
 
 export const query = graphql`
   query raceData($raceid: PostGraphile_BigInt!) {
@@ -157,12 +157,9 @@ const RaceTemplate = ({ data }) => {
   return (
     <Layout>
       <SEO title={`${name} (${year})`} />
-      <h1
-        className="font-yrsa text-5xl font-bold tracking-wide mb-3"
-        data-id={raceid}
-      >
+      <Header1 dataId={raceid}>
         {name} ({year})
-      </h1>
+      </Header1>
       <div>
         <span>Track: </span>
         <a href={circuitUrl} className="standard-link">
@@ -182,7 +179,7 @@ const RaceTemplate = ({ data }) => {
         <Infobox text="For a better experience and more Info please use a bigger screen" />
       </div>
       <div className="mt-5">
-        <LinkableH2 text="Race Results" />
+        <LinkableH2>Race Results</LinkableH2>
         <div className="py-2 align-middle min-w-full">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
@@ -277,7 +274,7 @@ const RaceTemplate = ({ data }) => {
           <div>
             {laptimesByRaceidList && laptimesByRaceidList.length > 0 ? (
               <>
-                <LinkableH2 text="Positions" />
+                <LinkableH2>Positions</LinkableH2>
                 <PositionChart
                   laptimesByRaceidList={laptimesByRaceidList}
                   driverMap={driverMap}
@@ -287,7 +284,7 @@ const RaceTemplate = ({ data }) => {
           </div>
           {driAvgLaptsByRaceidList && driAvgLaptsByRaceidList.length > 0 ? (
             <div>
-              <LinkableH2 text="Driver Lap Time Statistics" />
+              <LinkableH2>Driver Lap Time Statistics</LinkableH2>
               <DriverLapTimes
                 driAvgLaptsByRaceidList={driAvgLaptsByRaceidList}
                 driAvgLapt70PsByRaceidList={driAvgLapt70PsByRaceidList}
@@ -297,7 +294,7 @@ const RaceTemplate = ({ data }) => {
           ) : null}
           {conAvgLaptsByRaceidList && conAvgLaptsByRaceidList.length > 0 ? (
             <div>
-              <LinkableH2 text="Constructor Lap Time Statistics" />
+              <LinkableH2>Constructor Lap Time Statistics</LinkableH2>
               <ConstructorLapTimes
                 conAvgLaptsByRaceidList={conAvgLaptsByRaceidList}
                 conAvgLapt70PsByRaceidList={conAvgLapt70PsByRaceidList}

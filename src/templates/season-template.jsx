@@ -2,7 +2,6 @@
 import { graphql } from 'gatsby';
 import React from 'react';
 import Layout from '../components/layout';
-import LinkableH2 from '../components/linkableH2';
 import RaceDetailsTable from '../components/raceDetailsTable';
 import DriverStandingsBar from '../components/season-template/driverStandingsBar';
 import SeasonPositionBump from '../components/season-template/seasonPositionBump';
@@ -13,6 +12,7 @@ import TabsContainer from '../components/tabsContainer';
 import TeamStandingsTable from '../components/season-template/teamStandingTable';
 import TeamStandingsBar from '../components/season-template/teamStandingsBar';
 import ConstructorProgressStream from '../components/season-template/constructorProgressStream';
+import { Header1, LinkableH2 } from '../components/headers';
 
 export const query = graphql`
   query seasonData($year: PostGraphile_BigInt!) {
@@ -184,7 +184,7 @@ const SeasonTemplate = ({ data }) => {
 
   return (
     <Layout>
-      <h1 className="text-3xl font-bold tracking-wide mb-3">{`${year} Season`}</h1>
+      <Header1>{`${year} Season`}</Header1>
       <SEO title={`Season ${year}`} />
       <div>
         <a href={url} className="standard-link">
@@ -192,15 +192,15 @@ const SeasonTemplate = ({ data }) => {
         </a>
       </div>
       <div>
-        <LinkableH2 text="Driver Standings" />
+        <LinkableH2>Driver Standings</LinkableH2>
         <TabsContainer tabs={driverTabs} defaultTabId={1} />
       </div>
       <div>
-        <LinkableH2 text="Constructor Standings" />
+        <LinkableH2>Constructor Standings</LinkableH2>
         <TabsContainer tabs={constructorTabs} defaultTabId={1} />
       </div>
       <div>
-        <LinkableH2 text="Races" />
+        <LinkableH2>Races</LinkableH2>
         <RaceDetailsTable racesByYearList={racesByYearList} />
       </div>
     </Layout>
