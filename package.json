@@ -21,6 +21,7 @@
     "gatsby-plugin-sharp": "^3.10.0",
     "gatsby-plugin-sitemap": "^3.3.0",
     "gatsby-source-filesystem": "^3.10.0",
+    "gatsby-source-package-licenses": "^1.0.0",
     "gatsby-source-pg": "^0.2.1",
     "gatsby-source-sqlite": "^1.0.0",
     "gatsby-transformer-sharp": "^3.10.0",

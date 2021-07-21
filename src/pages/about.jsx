@@ -1,16 +1,18 @@
+import { Link } from 'gatsby';
 import React from 'react';
+import { Header1 } from '../components/headers';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 
 const About = () => (
-  <Layout>
+  <Layout noMarginTop>
     <SEO title="About" />
     <div className="flex justify-center">
       <div className="bg-white lg:w-2/3 mx-4 shadow pb-12">
+        <div className="mx-4 lg:mx-16 my-8">
+          <Header1>About</Header1>
+        </div>
         <div className="mx-4 lg:mx-16 prose md:prose-lg">
-          <h2 className="pt-5 mb-8 text-3xl font-semibold tracking-wide">
-            About
-          </h2>
           <p>
             Website by{' '}
             <a className="standard-link" href="https://hartenfeller.dev">
@@ -54,6 +56,18 @@ const About = () => (
             </a>
             .
           </p>
+          <p>
+            Styled with{' '}
+            <a className="standard-link" href="https://tailwindcss.com/">
+              TailwindCSS
+            </a>
+            .
+          </p>
+          <div>
+            <Link to="/license-info" className="standard-link">
+              List of all open source software and licenses
+            </Link>
+          </div>
         </div>
       </div>
     </div>

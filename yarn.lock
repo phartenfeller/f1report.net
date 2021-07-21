@@ -7089,6 +7089,11 @@ gatsby-source-graphql@^2.0.5:
     node-fetch "^2.6.1"
     uuid "3.4.0"
 
+gatsby-source-package-licenses@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/gatsby-source-package-licenses/-/gatsby-source-package-licenses-1.0.0.tgz#18dceeed49aa678c3a147679aaa1fd45b66f8af1"
+  integrity sha512-sCvZMetxQkhciv1v+OlFmTdaemhwFBiclpqhX9g16BhzvNBBSTlmNiHkUs0xZ1lKNnLBiD/6pX2Zikjaxb32BQ==
+
 gatsby-source-pg@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/gatsby-source-pg/-/gatsby-source-pg-0.2.1.tgz#7fb9e530d2d135c72f8b2ec5b4746d403cdf4f14"
