@@ -56,8 +56,12 @@ function SEO({ description, lang, meta, title }) {
           content: `summary`,
         },
         {
+          name: `twitter:site`,
+          content: '@f1reportxyz',
+        },
+        {
           name: `twitter:creator`,
-          content: site.siteMetadata.author,
+          content: '@phartenfeller',
         },
         {
           name: `twitter:title`,

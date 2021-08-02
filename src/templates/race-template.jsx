@@ -21,6 +21,7 @@ import HighlightVideos from '../components/race-template/highlightVideos';
 import RaceNotes from '../components/race-template/raceNotes';
 import { Header1, LinkableH2 } from '../components/headers';
 import RaceResultsTable from '../components/race-template/raceResultsTable';
+import arrayWithValues from '../util/arrayWithValues';
 
 export const query = graphql`
   query raceData($raceid: PostGraphile_BigInt!) {
@@ -111,6 +112,37 @@ export const query = graphql`
   }
 `;
 
+const metaTags = ({ resultsByRaceidList, country, year, name }) => {
+  const meta = [];
+  let description;
+  let one;
+
+  // description
+  if (arrayWithValues(resultsByRaceidList)) {
+    one = resultsByRaceidList.find((r) => parseInt(r.position) === 1)
+      .driverByDriverid.driverDisplayName;
+    const two = resultsByRaceidList.find((r) => parseInt(r.position) === 2)
+      .driverByDriverid.driverDisplayName;
+    const third = resultsByRaceidList.find((r) => parseInt(r.position) === 3)
+      .driverByDriverid.driverDisplayName;
+    description = `Results of the race in ${country}: 1st ${one}, 2nd: ${two}, 3rd ${third}`;
+  } else {
+    description = `Details of the upcoming race in ${country}`;
+  }
+
+  // keywords
+  const keywords = {
+    name: 'keywords',
+    content: `Race, ${name}, ${country}, ${year}`,
+  };
+  if (one) {
+    keywords.content += `, ${one}`;
+  }
+  meta.push(keywords);
+
+  return { meta, description };
+};
+
 const getDriverMap = (resultsByRaceidList) => {
   const map = {};
 
@@ -136,6 +168,7 @@ const RaceTemplate = ({ data }) => {
     url,
     year,
     name,
+    date,
     laptimesByRaceidList,
     driAvgLapt70PsByRaceidList,
     driAvgLaptsByRaceidList,
@@ -155,12 +188,26 @@ const RaceTemplate = ({ data }) => {
 
   const driverMap = getDriverMap(resultsByRaceidList);
 
+  const pageTitle = `${name} (${year})`;
+
+  const { meta, description } = metaTags({
+    resultsByRaceidList,
+    country,
+    year,
+    name,
+  });
+
+  const dateLocal =
+    typeof window !== 'undefined' ? new Date(date).toLocaleDateString() : date;
+
   return (
     <Layout>
-      <SEO title={`${name} (${year})`} />
-      <Header1 dataId={raceid}>
-        {name} ({year})
-      </Header1>
+      <SEO title={pageTitle} description={description} meta={meta} />
+      <Header1 dataId={raceid}>{pageTitle}</Header1>
+      <div>
+        <span>Date: </span>
+        <time dateTime={date}>{dateLocal}</time>
+      </div>
       <div>
         <span>Track: </span>
         <a href={circuitUrl} className="standard-link">
