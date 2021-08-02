@@ -197,6 +197,7 @@ const RaceTemplate = ({ data }) => {
                 <PositionChart
                   laptimesByRaceidList={laptimesByRaceidList}
                   driverMap={driverMap}
+                  resultsByRaceidList={resultsByRaceidList}
                 />
               </>
             ) : null}

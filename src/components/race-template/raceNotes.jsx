@@ -24,10 +24,10 @@ const RaceNotes = ({ racenotes }) => {
       </h3>
       <ul className="md:text-lg list-disc list-inside text-blueGray-700">
         {notesArray.map((note) => (
-          <li className="mb-4">
+          <li className="mb-4" key={note.text}>
             <span>{note.text}</span>
             {note.refs.map((ref, i) => (
-              <div className="ml-6 md:ml-12">
+              <div className="ml-6 md:ml-12" key={ref.link}>
                 <span className="text-blueGray-500">{`[${i + 1}]`}</span>
                 <a href={ref.link} className="standard-link">
                   {ref.title}

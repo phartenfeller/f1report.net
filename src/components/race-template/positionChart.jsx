@@ -1,10 +1,11 @@
 import React from 'react';
 import { ResponsiveBump } from '@nivo/bump';
-import { driverMapType, lapTimesType } from '../../types';
+import PropTypes from 'prop-types';
+import { driverMapType, lapTimesType, raceResultsType } from '../../types';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getLaps(count, amount) {
-  const laps = [1];
+  let laps = [0, 1];
   const step = count / amount;
 
   for (let i = 1; i < amount; i += 1) {
@@ -12,39 +13,58 @@ function getLaps(count, amount) {
     laps.push(last + step);
   }
 
-  if (count % amount !== 0) {
+  laps = laps.map((l) => Math.round(l));
+
+  // add one before last lap for lapped drivers
+  if (!laps.includes(count - 1)) {
+    laps.push(count - 1);
+  }
+
+  // add last lap
+  if (!laps.includes(count)) {
     laps.push(count);
   }
 
-  return laps.map((l) => Math.round(l));
+  return laps;
 }
 
-function getChartData(arr, relevantLaps, driverMap) {
+function getChartData(arr, relevantLaps, driverMap, resultsByRaceidList) {
   const drivers = [];
+  const data = [];
 
-  const data = arr.reduce((prev, curr) => {
-    const { driverid, driverDisplayName } = curr.driverByDriverid;
+  const highestGrid = Math.max(
+    ...resultsByRaceidList.map((r) => parseInt(r.grid))
+  );
+  let boxStartIdx = highestGrid;
 
-    if (!relevantLaps.includes(parseInt(curr.lap))) return prev;
-    if (!drivers.includes(driverid)) {
-      drivers.push(driverid);
-      const newObj = {
-        id: driverDisplayName,
-        constructor_name: driverMap[driverid].constructor,
-        data: [
-          {
-            y: curr.position,
-            x: curr.lap,
-          },
-        ],
-      };
-      prev.push(newObj);
-    } else {
-      const index = prev.findIndex((e) => e.id === driverDisplayName);
-      prev[index].data.push({ y: curr.position, x: curr.lap });
+  // add starting position as lap 0
+  resultsByRaceidList.forEach((res) => {
+    drivers.push(res.driverByDriverid.driverDisplayName);
+
+    const display = res.driverByDriverid.driverDisplayName;
+    const { driverid } = res.driverByDriverid;
+    let { grid } = res;
+
+    if (parseInt(grid) === 0) {
+      boxStartIdx += 1;
+      grid = boxStartIdx;
     }
-    return prev;
-  }, []);
+
+    data.push({
+      id: display,
+      constructor_name: driverMap[driverid].constructor,
+      data: [{ y: parseInt(grid), x: 0 }],
+    });
+  });
+
+  arr.forEach((curr) => {
+    const { driverDisplayName } = curr.driverByDriverid;
+
+    if (!relevantLaps.includes(parseInt(curr.lap))) return;
+
+    const index = data.findIndex((e) => e.id === driverDisplayName);
+    data[index].data.push({ y: curr.position, x: curr.lap });
+  });
 
   // set last pos of retired drivers to null
   // otherwise e. g. first one crashes halfway -> chart still same pos because no data update
@@ -79,11 +99,20 @@ function tooltip(obj) {
   );
 }
 
-const PositionChart = ({ laptimesByRaceidList, driverMap }) => {
+const PositionChart = ({
+  laptimesByRaceidList,
+  driverMap,
+  resultsByRaceidList,
+}) => {
   const laps = laptimesByRaceidList.map((l) => l.lap);
   const relevantLaps = getLaps(Math.max(...laps), 12);
 
-  const data = getChartData(laptimesByRaceidList, relevantLaps, driverMap);
+  const data = getChartData(
+    laptimesByRaceidList,
+    relevantLaps,
+    driverMap,
+    resultsByRaceidList
+  );
 
   return (
     <div style={{ height: '500px' }}>
@@ -136,6 +165,7 @@ const PositionChart = ({ laptimesByRaceidList, driverMap }) => {
 PositionChart.propTypes = {
   laptimesByRaceidList: lapTimesType.isRequired,
   driverMap: driverMapType.isRequired,
+  resultsByRaceidList: PropTypes.arrayOf(raceResultsType).isRequired,
 };
 
 export default PositionChart;
