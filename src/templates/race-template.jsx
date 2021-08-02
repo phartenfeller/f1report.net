@@ -20,6 +20,7 @@ import conAvgPitstopsByRaceidListType from '../types/conAvgPitstopsByRaceidListT
 import HighlightVideos from '../components/race-template/highlightVideos';
 import RaceNotes from '../components/race-template/raceNotes';
 import { Header1, LinkableH2 } from '../components/headers';
+import TeamDisplay from '../components/teamDisplay/teamDisplay';
 
 export const query = graphql`
   query raceData($raceid: PostGraphile_BigInt!) {
@@ -242,7 +243,9 @@ const RaceTemplate = ({ data }) => {
                           : null}
                       </td>
                       <td className="table-cell">
-                        {constructorTeamByConstructorid.name}
+                        <TeamDisplay
+                          teamName={constructorTeamByConstructorid.name}
+                        />
                       </td>
                       <td className="table-cell">{points}</td>
                       <td className="table-cell">{finishTime}</td>
