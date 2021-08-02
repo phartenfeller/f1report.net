@@ -14,6 +14,7 @@ import TeamStandingsBar from '../components/season-template/teamStandingsBar';
 import ConstructorProgressStream from '../components/season-template/constructorProgressStream';
 import { Header1, LinkableH2 } from '../components/headers';
 import ConstructorPositionBump from '../components/season-template/constructorPositionBump';
+import arrayWithValues from '../util/arrayWithValues';
 
 export const query = graphql`
   query seasonData($year: PostGraphile_BigInt!) {
@@ -94,6 +95,42 @@ export const query = graphql`
     }
   }
 `;
+
+const metaTags = ({ driverstandingsByRaceidList, year }) => {
+  const meta = [];
+  let description;
+  let one;
+  let two;
+
+  // description
+  if (arrayWithValues(driverstandingsByRaceidList)) {
+    one = driverstandingsByRaceidList.find((r) => parseInt(r.position) === 1)
+      ?.driverByDriverid?.driverDisplayName;
+    two = driverstandingsByRaceidList.find((r) => parseInt(r.position) === 2)
+      ?.driverByDriverid?.driverDisplayName;
+    const third = driverstandingsByRaceidList.find(
+      (r) => parseInt(r.position) === 3
+    )?.driverByDriverid?.driverDisplayName;
+    description = `Results the ${year} season: 1st ${one}, 2nd: ${two}, 3rd ${third}`;
+  } else {
+    description = `Details of the upcoming season of ${year}`;
+  }
+
+  // keywords
+  const keywords = {
+    name: 'keywords',
+    content: `Season, ${year}`,
+  };
+  if (one) {
+    keywords.content += `, ${one}`;
+  }
+  if (two) {
+    keywords.content += `, ${two}`;
+  }
+  meta.push(keywords);
+
+  return { meta, description };
+};
 
 const SeasonTemplate = ({ data }) => {
   const { seasonByYear } = data.postgres;
@@ -188,10 +225,12 @@ const SeasonTemplate = ({ data }) => {
     },
   ];
 
+  const { meta, description } = metaTags({ driverstandingsByRaceidList, year });
+
   return (
     <Layout>
       <Header1>{`${year} Season`}</Header1>
-      <SEO title={`Season ${year}`} />
+      <SEO title={`Season ${year}`} description={description} meta={meta} />
       <div>
         <a href={url} className="standard-link">
           Wikipedia Article

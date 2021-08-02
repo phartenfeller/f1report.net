@@ -120,11 +120,11 @@ const metaTags = ({ resultsByRaceidList, country, year, name }) => {
   // description
   if (arrayWithValues(resultsByRaceidList)) {
     one = resultsByRaceidList.find((r) => parseInt(r.position) === 1)
-      .driverByDriverid.driverDisplayName;
+      ?.driverByDriverid?.driverDisplayName;
     const two = resultsByRaceidList.find((r) => parseInt(r.position) === 2)
-      .driverByDriverid.driverDisplayName;
+      ?.driverByDriverid?.driverDisplayName;
     const third = resultsByRaceidList.find((r) => parseInt(r.position) === 3)
-      .driverByDriverid.driverDisplayName;
+      ?.driverByDriverid?.driverDisplayName;
     description = `Results of the race in ${country}: 1st ${one}, 2nd: ${two}, 3rd ${third}`;
   } else {
     description = `Details of the upcoming race in ${country}`;
