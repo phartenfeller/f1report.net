@@ -25,13 +25,15 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Formula 1 Report`,
-        short_name: `f1 report`,
+        name: `Formula1 Report`,
+        short_name: `F1 Report`,
+        description: `Data for every Formula 1 race ever`,
+        lang: `en`,
         start_url: `/`,
-        background_color: `#EF4444`,
-        theme_color: `#EF4444`,
+        background_color: `#f1f5f9`,
+        theme_color: `#e10600`,
         display: `minimal-ui`,
-        icon: `src/images/f1report-icon.png`, // This path is relative to the root of the site.
+        icon: 'src/images/f1report-icon.png',
       },
     },
     `gatsby-plugin-postcss`,
