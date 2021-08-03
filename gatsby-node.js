@@ -20,6 +20,7 @@ exports.createPages = async ({ graphql, actions }) => {
           nodes {
             raceid
             raceSlug
+            year
           }
         }
       }
@@ -32,6 +33,7 @@ exports.createPages = async ({ graphql, actions }) => {
       component: raceTemplate,
       context: {
         raceid: node.raceid,
+        year: node.year,
       },
     });
   });

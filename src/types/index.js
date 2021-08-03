@@ -1,6 +1,7 @@
 import allRacesType from './allRacesType';
 import conAvgLapt70PType from './conAvgLapt70PType';
 import conAvgLaptType from './conAvgLaptType';
+import conAvgPitstopsByRaceidListType from './conAvgPitstopsByRaceidListType';
 import constructorType from './constructorType';
 import driAvgLapt70PType from './driAvgLapt70PType';
 import driAvgLaptType from './driAvgLaptType';
@@ -28,4 +29,5 @@ export {
   seasonDriverMainConsType,
   driverStandingsType,
   teamStandingsType,
+  conAvgPitstopsByRaceidListType,
 };

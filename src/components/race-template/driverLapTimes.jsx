@@ -1,7 +1,7 @@
 import React from 'react';
 import { driAvgLapt70PType, driAvgLaptType, driverMapType } from '../../types';
 import TabsContainer from '../tabsContainer';
-import AvgTimingsBar from './avgTimingsBar';
+import AvgTimingsBar from '../charts/avgTimingsBar';
 
 const AVG = 'Average Lap Times';
 const MEDIAN = 'Median Lap Times';

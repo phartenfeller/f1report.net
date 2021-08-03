@@ -14,6 +14,7 @@ import {
   conAvgLaptType,
   driAvgLapt70PType,
   driAvgLaptType,
+  seasonDriverMainConsType,
 } from '../types';
 import ConstructorLapTimes from '../components/race-template/constructorLapTimes';
 import conAvgPitstopsByRaceidListType from '../types/conAvgPitstopsByRaceidListType';
@@ -22,9 +23,11 @@ import RaceNotes from '../components/race-template/raceNotes';
 import { Header1, LinkableH2 } from '../components/headers';
 import RaceResultsTable from '../components/race-template/raceResultsTable';
 import arrayWithValues from '../util/arrayWithValues';
+import PitStopTimes from '../components/race-template/pitstopTimes';
+import pitstopsByRaceidListType from '../types/pitstopsByRaceidListType';
 
 export const query = graphql`
-  query raceData($raceid: PostGraphile_BigInt!) {
+  query raceData($raceid: PostGraphile_BigInt!, $year: PostGraphile_BigInt!) {
     postgres {
       raceByRaceid(raceid: $raceid) {
         circuitByCircuitid {
@@ -102,9 +105,31 @@ export const query = graphql`
           fastestlaptime
         }
         conAvgPitstopsByRaceidList {
-          avglaptimes
+          avgpittimes
           constructorTeamByConstructorid {
             name
+          }
+        }
+        pitstopsByRaceidList(orderBy: TIME_ASC) {
+          nodeId
+          lap
+          milliseconds
+          stop
+          driverByDriverid {
+            driverid
+            driverDisplayName
+          }
+        }
+      }
+      seasonByYear(year: $year) {
+        seasondrivermainconsByYearList {
+          year
+          constructorTeamByConstructorid {
+            name
+          }
+          driverid
+          driverByDriverid {
+            driverDisplayName
           }
         }
       }
@@ -160,7 +185,8 @@ const getDriverMap = (resultsByRaceidList) => {
 };
 
 const RaceTemplate = ({ data }) => {
-  const { raceByRaceid } = data.postgres;
+  const { raceByRaceid, seasonByYear } = data.postgres;
+  const { seasondrivermainconsByYearList } = seasonByYear;
 
   const {
     circuitByCircuitid,
@@ -177,6 +203,8 @@ const RaceTemplate = ({ data }) => {
     resultsByRaceidList,
     highlightlinks,
     racenotes,
+    conAvgPitstopsByRaceidList,
+    pitstopsByRaceidList,
   } = raceByRaceid;
 
   const {
@@ -269,6 +297,11 @@ const RaceTemplate = ({ data }) => {
               />
             </div>
           ) : null}
+          <PitStopTimes
+            conAvgPitstopsByRaceidList={conAvgPitstopsByRaceidList}
+            pitstopsByRaceidList={pitstopsByRaceidList}
+            seasondrivermainconsByYearList={seasondrivermainconsByYearList}
+          />
         </div>
       ) : (
         <div className="m-0 lg:m-16 rounded border-2 border-gray-300">
@@ -308,7 +341,13 @@ RaceTemplate.propTypes = {
         highlightlinks: PropTypes.string,
         racenotes: PropTypes.string,
         conAvgPitstopsByRaceidList: conAvgPitstopsByRaceidListType.isRequired,
+        pitstopsByRaceidList: pitstopsByRaceidListType.isRequired,
       }).isRequired,
+      seasonByYear: {
+        seasondrivermainconsByYearList: PropTypes.arrayOf(
+          seasonDriverMainConsType.isRequired
+        ).isRequired,
+      }.isRequired,
     }).isRequired,
   }).isRequired,
 };

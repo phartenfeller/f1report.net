@@ -1,7 +1,7 @@
 import React from 'react';
 import { conAvgLapt70PType, conAvgLaptType } from '../../types';
 import TabsContainer from '../tabsContainer';
-import AvgTimingsBar from './avgTimingsBar';
+import AvgTimingsBar from '../charts/avgTimingsBar';
 
 const AVG = 'Average Lap Times';
 const MEDIAN = 'Median Lap Times';
