@@ -58,3 +58,24 @@ exports.createPages = async ({ graphql, actions }) => {
     });
   });
 };
+
+// exports.createSchemaCustomization = ({ actions }) => {
+//   const { createFieldExtension, createTypes } = actions;
+
+//   createFieldExtension({
+//     name: 'isFuture',
+//     extend(options, prevFieldConfig) {
+//       return {
+//         resolve(source) {
+//           return new Date(source.date) > new Date();
+//         },
+//       };
+//     },
+//   });
+
+//   createTypes(`
+//     type PostGraphile_Race implements Node {
+//       isFuture: Boolean @isFuture
+//     }
+// `);
+// };

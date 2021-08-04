@@ -28,7 +28,8 @@
         "assert": "htmlFor"
       }
     ],
-    "camelcase": 0
+    "camelcase": 0,
+    "react/jsx-props-no-spreading": 0
   },
   "plugins": ["prettier", "react-hooks", "jsx-a11y"],
   "settings": {
