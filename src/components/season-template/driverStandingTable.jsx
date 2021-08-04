@@ -12,19 +12,19 @@ const DriverStandingsTable = ({
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               #
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Driver
             </th>
-            <th scope="col" className="table-heading hidden md:table-cell">
+            <th scope="col" className="hidden md:c-table-heading">
               Team
             </th>
-            <th scope="col" className="table-heading hidden lg:table-cell">
+            <th scope="col" className="hidden lg:c-table-heading">
               Wins
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Points
             </th>
           </tr>
@@ -36,11 +36,11 @@ const DriverStandingsTable = ({
                 key={driverid}
                 className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
               >
-                <td className="table-cell font-medium">{position}</td>
-                <td className="table-cell font-medium">
+                <td className="c-table-cell font-medium">{position}</td>
+                <td className="c-table-cell font-medium">
                   {driverByDriverid.driverDisplayName}
                 </td>
-                <td className="hidden md:table-cell">
+                <td className="hidden md:c-table-cell">
                   <TeamDisplay
                     driverId={driverid}
                     seasondrivermainconsByYearList={
@@ -48,8 +48,8 @@ const DriverStandingsTable = ({
                     }
                   />
                 </td>
-                <td className="hidden lg:table-cell">{wins}</td>
-                <td className="table-cell text-right pr-4 md:text-left md:pr-0">
+                <td className="hidden lg:c-table-cell">{wins}</td>
+                <td className="c-table-cell text-right pr-4 md:text-left md:pr-0">
                   {points}
                 </td>
               </tr>

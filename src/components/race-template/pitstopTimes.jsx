@@ -41,19 +41,19 @@ const PitStopTimes = ({
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="table-heading">
+                  <th scope="col" className="c-table-heading">
                     Driver
                   </th>
-                  <th scope="col" className="table-heading">
+                  <th scope="col" className="hidden lg:c-table-heading">
                     Constructor
                   </th>
-                  <th scope="col" className="table-heading">
+                  <th scope="col" className="hidden lg:c-table-heading">
                     Lap
                   </th>
-                  <th scope="col" className="table-heading">
+                  <th scope="col" className="hidden md:c-table-heading">
                     Stop
                   </th>
-                  <th scope="col" className="table-heading">
+                  <th scope="col" className="c-table-heading">
                     Time (s)
                   </th>
                 </tr>
@@ -68,10 +68,10 @@ const PitStopTimes = ({
                       key={nodeId}
                       className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
                     >
-                      <td className="table-cell font-medium">
+                      <td className="c-table-cell font-medium">
                         {driverByDriverid?.driverDisplayName}
                       </td>
-                      <td className="table-cell">
+                      <td className="hidden lg:c-table-cell">
                         <DriverTeamDisplay
                           driverId={driverByDriverid?.driverid}
                           seasondrivermainconsByYearList={
@@ -79,9 +79,9 @@ const PitStopTimes = ({
                           }
                         />
                       </td>
-                      <td className="table-cell">{lap}</td>
-                      <td className="table-cell">{stop}</td>
-                      <td className="table-cell">
+                      <td className="hidden lg:c-table-cell">{lap}</td>
+                      <td className="hidden md:c-table-cell">{stop}</td>
+                      <td className="c-table-cell">
                         {(parseInt(milliseconds) / 1000).toFixed(2)}
                       </td>
                     </tr>

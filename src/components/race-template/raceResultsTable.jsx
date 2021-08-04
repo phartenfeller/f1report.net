@@ -9,28 +9,28 @@ const RaceResultsTable = ({ resultsByRaceidList }) => (
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               #
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Driver
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Constructor
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Pts.
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Time
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Result
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Fastest L.
             </th>
-            <th scope="col" className="table-heading">
+            <th scope="col" className="c-table-heading">
               Grid
             </th>
           </tr>
@@ -58,28 +58,28 @@ const RaceResultsTable = ({ resultsByRaceidList }) => (
                 key={resultid}
                 className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
               >
-                <td className="table-cell font-medium">{position}</td>
-                <td className="table-cell">
+                <td className="c-table-cell font-medium">{position}</td>
+                <td className="c-table-cell">
                   {driverByDriverid.forename} {driverByDriverid.surname}{' '}
                   {driverByDriverid.number
                     ? `(${driverByDriverid.number})`
                     : null}
                 </td>
-                <td className="table-cell">
+                <td className="c-table-cell">
                   <TeamDisplay teamName={constructorTeamByConstructorid.name} />
                 </td>
-                <td className="table-cell">{points}</td>
-                <td className="table-cell">{finishTime}</td>
-                <td className="table-cell" title={`Laps: ${laps}`}>
+                <td className="c-table-cell">{points}</td>
+                <td className="c-table-cell">{finishTime}</td>
+                <td className="c-table-cell" title={`Laps: ${laps}`}>
                   {statusByStatusid.status}
                 </td>
                 <td
-                  className="table-cell"
+                  className="c-table-cell"
                   title={`Lap: ${fastestlap}, Speed: ${fastestlapspeed}`}
                 >
                   {fastestlaptime}
                 </td>
-                <td className="table-cell">{grid}</td>
+                <td className="c-table-cell">{grid}</td>
               </tr>
             )
           )}
