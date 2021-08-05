@@ -48,6 +48,8 @@ ListItem.propTypes = {
 };
 
 const TeamCard = ({ list, allConstructorTeamsList, category }) => {
+  if (!list) return <></>;
+
   const teamArray = JSON.parse(list).sort((a, b) => a.rank - b.rank);
 
   return (
@@ -85,6 +87,8 @@ TeamCard.propTypes = {
 };
 
 const DriverCard = ({ list, allDriversList, category }) => {
+  if (!list) return <></>;
+
   const driverArray = JSON.parse(list).sort((a, b) => a.rank - b.rank);
 
   return (
@@ -128,44 +132,58 @@ const CircuitPerformanceStats = ({
   mostdriverpodiums,
   mostdriverstarts,
   mostdriverwins,
-}) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-12">
-    <DriverCard
-      list={mostdriverwins}
-      allDriversList={allDriversList}
-      category="wins"
-    />
-    <DriverCard
-      list={mostdriverpodiums}
-      allDriversList={allDriversList}
-      category="podiums"
-    />
-    <DriverCard
-      list={mostdriverstarts}
-      allDriversList={allDriversList}
-      category="starts"
-    />
-    <TeamCard
-      list={mostcostructorwins}
-      allConstructorTeamsList={allConstructorTeamsList}
-      category="wins"
-    />
-    <TeamCard
-      list={mostconstructorpodiums}
-      allConstructorTeamsList={allConstructorTeamsList}
-      category="podiums"
-    />
-  </div>
-);
+}) => {
+  if (!mostconstructorpodiums && !mostdriverpodiums && !mostdriverstarts) {
+    return <div className="text-2xl">No data yet!</div>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-12">
+      <DriverCard
+        list={mostdriverwins}
+        allDriversList={allDriversList}
+        category="wins"
+      />
+      <DriverCard
+        list={mostdriverpodiums}
+        allDriversList={allDriversList}
+        category="podiums"
+      />
+      <DriverCard
+        list={mostdriverstarts}
+        allDriversList={allDriversList}
+        category="starts"
+      />
+      <TeamCard
+        list={mostcostructorwins}
+        allConstructorTeamsList={allConstructorTeamsList}
+        category="wins"
+      />
+      <TeamCard
+        list={mostconstructorpodiums}
+        allConstructorTeamsList={allConstructorTeamsList}
+        category="podiums"
+      />
+    </div>
+  );
+};
 
 CircuitPerformanceStats.propTypes = {
-  mostconstructorpodiums: PropTypes.string.isRequired,
-  mostcostructorwins: PropTypes.string.isRequired,
-  mostdriverpodiums: PropTypes.string.isRequired,
-  mostdriverstarts: PropTypes.string.isRequired,
-  mostdriverwins: PropTypes.string.isRequired,
+  mostconstructorpodiums: PropTypes.string,
+  mostcostructorwins: PropTypes.string,
+  mostdriverpodiums: PropTypes.string,
+  mostdriverstarts: PropTypes.string,
+  mostdriverwins: PropTypes.string,
   allConstructorTeamsList: PropTypes.arrayOf(constructorType).isRequired,
   allDriversList: PropTypes.arrayOf(driverType).isRequired,
+};
+
+CircuitPerformanceStats.defaultProps = {
+  mostconstructorpodiums: null,
+  mostcostructorwins: null,
+  mostdriverpodiums: null,
+  mostdriverstarts: null,
+  mostdriverwins: null,
 };
 
 export default CircuitPerformanceStats;
