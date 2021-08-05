@@ -71,7 +71,9 @@ const CircuitTemplate = ({ data }) => {
 
   const meta = [];
 
-  const pageTitle = `${name} (Circuit)`;
+  const pageTitle = name.toLowerCase().includes('circuit')
+    ? name
+    : `${name} (Circuit)`;
   const description = `${country} ${location}`;
 
   return (
@@ -79,7 +81,7 @@ const CircuitTemplate = ({ data }) => {
       <SEO title={pageTitle} description={description} meta={meta} />
       <Header1 dataId={circuitid}>{pageTitle}</Header1>
       <a href={url} className="standard-link">
-        Wikipedia Page
+        Circuit Wikipedia Page
       </a>
       <div>
         <LinkableH2>Time Stats</LinkableH2>
