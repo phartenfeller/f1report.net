@@ -7,6 +7,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      boxShadow: {
+        muted: '0 8px 30px rgb(81 102 167 / 24%)', // I admit it's stolen from vercel :o but customized
+      },
       colors: {
         f1red: '#E10600',
         ...colors,

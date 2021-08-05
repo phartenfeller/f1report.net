@@ -10,8 +10,10 @@ const path = require(`path`);
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
+
   const raceTemplate = path.resolve(`src/templates/race-template.jsx`);
   const seasonTemplate = path.resolve(`src/templates/season-template.jsx`);
+  const circuitTemplate = path.resolve(`src/templates/circuit-template.jsx`);
 
   const races = await graphql(`
     {
@@ -54,6 +56,27 @@ exports.createPages = async ({ graphql, actions }) => {
       component: seasonTemplate,
       context: {
         year: node.year,
+      },
+    });
+  });
+
+  const circuits = await graphql(`
+    {
+      postgres {
+        allCircuitsList {
+          circuitid
+          circuitref
+        }
+      }
+    }
+  `);
+
+  circuits.data.postgres.allCircuitsList.forEach((node) => {
+    createPage({
+      path: `circuits/${node.circuitref}`,
+      component: circuitTemplate,
+      context: {
+        circuitid: node.circuitid,
       },
     });
   });

@@ -34,7 +34,7 @@ export const query = graphql`
           country
           location
           name
-          url
+          circuitref
         }
         round
         raceid
@@ -207,12 +207,7 @@ const RaceTemplate = ({ data }) => {
     pitstopsByRaceidList,
   } = raceByRaceid;
 
-  const {
-    country,
-    location,
-    name: curcuit,
-    url: circuitUrl,
-  } = circuitByCircuitid;
+  const { country, location, name: curcuit, circuitref } = circuitByCircuitid;
 
   const driverMap = getDriverMap(resultsByRaceidList);
 
@@ -238,9 +233,9 @@ const RaceTemplate = ({ data }) => {
       </div>
       <div>
         <span>Track: </span>
-        <a href={circuitUrl} className="standard-link">
+        <Link to={`/circuits/${circuitref}`} className="standard-link">
           {curcuit}
-        </a>
+        </Link>
         <span>
           {' '}
           - {location} - {country}
@@ -323,7 +318,7 @@ RaceTemplate.propTypes = {
           country: PropTypes.string.isRequired,
           location: PropTypes.string.isRequired,
           name: PropTypes.string.isRequired,
-          url: PropTypes.string.isRequired,
+          circuitref: PropTypes.string.isRequired,
         }).isRequired,
         conAvgLapt70PsByRaceidList: conAvgLapt70PType.isRequired,
         conAvgLaptsByRaceidList: conAvgLaptType.isRequired,

@@ -1,0 +1,22 @@
+@tailwind components;
+
+@layer components {
+  .first-styles {
+    @apply font-yrsa font-semibold text-5xl;
+    color: #b78e08;
+  }
+
+  .second-styles {
+    @apply font-yrsa font-semibold text-4xl;
+    color: #9191a5;
+  }
+
+  .third-styles {
+    @apply font-yrsa font-semibold text-3xl;
+    color: #ae6842;
+  }
+
+  .other-rank-styles {
+    @apply font-yrsa text-2xl text-blueGray-600;
+  }
+}
