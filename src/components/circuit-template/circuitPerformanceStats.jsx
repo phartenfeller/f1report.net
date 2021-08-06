@@ -44,7 +44,11 @@ ListItem.propTypes = {
   count: PropTypes.number.isRequired,
   last: PropTypes.bool.isRequired,
   category: PropTypes.string.isRequired,
-  team: PropTypes.bool.isRequired,
+  team: PropTypes.bool,
+};
+
+ListItem.defaultProps = {
+  team: false,
 };
 
 const TeamCard = ({ list, allConstructorTeamsList, category }) => {

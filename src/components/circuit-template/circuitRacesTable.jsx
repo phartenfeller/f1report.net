@@ -18,16 +18,16 @@ const CircuitRacesTable = ({ racesByCircuitidList }) => {
       {
         Header: 'Race',
         accessor: 'name',
+        showAt: 'lg',
       },
       {
         Header: 'Year',
         accessor: 'year',
-        showAt: 'lg',
       },
       {
         Header: 'Winner (Driver)',
         accessor: 'resultsByRaceidList[0].driverByDriverid.driverDisplayName',
-        showAt: 'lg',
+        showAt: 'sm',
       },
       {
         Header: 'Winner (Constructor)',

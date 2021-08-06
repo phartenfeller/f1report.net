@@ -111,6 +111,7 @@ const colors = {
   MBM: NO_COLOR_FOUND,
   Gilby: '#255B66',
   ENB: '#E0BE30',
+  Honda: '#CD0000',
 };
 
 function getTeamColor(team) {
