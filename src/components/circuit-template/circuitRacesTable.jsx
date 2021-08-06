@@ -41,8 +41,8 @@ const CircuitRacesTable = ({ racesByCircuitidList }) => {
         accessor: 'raceSlug',
         // eslint-disable-next-line react/prop-types
         Cell: ({ value }) => (
-          <Link to={value} className="standard-link">
-            Details
+          <Link to={`/races/${value}`} className="standard-link">
+            Race Details
           </Link>
         ),
       },

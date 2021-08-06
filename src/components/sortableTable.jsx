@@ -37,16 +37,40 @@ SortedHeaderRenderer.propTypes = {
 };
 
 const cellClasses = (column) => {
+  // needed to be written out for purging styles
   if (column.showAt) {
-    return `hidden ${column.showAt}:c-table-cell`;
+    switch (column.showAt) {
+      case 'sm':
+        return 'hidden sm:c-table-cell';
+      case 'md':
+        return 'hidden md:c-table-cell';
+      case 'lg':
+        return 'hidden lg:c-table-cell';
+      default:
+        // eslint-disable-next-line no-console
+        console.error(`SortableTable => Unknown showAt "${column.showAt}"`);
+        return 'c-table-cell';
+    }
   }
   return 'c-table-cell';
 };
 
 const headerClasses = (column) => {
   if (column.showAt) {
-    return `hidden ${column.showAt}:c-table-heading`;
+    switch (column.showAt) {
+      case 'sm':
+        return 'hidden sm:c-table-heading';
+      case 'md':
+        return 'hidden md:c-table-heading';
+      case 'lg':
+        return 'hidden lg:c-table-heading';
+      default:
+        // eslint-disable-next-line no-console
+        console.error(`SortableTable => Unknown showAt "${column.showAt}"`);
+        return 'c-table-heading';
+    }
   }
+
   return 'c-table-heading';
 };
 
