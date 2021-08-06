@@ -6,8 +6,10 @@ import Layout from '../components/layout';
 import SEO from '../components/seo';
 import CircuitTimeStats from '../components/circuit-template/circuitTimeStats';
 import CircuitPerformanceStats from '../components/circuit-template/circuitPerformanceStats';
+import CircuitRacesTable from '../components/circuit-template/circuitRacesTable';
 
 import '../styles/ranks.css';
+import arrayWithValues from '../util/arrayWithValues';
 
 export const query = graphql`
   query circuitData($circuitid: PostGraphile_BigInt!) {
@@ -30,6 +32,19 @@ export const query = graphql`
           racecount
           racecountrank
         }
+        racesByCircuitidList {
+          name
+          raceSlug
+          year
+          resultsByRaceidList(condition: { position: "1" }) {
+            driverByDriverid {
+              driverDisplayName
+            }
+            constructorTeamByConstructorid {
+              name
+            }
+          }
+        }
       }
       allConstructorTeamsList {
         constructorid
@@ -49,12 +64,12 @@ const CircuitTemplate = ({ data }) => {
 
   const {
     circuitid,
-    circuitref,
     name,
     circuitstatByCircuitid,
     country,
     location,
     url,
+    racesByCircuitidList,
   } = circuitByCircuitid;
 
   const {
@@ -104,6 +119,12 @@ const CircuitTemplate = ({ data }) => {
           mostdriverwins={mostdriverwins}
         />
       </div>
+      {arrayWithValues(racesByCircuitidList) && (
+        <div>
+          <LinkableH2>Race List</LinkableH2>
+          <CircuitRacesTable racesByCircuitidList={racesByCircuitidList} />
+        </div>
+      )}
     </Layout>
   );
 };
