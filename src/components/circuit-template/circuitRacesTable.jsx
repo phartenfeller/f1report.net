@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { raceType } from '../../types';
 import SortableTable from '../sortableTable';
+import TBD from '../tbd';
 import TeamDisplay from '../teamDisplay/teamDisplay';
 
 const defaultSort = [
@@ -28,13 +29,16 @@ const CircuitRacesTable = ({ racesByCircuitidList }) => {
         Header: 'Winner (Driver)',
         accessor: 'resultsByRaceidList[0].driverByDriverid.driverDisplayName',
         showAt: 'sm',
+        // eslint-disable-next-line react/prop-types
+        Cell: ({ value }) => (value ? <>{value}</> : <TBD />),
       },
       {
         Header: 'Winner (Constructor)',
         accessor: 'resultsByRaceidList[0].constructorTeamByConstructorid.name',
         showAt: 'md',
         // eslint-disable-next-line react/prop-types
-        Cell: ({ value }) => <TeamDisplay teamName={value} />,
+        Cell: ({ value }) =>
+          value ? <TeamDisplay teamName={value} /> : <TBD />,
       },
       {
         Header: 'More Info',
