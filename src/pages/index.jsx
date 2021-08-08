@@ -1,10 +1,11 @@
-import { graphql, Link } from 'gatsby';
+import { graphql } from 'gatsby';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Infobox from '../components/alerts/infobox';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import LinkList from '../components/index/LinkList';
+import LandingHero from '../components/landingPage/landingHero';
 
 export const query = graphql`
   {
@@ -39,29 +40,19 @@ const IndexPage = ({ data }) => {
   )[0];
 
   return (
-    <Layout noMarginTop>
+    <Layout noMarginTop noHeader noMarginSides noMarginBottom>
       <SEO title="Home" />
-      <div className="flex justify-center">
-        <div className="bg-white lg:w-2/3 mx-4 shadow">
-          <h2 className="pt-6 mb-12 text-center text-3xl font-bold tracking-wide">
-            Welcome to F1 Report
-          </h2>
-          <div className="mx-4 lg:mx-16">
+      <div className="bg-white pb-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <LandingHero />
+          <div className="mt-12">
             <div className="mb-12">
               <Infobox text="This site is under active development, more data and analytics will be added soon" />
             </div>
             <div className="prose-lg">
               <p>
-                F1 Report offers in-depth data analytics on F1. I am currently
-                focusing the development on Race analytics. Head over to the
-                <Link to="/races/" className="mx-1 standard-link">
-                  Race overview
-                </Link>
-                and check out some races.
-              </p>
-              <p>
-                This site delivers analytics <b>after a race has happened</b>. I
-                do not have access to live data and training data.
+                I can only generate statistics <b>after a race has happened</b>.
+                I do not have access to live data and training data.
               </p>
               <p>
                 If you have any feedback or ideas feel free to{' '}

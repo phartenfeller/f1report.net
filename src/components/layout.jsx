@@ -14,7 +14,13 @@ import '../styles/fonts.css';
 import '../styles/tailwind.css';
 import classNames from '../util/classNames';
 
-const Layout = ({ children, noMarginTop = false }) => {
+const Layout = ({
+  children,
+  noMarginTop = false,
+  noHeader = false,
+  noMarginSides = false,
+  noMarginBottom = false,
+}) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -27,11 +33,13 @@ const Layout = ({ children, noMarginTop = false }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header siteTitle={data.site.siteMetadata.title} />
+      {!noHeader && <Header siteTitle={data.site.siteMetadata.title} />}
       <main
         className={classNames(
-          'flex-grow mx-6 mb-24',
-          noMarginTop ? '' : 'mt-5'
+          'flex-grow',
+          noMarginTop ? '' : 'mt-5',
+          noMarginSides ? '' : 'mx-6',
+          noMarginBottom ? '' : 'mb-24'
         )}
       >
         {children}
@@ -44,10 +52,16 @@ const Layout = ({ children, noMarginTop = false }) => {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   noMarginTop: PropTypes.bool,
+  noHeader: PropTypes.bool,
+  noMarginSides: PropTypes.bool,
+  noMarginBottom: PropTypes.bool,
 };
 
 Layout.defaultProps = {
   noMarginTop: false,
+  noHeader: false,
+  noMarginSides: false,
+  noMarginBottom: false,
 };
 
 export default Layout;
