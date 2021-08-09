@@ -112,6 +112,21 @@ const colors = {
   Gilby: '#255B66',
   ENB: '#E0BE30',
   Honda: '#CD0000',
+  Brabham: '#167018',
+  'BMW Sauber': '#0D1E60',
+  Spyker: '#FF6D01',
+  Brawn: '#E4F74E',
+  'Super Aguri': '#CD3A41',
+  MF1: '#FF352E',
+  Tyrell: '#001DDC',
+  Stewart: '#052554',
+  Ligier: '#0168CB',
+  Footwork: '#D72813',
+  Forti: '#F9E545',
+  Pacific: '#EA0E95',
+  Simtek: '#48258C',
+  Lola: '#FAAD0D',
+  Larrousse: '#203D6F',
 };
 
 function getTeamColor(team) {
