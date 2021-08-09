@@ -18,6 +18,9 @@ module.exports = {
       fontFamily: {
         yrsa: ['Yrsa', 'ui-serif', 'serif'],
       },
+      maxWidth: {
+        '4k-limit': '120rem',
+      },
     },
   },
   variants: {

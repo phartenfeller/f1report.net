@@ -75,6 +75,7 @@ const IndexPage = ({ data }) => {
                 display={`Current Season: ${data.postgres.allSeasons.nodes[0].year}`}
               />
               <LinkList target="/races/" display="All Races" />
+              <LinkList target="/circuits/" display="All Circuits" />
             </div>
           </div>
         </div>

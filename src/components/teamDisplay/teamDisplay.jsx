@@ -3,11 +3,16 @@ import React from 'react';
 import getTeamColor from '../../util/f1TeamColors';
 
 const TeamDisplay = ({ teamName, textClasses = '' }) => {
+  if (!teamName) {
+    return null;
+  }
+
   const color = getTeamColor(teamName);
 
   return (
     <div className="inline-flex items-center">
       <div
+        aria-hidden="true"
         className="h-4 w-4 rounded-full mr-2"
         style={{ background: color }}
       />
@@ -17,11 +22,12 @@ const TeamDisplay = ({ teamName, textClasses = '' }) => {
 };
 
 TeamDisplay.propTypes = {
-  teamName: PropTypes.string.isRequired,
+  teamName: PropTypes.string,
   textClasses: PropTypes.string,
 };
 
 TeamDisplay.defaultProps = {
+  teamName: null,
   textClasses: '',
 };
 

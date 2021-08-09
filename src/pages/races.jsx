@@ -50,7 +50,7 @@ const Races = ({ data }) => {
       <SEO title="Races" />
       <Header1>All Races</Header1>
 
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-4k-limit">
         {allSeasonsList.map(({ year, racesByYearList }, i) => (
           <Disclosure
             as="div"

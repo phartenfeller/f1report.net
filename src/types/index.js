@@ -1,4 +1,5 @@
 import allRacesType from './allRacesType';
+import circuitType from './circuitType';
 import conAvgLapt70PType from './conAvgLapt70PType';
 import conAvgLaptType from './conAvgLaptType';
 import conAvgPitstopsByRaceidListType from './conAvgPitstopsByRaceidListType';
@@ -30,4 +31,5 @@ export {
   driverStandingsType,
   teamStandingsType,
   conAvgPitstopsByRaceidListType,
+  circuitType,
 };
