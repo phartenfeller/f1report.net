@@ -65,6 +65,7 @@ export const query = graphql`
             name
             country
             location
+            circuitref
           }
           date
           raceid
@@ -86,9 +87,13 @@ export const query = graphql`
             points
             position
           }
-          resultsByRaceidList {
-            driverid
-            points
+          resultsByRaceidList(condition: { position: "1" }) {
+            driverByDriverid {
+              driverDisplayName
+            }
+            constructorTeamByConstructorid {
+              name
+            }
           }
         }
       }

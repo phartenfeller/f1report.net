@@ -24,6 +24,12 @@ const CircuitRacesTable = ({ racesByCircuitidList }) => {
       {
         Header: 'Year',
         accessor: 'year',
+        // eslint-disable-next-line react/prop-types
+        Cell: ({ value }) => (
+          <Link to={`/seasons/${value}`} className="standard-link">
+            {value}
+          </Link>
+        ),
       },
       {
         Header: 'Winner (Driver)',
