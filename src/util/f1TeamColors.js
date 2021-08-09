@@ -7,6 +7,8 @@ https://www.reddit.com/r/formula1/comments/arxt0r/f1_2019_team_colors_hex_codes/
 https://www.reddit.com/r/formula1/comments/4v9t9f/f1_team_color_hex_codes/
 */
 
+const warnSet = new Set();
+
 const NO_COLOR_FOUND = '#C9D1D2';
 
 const colors = {
@@ -62,6 +64,7 @@ const colors = {
   Moore: '#215AC1',
   Cooper: '#374C2F',
   BRM: '#8D2B1C',
+  'BRM-Ford': '#8D2B1C',
   Trevis: NO_COLOR_FOUND,
   Bromme: NO_COLOR_FOUND,
   Schroeder: NO_COLOR_FOUND,
@@ -91,6 +94,7 @@ const colors = {
   'Lotus-Borgward': '#FFB800',
   'Lotus-BRM': '#FFB800',
   'Lotus-Ford': '#FFB800',
+  'Lotus F1': '#FFB800',
   'Cooper-Borgward': '#133131',
   'Cooper-OSCA': '#133131',
   'Cooper-Maserati': '#133131',
@@ -98,6 +102,9 @@ const colors = {
   'Cooper-Castellotti': '#133131',
   'Cooper-Alfa Romeo': '#133131',
   'Cooper-Ford': '#133131',
+  'Cooper-BRM': '#133131',
+  'Cooper-ATS': '#133131',
+  'Cooper-Ferrari': '#133131',
   Fry: NO_COLOR_FOUND,
   JBW: '#333D3C',
   Christensen: NO_COLOR_FOUND,
@@ -125,6 +132,7 @@ const colors = {
   'Brabham-BRM': '#167018',
   'BMW Sauber': '#0D1E60',
   Spyker: '#FF6D01',
+  'Spyker MF1': '#FF6D01',
   Brawn: '#E4F74E',
   'Super Aguri': '#CD3A41',
   MF1: '#FF352E',
@@ -146,14 +154,36 @@ const colors = {
   Derrington: '#AE3325',
   BRP: '#CAFFCE',
   RE: NO_COLOR_FOUND,
+  Caterham: '#1A984E',
+  Marussia: '#FC2611',
+  'Tec-Mec': '#C41A25',
+  Theodore: NO_COLOR_FOUND,
+  Life: '#E22546',
+  Rial: '#006DE2',
+  Lambo: '#2F3275',
+  Fondmetal: '#081C4C',
+  Dallara: '#D0073B',
+  Bugatti: '#267EEA',
+  Parnelli: NO_COLOR_FOUND,
+  Penske: '#17A6FF',
+  Apollon: '#F1B643',
+  Tecno: '#DA344A',
+  Bellasi: '#BF403B',
 };
 
 function getTeamColor(team) {
   if (colors[team]) {
     return colors[team];
   }
-  // eslint-disable-next-line no-console
-  console.warn(`Unknown team => "${team}". Using fallback color`);
+
+  if (!warnSet.has(team)) {
+    warnSet.add(team);
+    // eslint-disable-next-line no-console
+    console.warn(
+      `Unknown team => "${team}". Using fallback color (${warnSet.size})`
+    );
+  }
+
   return '#374151'; // neutral gray
 }
 
