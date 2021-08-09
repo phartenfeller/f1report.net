@@ -40,7 +40,7 @@ const IndexPage = ({ data }) => {
   )[0];
 
   return (
-    <Layout noMarginTop noHeader noMarginSides noMarginBottom>
+    <Layout noMarginTop noMarginSides noMarginBottom>
       <SEO title="Home" />
       <div className="bg-white pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,7 +56,10 @@ const IndexPage = ({ data }) => {
               </p>
               <p>
                 If you have any feedback or ideas feel free to{' '}
-                <a className="standard-link" href="https://hartenfeller.dev">
+                <a
+                  className="standard-link"
+                  href="mailto:f1report@hartenfeller.dev"
+                >
                   contact me
                 </a>
                 .

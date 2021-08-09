@@ -1,66 +1,112 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'gatsby';
 import { raceType } from '../types';
+import SortableTable from './sortableTable';
+import TeamDisplay from './teamDisplay/teamDisplay';
+import TBD from './tbd';
+import CircuitLink from './links/circuitLink';
 
-const RaceDetailsTable = ({ racesByYearList }) => (
-  <div className="py-2 align-middle inline-block min-w-full">
-    <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th scope="col" className="hidden lg:c-table-heading">
-              #
-            </th>
-            <th scope="col" className="c-table-heading">
-              Race
-            </th>
-            <th scope="col" className="hidden lg:c-table-heading">
-              Circuit
-            </th>
-            <th scope="col" className="hidden md:c-table-heading">
-              Location
-            </th>
-            <th scope="col" className="hidden md:c-table-heading">
-              Date
-            </th>
-            <th scope="col" className="hidden md:c-table-heading">
-              &nbsp;
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {racesByYearList.map(
-            (
-              { circuitByCircuitid, date, raceid, raceSlug, round, name },
-              i
-            ) => (
-              <tr
-                key={raceid}
-                className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-              >
-                <td className="hidden lg:c-table-cell font-medium">{round}</td>
-                <td className="c-table-cell font-medium">{name}</td>
-                <td className="hidden lg:c-table-cell">
-                  {circuitByCircuitid.name}
-                </td>
-                <td className="hidden md:c-table-cell">
-                  {circuitByCircuitid.location} - {circuitByCircuitid.country}
-                </td>
-                <td className="hidden md:c-table-cell">{date}</td>
-                <td className="c-table-cell">
-                  <Link to={`/races/${raceSlug}`} className="standard-link">
-                    Details
-                  </Link>
-                </td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
+const defaultSort = [
+  {
+    id: 'round',
+    desc: false,
+  },
+];
+
+const RaceDetailsTable = ({ racesByYearList }) => {
+  const data = useMemo(
+    () =>
+      racesByYearList.map(
+        ({
+          circuitByCircuitid,
+          date,
+          raceSlug,
+          round,
+          name,
+          resultsByRaceidList,
+        }) => ({
+          round,
+          race: name,
+          circuit: {
+            name: circuitByCircuitid.name,
+            ref: circuitByCircuitid.circuitref,
+            location: circuitByCircuitid.location,
+            country: circuitByCircuitid.country,
+          },
+          date,
+          raceSlug,
+          winnerDriver:
+            resultsByRaceidList?.[0]?.driverByDriverid?.driverDisplayName,
+          winnerConstructor:
+            resultsByRaceidList?.[0]?.constructorTeamByConstructorid?.name,
+        })
+      ),
+    [racesByYearList]
+  );
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: '#',
+        accessor: 'round',
+      },
+      {
+        Header: 'Race',
+        accessor: 'race',
+      },
+      {
+        Header: 'Circuit',
+        accessor: 'circuit',
+        showAt: 'sm',
+        Cell: ({ value }) => (
+          <CircuitLink
+            name={value.name}
+            circuitref={value.ref}
+            location={value.location}
+            country={value.country}
+          />
+        ),
+      },
+      {
+        Header: 'Winner (Driver)',
+        accessor: 'winnerDriver',
+        showAt: 'lg',
+        Cell: ({ value }) => (value ? <>{value}</> : <TBD />),
+      },
+      {
+        Header: 'Winner (Constructor)',
+        accessor: 'winnerConstructor',
+        showAt: 'lg',
+        Cell: ({ value }) =>
+          value ? <TeamDisplay teamName={value} /> : <TBD />,
+      },
+      {
+        Header: 'Date',
+        accessor: 'date',
+        showAt: 'md',
+      },
+      {
+        Header: ' ',
+        accessor: 'raceSlug',
+        // eslint-disable-next-line react/prop-types
+        Cell: ({ value }) => (
+          <Link to={`/races/${value}`} className="standard-link">
+            Details
+          </Link>
+        ),
+      },
+    ],
+    []
+  );
+
+  return (
+    <div>
+      <SortableTable columns={columns} data={data} defaultSort={defaultSort} />
     </div>
-  </div>
-);
+  );
+};
 
 RaceDetailsTable.propTypes = {
   racesByYearList: PropTypes.arrayOf(raceType).isRequired,

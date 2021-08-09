@@ -8,6 +8,7 @@ import SEO from '../components/seo';
 import { raceType } from '../types';
 import RaceDetailsTable from '../components/raceDetailsTable';
 import classNames from '../util/classNames';
+import Header1 from '../components/headers/header1';
 
 export const query = graphql`
   {
@@ -19,6 +20,7 @@ export const query = graphql`
             name
             country
             location
+            circuitref
           }
           date
           raceid
@@ -26,6 +28,14 @@ export const query = graphql`
           round
           name
           year
+          resultsByRaceidList(condition: { position: "1" }) {
+            driverByDriverid {
+              driverDisplayName
+            }
+            constructorTeamByConstructorid {
+              name
+            }
+          }
         }
       }
     }
@@ -38,11 +48,9 @@ const Races = ({ data }) => {
   return (
     <Layout>
       <SEO title="Races" />
-      <h1 className="mt-2 mb-12 text-3xl font-semibold tracking-wide">
-        All Races
-      </h1>
+      <Header1>All Races</Header1>
 
-      <div>
+      <div className="mx-auto max-w-7xl">
         {allSeasonsList.map(({ year, racesByYearList }, i) => (
           <Disclosure
             as="div"
@@ -53,7 +61,7 @@ const Races = ({ data }) => {
             {({ open }) => (
               <>
                 <dt className="text-lg">
-                  <Disclosure.Button className="text-left bg-white rounded shadow p-4 w-full flex justify-between items-start text-gray-400 hover:shadow-lg focus:outline-none focus:ring focus:ring-red-300">
+                  <Disclosure.Button className="text-left bg-white rounded shadow-muted-sm p-4 w-full flex justify-between items-start text-gray-400 hover:shadow-muted focus:outline-none focus:ring focus:ring-red-300">
                     <span className="font-medium text-gray-900">{year}</span>
                     <span className="ml-6 h-7 flex items-center">
                       <ChevronDownIcon
@@ -66,7 +74,7 @@ const Races = ({ data }) => {
                     </span>
                   </Disclosure.Button>
                 </dt>
-                <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                <Disclosure.Panel as="dd" className="my-6 px-3">
                   <RaceDetailsTable racesByYearList={racesByYearList} />
                 </Disclosure.Panel>
               </>

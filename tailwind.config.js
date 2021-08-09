@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
+        'muted-sm': '0px 4px 20px rgb(81 102 167 / 12%)',
         muted: '0 8px 30px rgb(81 102 167 / 24%)', // I admit it's stolen from vercel :o but customized
       },
       colors: {
