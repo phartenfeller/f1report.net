@@ -255,8 +255,10 @@ const RaceTemplate = ({ data }) => {
         <Link to={`/seasons/${year}`} className="standard-link">
           Season overview
         </Link>
-        <RaceNotes racenotes={racenotes} />
-        <HighlightVideos highlightlinks={highlightlinks} />
+        <div className="md:grid md:grid-cols-3 md:space-x-12">
+          <RaceNotes racenotes={racenotes} />
+          <HighlightVideos highlightlinks={highlightlinks} />
+        </div>
       </div>
       {resultsByRaceidList && resultsByRaceidList.length > 0 ? (
         <div>

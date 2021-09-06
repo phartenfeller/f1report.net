@@ -18,7 +18,7 @@ const HighlightVideos = ({ highlightlinks }) => {
   if (!highlightObject) return null;
 
   return (
-    <>
+    <div>
       <h3 className="text-3xl font-yrsa font-medium text-gray-700 pt-4 pb-2">
         Highlights
       </h3>
@@ -51,7 +51,7 @@ const HighlightVideos = ({ highlightlinks }) => {
           </li>
         ) : null}
       </ul>
-    </>
+    </div>
   );
 };
 

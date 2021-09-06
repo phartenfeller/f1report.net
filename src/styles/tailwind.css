@@ -16,11 +16,11 @@ html {
   }
 
   .standard-link {
-    @apply p-1 rounded text-blue-600 underline hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply px-1 rounded text-blue-600 underline hover:text-blue-800 focus:outline-none focus:ring-1 focus:ring-blue-500;
   }
 
   .black-link {
-    @apply p-1 rounded text-black underline decoration-gray-400 hover:decoration-black focus:outline-none focus:ring-2 focus:ring-blue-300;
+    @apply px-1 rounded text-black underline decoration-gray-400 hover:decoration-black focus:outline-none focus:ring-1 focus:ring-blue-300;
   }
 }
 
