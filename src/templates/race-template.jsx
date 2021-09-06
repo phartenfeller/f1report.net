@@ -25,6 +25,7 @@ import RaceResultsTable from '../components/race-template/raceResultsTable';
 import arrayWithValues from '../util/arrayWithValues';
 import PitStopTimes from '../components/race-template/pitstopTimes';
 import pitstopsByRaceidListType from '../types/pitstopsByRaceidListType';
+import PirelliStats from '../components/race-template/pirelliStats';
 
 export const query = graphql`
   query raceData($raceid: PostGraphile_BigInt!, $year: PostGraphile_BigInt!) {
@@ -120,6 +121,19 @@ export const query = graphql`
             driverDisplayName
           }
         }
+        pirellisource
+        startcompound
+        traction
+        braking
+        lateral
+        tyrestress
+        asphaltgrip
+        asphaltabrasion
+        downforce
+        eoscamperlimitfront
+        eoscamperlimitrear
+        minstartingpressurefront
+        minstartingpressurerear
       }
       seasonByYear(year: $year) {
         seasondrivermainconsByYearList {
@@ -205,6 +219,19 @@ const RaceTemplate = ({ data }) => {
     racenotes,
     conAvgPitstopsByRaceidList,
     pitstopsByRaceidList,
+    pirellisource,
+    startcompound,
+    traction,
+    braking,
+    lateral,
+    tyrestress,
+    asphaltgrip,
+    asphaltabrasion,
+    downforce,
+    eoscamperlimitfront,
+    eoscamperlimitrear,
+    minstartingpressurefront,
+    minstartingpressurerear,
   } = raceByRaceid;
 
   const { country, location, name: curcuit, circuitref } = circuitByCircuitid;
@@ -308,6 +335,28 @@ const RaceTemplate = ({ data }) => {
           />
         </div>
       )}
+      {pirellisource ? (
+        <div>
+          <LinkableH2>Pirelli Stats</LinkableH2>
+          <PirelliStats
+            data={{
+              pirellisource,
+              startcompound,
+              traction,
+              braking,
+              lateral,
+              tyrestress,
+              asphaltgrip,
+              asphaltabrasion,
+              downforce,
+              eoscamperlimitfront,
+              eoscamperlimitrear,
+              minstartingpressurefront,
+              minstartingpressurerear,
+            }}
+          />
+        </div>
+      ) : null}
     </Layout>
   );
 };
@@ -339,6 +388,19 @@ RaceTemplate.propTypes = {
         racenotes: PropTypes.string,
         conAvgPitstopsByRaceidList: conAvgPitstopsByRaceidListType.isRequired,
         pitstopsByRaceidList: pitstopsByRaceidListType.isRequired,
+        pirellisource: PropTypes.string,
+        startcompound: PropTypes.number,
+        traction: PropTypes.number,
+        braking: PropTypes.number,
+        lateral: PropTypes.number,
+        tyrestress: PropTypes.number,
+        asphaltgrip: PropTypes.number,
+        asphaltabrasion: PropTypes.number,
+        downforce: PropTypes.number,
+        eoscamperlimitfront: PropTypes.number,
+        eoscamperlimitrear: PropTypes.number,
+        minstartingpressurefront: PropTypes.number,
+        minstartingpressurerear: PropTypes.number,
       }).isRequired,
       seasonByYear: {
         seasondrivermainconsByYearList: PropTypes.arrayOf(
