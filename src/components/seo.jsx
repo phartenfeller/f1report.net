@@ -77,7 +77,7 @@ function SEO({ description, lang, meta, title }) {
         async
         defer
         data-domain="f1report.xyz"
-        src="https://plausible.hartenfeller.dev/js/plausible.js"
+        src="https://f1report.xyz/toolsapi/script.js"
       />
     </Helmet>
   );
