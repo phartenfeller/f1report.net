@@ -1,2 +1,2 @@
 User-agent: *
-Disallow /license-info/
+Disallow: /license-info/
