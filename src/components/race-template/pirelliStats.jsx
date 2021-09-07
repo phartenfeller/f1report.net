@@ -145,12 +145,14 @@ const CharacteristicsBlock = ({ name, value }) => {
 
   return (
     <div className="mt-5 max-w-xl">
-      <div className="flex justify-between mr-2 mb-2">
-        <h4 className="text-xl font-medium tracking-tight text-blueGray-700">
-          {name}
-        </h4>
-        <span className="text-xl font-light">{`${value} / 5`}</span>
-      </div>
+      <dl className="flex justify-between mr-2 mb-2">
+        <dt>
+          <h4 className="text-xl font-medium tracking-tight text-blueGray-700">
+            {name}
+          </h4>
+        </dt>
+        <dd className="text-xl font-light">{`${value} / 5`}</dd>
+      </dl>
       <div className="grid grid-cols-5">
         {blocks.map((_, i) => (
           <div
@@ -199,7 +201,7 @@ const PirelliStats = ({ data }) => {
       </div>
       <div>
         <h3 className="text-3xl font-bold mt-8 mb-4 font-yrsa text-blueGray-800">
-          Track Characteristics
+          Pirelli Track Characteristics
         </h3>
         <CharacteristicsBlock name="Traction" value={traction} />
         <CharacteristicsBlock name="Braking" value={braking} />
@@ -211,7 +213,7 @@ const PirelliStats = ({ data }) => {
       </div>
       <div className="text-right mt-3">
         <a href={pirellisource} className="text-lg black-link">
-          Source
+          Source: Pirelli
         </a>
       </div>
     </div>

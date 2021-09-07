@@ -337,7 +337,7 @@ const RaceTemplate = ({ data }) => {
       )}
       {pirellisource ? (
         <div>
-          <LinkableH2>Pirelli Stats</LinkableH2>
+          <LinkableH2>Tyre Usage</LinkableH2>
           <PirelliStats
             data={{
               pirellisource,
