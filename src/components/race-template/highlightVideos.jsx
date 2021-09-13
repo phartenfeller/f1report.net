@@ -1,5 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
+
+const HighlightLink = ({ link, text }) => (
+  <span className="inline-flex items-center">
+    <a href={link} className="standard-link">
+      {text}
+    </a>{' '}
+    <ExternalLinkIcon className="inline-block text-blueGray-400 w-4 h-4" />
+  </span>
+);
+
+HighlightLink.propTypes = {
+  link: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+};
 
 const HighlightVideos = ({ highlightlinks }) => {
   if (!highlightlinks) return null;
@@ -25,29 +40,26 @@ const HighlightVideos = ({ highlightlinks }) => {
       <ul className="md:text-lg list-disc list-inside text-blueGray-700">
         {highlightObject.qualifyingHighlights ? (
           <li className="mb-2">
-            <a
-              href={highlightObject.qualifyingHighlights}
-              className="standard-link"
-            >
-              Qualifying Highlights
-            </a>
+            <HighlightLink
+              link={highlightObject.qualifyingHighlights}
+              text="Qualifying Highlights"
+            />
           </li>
         ) : null}
         {highlightObject.sprintHighlights ? (
           <li className="mb-2">
-            <a
-              href={highlightObject.sprintHighlights}
-              className="standard-link"
-            >
-              Sprint Highlights
-            </a>
+            <HighlightLink
+              link={highlightObject.sprintHighlights}
+              text="Sprint Highlights"
+            />
           </li>
         ) : null}
         {highlightObject.raceHighlights ? (
           <li>
-            <a href={highlightObject.raceHighlights} className="standard-link">
-              Race Highlights
-            </a>
+            <HighlightLink
+              link={highlightObject.raceHighlights}
+              text="Race Highlights"
+            />
           </li>
         ) : null}
       </ul>

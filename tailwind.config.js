@@ -21,6 +21,18 @@ module.exports = {
       maxWidth: {
         '4k-limit': '120rem',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            a: {
+              color: '#2563eb',
+              '&:hover': {
+                color: 'rgb(30, 64, 175)',
+              },
+            },
+          },
+        },
+      },
     },
   },
   variants: {
