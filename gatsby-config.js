@@ -7,7 +7,7 @@ module.exports = {
     title: `F1 Report`,
     description: `Data for every Formula 1 race ever`,
     author: `Philipp Hartenfeller`,
-    siteUrl: `https://f1report.xyz`,
+    siteUrl: `https://f1report.net`,
   },
   plugins: [
     `gatsby-plugin-postcss`,
@@ -44,7 +44,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-canonical-urls`,
       options: {
-        siteUrl: `https://f1report.xyz/`,
+        siteUrl: `https://f1report.net/`,
       },
     },
     {

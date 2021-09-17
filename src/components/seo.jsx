@@ -76,8 +76,8 @@ function SEO({ description, lang, meta, title }) {
       <script
         async
         defer
-        data-domain="f1report.xyz"
-        src="https://f1report.xyz/toolsapi/script.js"
+        data-domain="f1report.net"
+        src="https://f1report.net/toolsapi/script.js"
       />
     </Helmet>
   );
