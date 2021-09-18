@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import React from 'react';
+import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 
 const TyreLogo = ({ num }) => {
   let color;
@@ -35,10 +36,26 @@ const TyreLogo = ({ num }) => {
   );
 };
 
-const TyreSelection = ({ startcompound }) => {
+const TyreSelection = ({ startcompound, grandPrix, year }) => {
   const tyres = new Array(5).fill(null);
   for (let i = 0; i < 3; i += 1) {
     tyres[startcompound - 1 + i] = i + 1;
+  }
+
+  let sentence;
+
+  switch (startcompound) {
+    case 1:
+      sentence = `The hardest tyre combination of C1, C2 and C3 was selected for the ${grandPrix} ${year}.`;
+      break;
+    case 2:
+      sentence = `The medium tyre combination of C2, C3, C4 was selected for the ${grandPrix} ${year}.`;
+      break;
+    case 3:
+      sentence = `The softest tyre combination of C3, C4, C5 was selected for the ${grandPrix} ${year}.`;
+      break;
+    default:
+      sentence = null;
   }
 
   return (
@@ -46,7 +63,7 @@ const TyreSelection = ({ startcompound }) => {
       <h3 className="text-3xl font-bold mb-4 font-yrsa text-blueGray-800">
         Tyre selection
       </h3>
-      <div className="grid grid-cols-5 select-none">
+      <div className="grid grid-cols-5 select-none" aria-hidden="true">
         {tyres.map((tyre, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={i} className="w-16 text-center">
@@ -64,6 +81,19 @@ const TyreSelection = ({ startcompound }) => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="mt-6">
+        <div className="text-gray-700">{sentence}</div>
+        <div className="mt-4 flex border border-gray-300 rounded-lg overflow-hidden">
+          <div className="px-4 flex items-center bg-gray-100">
+            <QuestionMarkCircleIcon className="text-gray-400 h-8 w-8" />
+          </div>
+          <span className="py-1 px-3 text-gray-600">
+            Out of five possible tyre combinations Pirelli selects three for
+            each race weekend. C1 is the hardest available tyre and C5 is the
+            softest one. Intermediate and wet tyres are the same each weekend.
+          </span>
+        </div>
       </div>
     </>
   );
@@ -167,7 +197,7 @@ const CharacteristicsBlock = ({ name, value }) => {
   );
 };
 
-const PirelliStats = ({ data }) => {
+const PirelliStats = ({ data, grandPrix, year }) => {
   const {
     pirellisource,
     startcompound,
@@ -187,8 +217,12 @@ const PirelliStats = ({ data }) => {
   return (
     <div className="rounded-lg shadow-muted w-full p-6 bg-white max-w-5xl mx-auto">
       <div className="space-y-8 sm:space-y-0 sm:flex justify-between">
-        <div className="">
-          <TyreSelection startcompound={startcompound} />
+        <div className="sm:w-1/2">
+          <TyreSelection
+            startcompound={startcompound}
+            grandPrix={grandPrix}
+            year={year}
+          />
         </div>
         <div>
           <TyreRegulations
@@ -223,6 +257,8 @@ const PirelliStats = ({ data }) => {
 PirelliStats.propTypes = {
   // eslint-disable-next-line react/require-default-props
   data: PropTypes.shape(PropTypes.any),
+  grandPrix: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
 };
 
 export default PirelliStats;

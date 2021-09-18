@@ -339,6 +339,8 @@ const RaceTemplate = ({ data }) => {
         <div>
           <LinkableH2>Tyre Usage</LinkableH2>
           <PirelliStats
+            grandPrix={name}
+            year={year}
             data={{
               pirellisource,
               startcompound,
