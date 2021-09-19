@@ -13,6 +13,7 @@
     "@tailwindcss/typography": "^0.4.1",
     "gatsby": "^3.14.0",
     "gatsby-image": "^3.11.0",
+    "gatsby-plugin-advanced-sitemap": "^2.0.0",
     "gatsby-plugin-canonical-urls": "^3.14.0",
     "gatsby-plugin-image": "^1.14.0",
     "gatsby-plugin-manifest": "^3.14.0",
@@ -24,6 +25,7 @@
     "gatsby-source-package-licenses": "^1.0.1",
     "gatsby-source-pg": "^0.2.1",
     "gatsby-transformer-sharp": "^3.14.0",
+    "lmdb-store": "^1.6.8",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -60,7 +62,8 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "browserlist": "npx browserslist@latest --update-db"
   },
   "repository": {
     "type": "git",

@@ -3,6 +3,10 @@ require('dotenv').config({
 });
 
 module.exports = {
+  flags: {
+    // PARALLEL_QUERY_RUNNING: true,
+    LMDB_STORE: true,
+  },
   siteMetadata: {
     title: `F1 Report`,
     description: `Data for every Formula 1 race ever`,
@@ -39,8 +43,39 @@ module.exports = {
     `gatsby-plugin-postcss`,
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
-    `gatsby-plugin-sitemap`,
+    `gatsby-plugin-offline`,
+    // {
+    //   resolve: `gatsby-plugin-advanced-sitemap`,
+    //   options: {
+    //     query: `
+    //     {
+    //       races: postgres {
+    //         allRaces {
+    //           nodes {
+    //             raceid
+    //             raceSlug
+    //             year
+    //           }
+    //         }
+    //       }
+    //     }
+    //     `,
+    //     output: '/sitemap.xml',
+    //     mapping: {
+    //       races: {
+    //         sitemap: `races`,
+    //         prefix: `races`,
+    //         serializer: (allRaces) => {
+    //           console.log('allRaces typeof =>', typeof allRaces);
+    //           console.log('allRaces keys =>', Object.keys(allRaces));
+    //           return allRaces.nodes.map(({ node }) => node.raceSlug);
+    //         },
+    //       },
+    //     },
+    //     createLinkInHead: true,
+    //     addUncaughtPages: true,
+    //   },
+    // },
     {
       resolve: `gatsby-plugin-canonical-urls`,
       options: {

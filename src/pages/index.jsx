@@ -1,43 +1,13 @@
-import { graphql } from 'gatsby';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Infobox from '../components/alerts/infobox';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import LinkList from '../components/index/LinkList';
 import LandingHero from '../components/landingPage/landingHero';
+import useCurrentData from '../hooks/useCurrentData';
 
-export const query = graphql`
-  {
-    postgres {
-      allSeasons(last: 1) {
-        nodes {
-          year
-          racesByYearList(orderBy: DATE_DESC) {
-            round
-            time
-            raceSlug
-            name
-            laptimesByRaceidList(first: 3) {
-              driverid
-              lap
-              position
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const IndexPage = ({ data }) => {
-  const pastRaces = data.postgres.allSeasons.nodes[0].racesByYearList.filter(
-    (race) => race.laptimesByRaceidList.length > 0
-  );
-
-  const lastRace = pastRaces.sort(
-    (a, b) => parseInt(b.round) - parseInt(a.round)
-  )[0];
+const IndexPage = () => {
+  const { lastRace, currentSeason } = useCurrentData();
 
   return (
     <Layout noMarginTop noMarginSides noMarginBottom>
@@ -71,8 +41,8 @@ const IndexPage = ({ data }) => {
                 display={`Last Race: ${lastRace.name}`}
               />
               <LinkList
-                target={`/seasons/${data.postgres.allSeasons.nodes[0].year}`}
-                display={`Current Season: ${data.postgres.allSeasons.nodes[0].year}`}
+                target={`/seasons/${currentSeason}`}
+                display={`Current Season: ${currentSeason}`}
               />
               <LinkList target="/races/" display="All Races" />
               <LinkList target="/circuits/" display="All Circuits" />
@@ -82,30 +52,6 @@ const IndexPage = ({ data }) => {
       </div>
     </Layout>
   );
-};
-
-IndexPage.propTypes = {
-  data: PropTypes.shape({
-    postgres: PropTypes.shape({
-      allSeasons: PropTypes.shape({
-        nodes: PropTypes.arrayOf(
-          PropTypes.shape({
-            year: PropTypes.string,
-            racesByYearList: PropTypes.arrayOf(
-              PropTypes.shape({
-                round: PropTypes.string,
-                time: PropTypes.string,
-                raceSlug: PropTypes.string,
-                name: PropTypes.string,
-                // eslint-disable-next-line react/forbid-prop-types
-                laptimesByRaceidList: PropTypes.array,
-              })
-            ),
-          })
-        ),
-      }),
-    }),
-  }).isRequired,
 };
 
 export default IndexPage;
