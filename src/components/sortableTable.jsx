@@ -92,22 +92,34 @@ const PaginationBar = ({
 );
 
 const cellClasses = (column) => {
+  const arr = [];
+
   // needed to be written out for purging styles
   if (column.showAt) {
     switch (column.showAt) {
       case 'sm':
-        return 'hidden sm:c-table-cell';
+        arr.push('hidden sm:c-table-cell');
+        break;
       case 'md':
-        return 'hidden md:c-table-cell';
+        arr.push('hidden md:c-table-cell');
+        break;
       case 'lg':
-        return 'hidden lg:c-table-cell';
+        arr.push('hidden lg:c-table-cell');
+        break;
       default:
         // eslint-disable-next-line no-console
         console.error(`SortableTable => Unknown showAt "${column.showAt}"`);
-        return 'c-table-cell';
+        arr.push('c-table-cell');
     }
+  } else {
+    arr.push('c-table-cell');
   }
-  return 'c-table-cell';
+
+  if (column.className) {
+    arr.push(column.className);
+  }
+
+  return arr.join(' ');
 };
 
 const headerClasses = (column) => {
