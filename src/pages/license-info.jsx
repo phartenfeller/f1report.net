@@ -46,11 +46,9 @@ export const query = graphql`
   }
 `;
 
-const noIndexMeta = [{ property: 'robots', content: 'noindex' }];
-
 const LicenseInfo = ({ data }) => (
   <Layout noMarginTop>
-    <SEO title="License Info" meta={noIndexMeta} />
+    <SEO title="License Info" noIndex />
     <div className="flex justify-center">
       <div className="bg-white lg:w-2/3 mx-4 shadow pb-12">
         <div className="mx-4 lg:mx-16 my-8">
