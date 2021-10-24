@@ -179,46 +179,48 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
 
   return (
     <div className="py-2 align-middle min-w-full">
-      <div className="shadow-muted overflow-hidden border-b border-gray-200 sm:rounded-lg">
-        <table
-          {...getTableProps()}
-          className="min-w-full divide-y divide-gray-200"
-        >
-          <thead className="bg-gray-50">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={headerClasses(column)}
-                  >
-                    <SortedHeaderRenderer column={column} />
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {iterator.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className={i % 2 === 0 ? 'bg-white' : 'bg-blueGray-50'}
-                >
-                  {row.cells.map((cell) => (
-                    <td
-                      {...cell.getCellProps()}
-                      className={cellClasses(cell.column)}
+      <div className="shadow-muted border-b border-gray-200 sm:rounded-lg">
+        <div className="overflow-x-auto overflow-hidden">
+          <table
+            {...getTableProps()}
+            className="min-w-full divide-y divide-gray-200"
+          >
+            <thead className="bg-gray-50">
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className={headerClasses(column)}
                     >
-                      {cell.render('Cell')}
-                    </td>
+                      <SortedHeaderRenderer column={column} />
+                    </th>
                   ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {iterator.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <tr
+                    {...row.getRowProps()}
+                    className={i % 2 === 0 ? 'bg-white' : 'bg-blueGray-50'}
+                  >
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        className={cellClasses(cell.column)}
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
         {pagination && (
           <PaginationBar
             canPreviousPage={canPreviousPage}
