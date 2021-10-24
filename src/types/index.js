@@ -1,3 +1,5 @@
+import allDriAlltimeStatsListType from './allDriAlltimeStatsListType';
+import allDriAlltimeStatsPreparedListType from './allDriAlltimeStatsPreparedListType';
 import allRacesType from './allRacesType';
 import circuitType from './circuitType';
 import conAvgLapt70PType from './conAvgLapt70PType';
@@ -32,4 +34,7 @@ export {
   teamStandingsType,
   conAvgPitstopsByRaceidListType,
   circuitType,
+  allDriAlltimeStatsListType,
+  allDriAlltimeStatsPreparedListType
 };
+

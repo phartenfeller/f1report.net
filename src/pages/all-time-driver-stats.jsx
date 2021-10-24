@@ -1,12 +1,22 @@
+/* eslint-disable no-else-return */
+/* eslint-disable react/prop-types */
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { Disclosure } from '@headlessui/react';
+import { FilterIcon } from '@heroicons/react/solid';
 import DriverCard from '../components/dataDisplay/DriverCard';
 import { LinkableH2 } from '../components/headers';
 import Header1 from '../components/headers/header1';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import SortableTable from '../components/sortableTable';
+import {
+  allDriAlltimeStatsListType,
+  allDriAlltimeStatsPreparedListType,
+} from '../types';
+import useDriverIndex from '../hooks/useDriverIndex';
+import useScreenWidth from '../hooks/useScreenWidth';
 
 export const query = graphql`
   {
@@ -14,9 +24,6 @@ export const query = graphql`
       allDriAlltimeStatsList {
         driverid
         points
-        driverByDriverid {
-          driverDisplayName
-        }
         fastestlaps
         podiums
         poles
@@ -25,6 +32,7 @@ export const query = graphql`
         toptens
         undertens
         wins
+        races
       }
       allDriAlltimeStatsPreparedsList {
         key
@@ -40,6 +48,71 @@ const defaultSort = [
     desc: true,
   },
 ];
+
+const ColumnSelector = ({ selected, setSelected, columns }) => {
+  const handleCheckbox = (e) => {
+    const accessor = e.target.dataset.value;
+
+    if (!e.target.checked) {
+      setSelected(selected.filter((c) => c !== accessor));
+    } else {
+      setSelected([...selected, accessor]);
+    }
+  };
+
+  return (
+    <Disclosure as="section" aria-labelledby="filter-heading" className="">
+      <h2 id="filter-heading" className="sr-only">
+        Filters
+      </h2>
+      <div className="relative py-4">
+        <div className="max-w-7xl flex space-x-6 divide-x divide-gray-200 text-sm">
+          <div>
+            <Disclosure.Button className="pr-2 py-1 rounded group text-gray-500 hover:text-gray-700 font-medium flex items-center select-none focus:outline-none focus:ring-1 focus:ring-blue-300">
+              <FilterIcon
+                className="flex-none w-5 h-5 mr-2 text-gray-300 group-hover:text-gray-400"
+                aria-hidden="true"
+              />
+              {selected.length} Columns selected
+            </Disclosure.Button>
+          </div>
+        </div>
+      </div>
+      <Disclosure.Panel className="mb-8 p-4 rounded-lg bg-gray-50 max-w-5xl text-sm border-2 border-dashed border-gray-300">
+        <div className="">
+          <fieldset>
+            <legend className="block font-medium">Displayed Columns</legend>
+            <div className="grid grid-cols-5 auto-cols-max gap-y-5 pt-6 sm:pt-4 ">
+              {columns.map(({ Header, accessor }) => (
+                <div
+                  key={Header}
+                  className="flex items-center text-base sm:text-sm mr-5"
+                >
+                  <input
+                    id={`price-${accessor}`}
+                    name={Header}
+                    // defaultValue={option.value}
+                    type="checkbox"
+                    className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-red-600 focus:ring-red-300"
+                    checked={selected.includes(accessor)}
+                    onChange={handleCheckbox}
+                    data-value={accessor}
+                  />
+                  <label
+                    htmlFor={`price-${accessor}`}
+                    className="ml-3 min-w-0 flex-1 text-gray-600 select-none"
+                  >
+                    {Header}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+      </Disclosure.Panel>
+    </Disclosure>
+  );
+};
 
 const CardStats = ({ allDriAlltimeStatsPreparedsList }) => {
   const data = {};
@@ -126,15 +199,31 @@ const CardStats = ({ allDriAlltimeStatsPreparedsList }) => {
   );
 };
 
+CardStats.propTypes = {
+  allDriAlltimeStatsPreparedsList: PropTypes.arrayOf(
+    allDriAlltimeStatsPreparedListType
+  ).isRequired,
+};
+
 const AllTimeDriverStats = ({ data }) => {
   const { allDriAlltimeStatsList, allDriAlltimeStatsPreparedsList } =
     data.postgres;
+
+  const driverIndex = useDriverIndex();
+
+  const tableStats = allDriAlltimeStatsList.map((obj) => {
+    const nObj = obj;
+    nObj.driverDisplayName = driverIndex.getDriver(
+      obj.driverid
+    ).driverDisplayName;
+    return nObj;
+  });
 
   const columns = useMemo(
     () => [
       {
         Header: 'Driver',
-        accessor: 'driverByDriverid.driverDisplayName',
+        accessor: 'driverDisplayName',
         className: 'font-semibold',
         // eslint-disable-next-line react/prop-types
         // Cell: ({ value }) => <span className="font-semibold">{value}</span>,
@@ -142,6 +231,10 @@ const AllTimeDriverStats = ({ data }) => {
       {
         Header: 'Points',
         accessor: 'points',
+      },
+      {
+        Header: 'Races',
+        accessor: 'races',
       },
       {
         Header: 'Podiums',
@@ -171,6 +264,25 @@ const AllTimeDriverStats = ({ data }) => {
     []
   );
 
+  const screenWidth = useScreenWidth();
+  const getDefaultSelectedCount = () => {
+    if (screenWidth < 600) {
+      return 4;
+    } else if (screenWidth < 900) {
+      return 6;
+    } else {
+      return 9;
+    }
+  };
+
+  const [selected, setSelected] = useState(
+    columns
+      .map((c) => c.accessor)
+      .filter((c, i) => i < getDefaultSelectedCount())
+  );
+
+  const filteredColumns = columns.filter((c) => selected.includes(c.accessor));
+
   return (
     <Layout>
       <SEO title="Races" />
@@ -184,9 +296,15 @@ const AllTimeDriverStats = ({ data }) => {
 
       <div>
         <LinkableH2>Table Stats</LinkableH2>
-        <SortableTable
+        <ColumnSelector
           columns={columns}
-          data={allDriAlltimeStatsList}
+          selected={selected}
+          setSelected={setSelected}
+        />
+
+        <SortableTable
+          columns={filteredColumns}
+          data={tableStats}
           defaultSort={defaultSort}
           pagination={30}
         />
@@ -196,7 +314,15 @@ const AllTimeDriverStats = ({ data }) => {
 };
 
 AllTimeDriverStats.propTypes = {
-  name: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    postgres: PropTypes.shape({
+      allDriAlltimeStatsList: PropTypes.arrayOf(allDriAlltimeStatsListType)
+        .isRequired,
+      allDriAlltimeStatsPreparedsList: PropTypes.arrayOf(
+        allDriAlltimeStatsPreparedListType
+      ).isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default AllTimeDriverStats;

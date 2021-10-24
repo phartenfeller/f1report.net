@@ -12,7 +12,8 @@ const CardWrapper = ({ note = null, children }) => (
 
 CardWrapper.propTypes = {
   note: PropTypes.string,
-  children: PropTypes.element.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  children: PropTypes.any.isRequired,
 };
 
 CardWrapper.defaultProps = {

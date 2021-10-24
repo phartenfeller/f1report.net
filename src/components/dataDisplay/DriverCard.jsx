@@ -35,7 +35,7 @@ const DriverCard = ({ list, accessor, header, note = null }) => {
 };
 
 DriverCard.propTypes = {
-  list: PropTypes.string.isRequired,
+  list: PropTypes.arrayOf(PropTypes.any).isRequired,
   accessor: PropTypes.string.isRequired,
   header: PropTypes.string.isRequired,
   note: PropTypes.string,

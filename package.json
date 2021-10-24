@@ -10,6 +10,7 @@
     "@nivo/line": "^0.73.0",
     "@nivo/stream": "^0.73.0",
     "@nivo/tooltip": "^0.73.0",
+    "@tailwindcss/forms": "^0.3.4",
     "@tailwindcss/typography": "^0.4.1",
     "gatsby": "^3.14.0",
     "gatsby-image": "^3.11.0",

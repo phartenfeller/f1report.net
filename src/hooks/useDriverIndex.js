@@ -1,6 +1,7 @@
 import { graphql, useStaticQuery } from 'gatsby';
+import { useMemo } from 'react';
 
-export default () => {
+const useDriverIndex = () => {
   const data = useStaticQuery(graphql`
     {
       postgres {
@@ -17,8 +18,14 @@ export default () => {
   `);
 
   const getDriver = (desiredId) =>
-    data.postgres.allDriversList.find(
-      (d) => parseInt(d.driverid) === parseInt(desiredId)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useMemo(
+      () =>
+        data.postgres.allDriversList.find(
+          (d) => parseInt(d.driverid) === parseInt(desiredId)
+        ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [desiredId, data.postgres.allDriversList]
     );
 
   return {
@@ -26,3 +33,5 @@ export default () => {
     allDrivers: data.postgres.allDriversList,
   };
 };
+
+export default useDriverIndex;

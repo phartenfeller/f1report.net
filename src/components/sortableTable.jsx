@@ -21,7 +21,7 @@ const SortedHeaderRenderer = ({ column }) => {
     <div className="flex justify-between w-full">
       <span>{column.render('Header')}</span>
       <svg
-        className="h-4 w-4"
+        className="h-4 w-4 mr-2"
         viewBox="0 0 128 128"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +204,7 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
               return (
                 <tr
                   {...row.getRowProps()}
-                  className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                  className={i % 2 === 0 ? 'bg-white' : 'bg-blueGray-50'}
                 >
                   {row.cells.map((cell) => (
                     <td
