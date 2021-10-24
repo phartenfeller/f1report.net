@@ -33,6 +33,11 @@ export const query = graphql`
         undertens
         wins
         races
+        avggridposition
+        avgpointsperrace
+        podiumratio
+        toptensratio
+        winratio
       }
       allDriAlltimeStatsPreparedsList {
         key
@@ -259,6 +264,26 @@ const AllTimeDriverStats = ({ data }) => {
       {
         Header: 'Under 10s',
         accessor: 'undertens',
+      },
+      {
+        Header: 'Avg Grid Pos',
+        accessor: 'avggridposition',
+      },
+      {
+        Header: 'Avg Points per Race',
+        accessor: 'avgpointsperrace',
+      },
+      {
+        Header: 'Podium Ratio',
+        accessor: 'podiumratio',
+      },
+      {
+        Header: 'Top 10s Ratio',
+        accessor: 'toptensratio',
+      },
+      {
+        Header: 'Win Ratio',
+        accessor: 'winratio',
       },
     ],
     []
