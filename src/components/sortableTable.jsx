@@ -144,12 +144,15 @@ const headerClasses = (column) => {
 const SortableTable = ({ data, columns, defaultSort, pagination }) => {
   const initialState = {};
 
+  const props = [{ columns, data, initialState }, useSortBy];
+
   if (defaultSort) {
     initialState.sortBy = defaultSort;
   }
 
   if (pagination) {
     initialState.pageSize = pagination;
+    props.push(usePagination);
   }
 
   const {
@@ -169,11 +172,7 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
     pageCount,
     gotoPage,
     state: { pageIndex },
-  } = useTable(
-    { columns, data, initialState },
-    useSortBy,
-    pagination ? usePagination : null
-  );
+  } = useTable(...props);
 
   const iterator = pagination ? page : rows;
 
