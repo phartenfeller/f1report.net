@@ -177,6 +177,16 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
 
   const iterator = pagination ? page : rows;
 
+  if (!columns || columns.length === 0) {
+    return (
+      <div className="py-2 align-middle min-w-full">
+        <div className="shadow-muted bg-white sm:rounded-lg p-8 text-center font-semibold">
+          No columns selected to display...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-2 align-middle min-w-full">
       <div className="shadow-muted border-b border-gray-200 sm:rounded-lg">
@@ -240,7 +250,7 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
 
 SortableTable.propTypes = {
   data: PropTypes.array.isRequired,
-  columns: PropTypes.array.isRequired,
+  columns: PropTypes.array,
   defaultSort: PropTypes.array,
   pagination: PropTypes.number,
 };
@@ -248,6 +258,7 @@ SortableTable.propTypes = {
 SortableTable.defaultProps = {
   defaultSort: null,
   pagination: null,
+  columns: [],
 };
 
 export default SortableTable;
