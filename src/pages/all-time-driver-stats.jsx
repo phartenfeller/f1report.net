@@ -313,6 +313,10 @@ const AllTimeDriverStats = ({ data }) => {
       <SEO title="Races" />
       <Header1>All Time Driver Stats</Header1>
 
+      <div className="text-gray-600">
+        * all points are calculated after todays rules.
+      </div>
+
       <div className="my-6">
         <CardStats
           allDriAlltimeStatsPreparedsList={allDriAlltimeStatsPreparedsList}
