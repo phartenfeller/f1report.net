@@ -87,11 +87,11 @@ const ColumnSelector = ({ selected, setSelected, columns }) => {
         <div className="">
           <fieldset>
             <legend className="block font-medium">Displayed Columns</legend>
-            <div className="grid grid-cols-5 auto-cols-max gap-y-5 pt-6 sm:pt-4 ">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 auto-cols-max gap-y-5 pt-6 sm:pt-4 ">
               {columns.map(({ Header, accessor }) => (
                 <div
                   key={Header}
-                  className="flex items-center text-base sm:text-sm mr-5"
+                  className="flex items-center text-sm md:text-base sm:text-sm mr-5"
                 >
                   <input
                     id={`price-${accessor}`}
