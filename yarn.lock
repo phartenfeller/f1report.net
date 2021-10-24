@@ -6493,10 +6493,10 @@ gatsby-source-graphql@^2.0.5:
     node-fetch "^2.6.1"
     uuid "3.4.0"
 
-gatsby-source-package-licenses@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/gatsby-source-package-licenses/-/gatsby-source-package-licenses-1.0.1.tgz#3c6b608acccd26aa7495cdc9cb7b2fc763f93a50"
-  integrity sha512-aMnUH6N+qJaPnV7BHqsyXWyRaS83GqDftcIlFxT+kOxoerW1FHGTus8o/PBWZ23C9C1xAb7kP9Ji7deXiNpSzg==
+gatsby-source-package-licenses@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/gatsby-source-package-licenses/-/gatsby-source-package-licenses-1.0.2.tgz#eb8a3ec869289dff8b1d3b5220aca0842ba56577"
+  integrity sha512-nTlC1s+BFIdJhmnGUyiT+B9ckfT5iSGvTZzja5Y1goaBXJL4khTwmSmibeNL5OfaIkjpIwOw2UMt7kw/kStybQ==
 
 gatsby-source-pg@^0.2.1:
   version "0.2.1"
