@@ -8,6 +8,7 @@ import {
   ArrowCircleRightIcon,
   CalendarIcon,
   ClipboardListIcon,
+  UserIcon,
 } from '@heroicons/react/outline';
 import classNames from '../util/classNames';
 import useCurrentData from '../hooks/useCurrentData';
@@ -80,6 +81,15 @@ const getCircuits = ({ lastRace, nextRace }) => {
 
   return arr;
 };
+
+const statsHeaderItems = [
+  {
+    name: 'Drivers',
+    description: `Alltime Driver Stats`,
+    href: `/all-time-driver-stats`,
+    icon: UserIcon,
+  },
+];
 
 const HeaderMenuItem = ({ items, name }) => (
   <Popover className="relative">
@@ -175,6 +185,7 @@ const Header = ({ siteTitle }) => {
           >
             <MemoMenuItem items={races} name="Races" />
             <MemoMenuItem items={circuits} name="Circuits" />
+            <MemoMenuItem items={statsHeaderItems} name="Stats" />
           </Popover.Group>
         </div>
 

@@ -10,7 +10,9 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { useStaticQuery, graphql } from 'gatsby';
 
-function SEO({ description, lang, meta, title }) {
+const noIndexMeta = [{ name: 'robots', content: 'noindex' }];
+
+function SEO({ description, lang, meta = [], title, noIndex = false }) {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -26,6 +28,11 @@ function SEO({ description, lang, meta, title }) {
   );
 
   const metaDescription = description || site.siteMetadata.description;
+  let specificMeta = meta;
+
+  if (noIndex) {
+    specificMeta = meta.concat(noIndexMeta);
+  }
 
   return (
     <Helmet
@@ -71,7 +78,7 @@ function SEO({ description, lang, meta, title }) {
           name: `twitter:description`,
           content: metaDescription,
         },
-      ].concat(meta)}
+      ].concat(specificMeta)}
     >
       <script
         async
@@ -87,6 +94,7 @@ SEO.defaultProps = {
   lang: `en`,
   meta: [],
   description: ``,
+  noIndex: false,
 };
 
 SEO.propTypes = {
@@ -94,6 +102,7 @@ SEO.propTypes = {
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
   title: PropTypes.string.isRequired,
+  noIndex: PropTypes.bool,
 };
 
 export default SEO;

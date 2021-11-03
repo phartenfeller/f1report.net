@@ -8,11 +8,11 @@ html {
 
 @layer components {
   .c-table-cell {
-    @apply table-cell px-3 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500;
+    @apply table-cell px-2 py-1 md:py-4 whitespace-nowrap text-xs text-gray-500;
   }
 
   .c-table-heading {
-    @apply table-cell px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+    @apply table-cell px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
   }
 
   .standard-link {
