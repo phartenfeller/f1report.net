@@ -29,7 +29,10 @@
       }
     ],
     "camelcase": 0,
-    "react/jsx-props-no-spreading": 0
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-no-bind": {
+      "allowFunctions": true
+    }
   },
   "plugins": ["prettier", "react-hooks", "jsx-a11y"],
   "settings": {

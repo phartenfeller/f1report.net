@@ -47,8 +47,7 @@ const ConstructorProgressStream = ({ racesByYearList, teamStandings }) => {
     }
   });
 
-  function getColor({ index }) {
-    const id = teams[index];
+  function getColor({ id }) {
     const info = teamStandings.find((t) => t.constructorid === id);
     return getTeamColor(info?.constructorTeamByConstructorid?.name);
   }
@@ -79,8 +78,7 @@ const ConstructorProgressStream = ({ racesByYearList, teamStandings }) => {
         fillOpacity={0.7}
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [] }}
-        legendLabel={getDriverById}
-        tooltipLabel={getDriverById}
+        label={getDriverById}
         legends={[
           {
             anchor: 'bottom-right',

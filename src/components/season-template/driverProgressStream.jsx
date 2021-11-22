@@ -7,12 +7,14 @@ import {
   seasonDriverMainConsType,
   driverStandingsType,
 } from '../../types';
+import useDriverIndex from '../../hooks/useDriverIndex';
 
 const DriverProgressStream = ({
   racesByYearList,
   seasondrivermainconsByYearList,
   driverstandingsByRaceidList,
 }) => {
+  const { getDriver } = useDriverIndex();
   // sorted by position
   const drivers = driverstandingsByRaceidList.map((s) => s.driverid);
 
@@ -50,18 +52,15 @@ const DriverProgressStream = ({
     }
   });
 
-  function getColor({ index }) {
-    const driverid = drivers[index];
-    const info = seasondrivermainconsByYearList.find(
-      (s) => s.driverid === driverid
-    );
+  function getColor({ id }) {
+    const info = seasondrivermainconsByYearList.find((s) => s.driverid === id);
 
     return getTeamColor(info?.constructorTeamByConstructorid?.name);
   }
 
   function getDriverById({ id }) {
-    const info = seasondrivermainconsByYearList.find((s) => s.driverid === id);
-    return info?.driverByDriverid?.driverDisplayName;
+    const { driverDisplayName } = getDriver(id);
+    return driverDisplayName;
   }
 
   return (
@@ -85,8 +84,7 @@ const DriverProgressStream = ({
         fillOpacity={0.7}
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [] }}
-        legendLabel={getDriverById}
-        tooltipLabel={getDriverById}
+        label={getDriverById}
         legends={[
           {
             anchor: 'bottom-right',
