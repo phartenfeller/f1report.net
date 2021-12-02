@@ -21,16 +21,20 @@ const IndexPage = () => {
             </div>
             <div className="prose-lg">
               <p>
-                I can only generate statistics <b>after a race has happened</b>.
-                I do not have access to live data and training data.
+                Stats are generated <b>after a race has happened</b>. I do not
+                have access to live data and training data.
               </p>
               <p>
-                If you have any feedback or ideas feel free to{' '}
+                If you have any feedback or ideas feel free to contact me{' '}
+                <a className="standard-link" href="mailto:hello@f1report.net">
+                  via email
+                </a>{' '}
+                or on{' '}
                 <a
                   className="standard-link"
-                  href="mailto:f1report@hartenfeller.dev"
+                  href="https://twitter.com/f1report_net"
                 >
-                  contact me
+                  twitter
                 </a>
                 .
               </p>
