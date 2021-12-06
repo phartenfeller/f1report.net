@@ -136,7 +136,7 @@ const TyreRegulations = ({
           </td>
         </tr>
         <tr>
-          <td className="text-blueGray-800 px-6 py-1">EOS Camper Limit</td>
+          <td className="text-blueGray-800 px-6 py-1">EOS Camber Limit</td>
           <td className="text-blueGray-600 px-6 py-1 text-center">
             {eoscamperlimitfront.toFixed(2)}°
           </td>
