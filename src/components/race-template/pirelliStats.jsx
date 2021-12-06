@@ -138,10 +138,10 @@ const TyreRegulations = ({
         <tr>
           <td className="text-blueGray-800 px-6 py-1">EOS Camper Limit</td>
           <td className="text-blueGray-600 px-6 py-1 text-center">
-            {eoscamperlimitfront.toFixed(1)}°
+            {eoscamperlimitfront.toFixed(2)}°
           </td>
           <td className="text-blueGray-600 px-6 py-1 text-center">
-            {eoscamperlimitrear.toFixed(1)}°
+            {eoscamperlimitrear.toFixed(2)}°
           </td>
         </tr>
       </tbody>
