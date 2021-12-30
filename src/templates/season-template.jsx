@@ -147,12 +147,17 @@ const SeasonTemplate = ({ data }) => {
     seasondrivermainconsByYearList,
   } = seasonByYear;
 
-  const { raceByLastraceid } = seasonlastracesByYearList[0];
-  const {
-    driverstandingsByRaceidList,
-    resultsByRaceidList,
-    constructorstandingsByRaceidList,
-  } = raceByLastraceid;
+  let driverstandingsByRaceidList = [];
+  let resultsByRaceidList = [];
+  let constructorstandingsByRaceidList = [];
+
+  if (seasonlastracesByYearList && seasonlastracesByYearList.length) {
+    const { raceByLastraceid } = seasonlastracesByYearList[0];
+    driverstandingsByRaceidList = raceByLastraceid.driverstandingsByRaceidList;
+    resultsByRaceidList = raceByLastraceid.resultsByRaceidList;
+    constructorstandingsByRaceidList =
+      raceByLastraceid.constructorstandingsByRaceidList;
+  }
 
   const driverTabs = [
     {
@@ -241,14 +246,18 @@ const SeasonTemplate = ({ data }) => {
           Wikipedia Article
         </a>
       </div>
-      <div>
-        <LinkableH2>Driver Standings</LinkableH2>
-        <TabsContainer tabs={driverTabs} defaultTabId={1} />
-      </div>
-      <div>
-        <LinkableH2>Constructor Standings</LinkableH2>
-        <TabsContainer tabs={constructorTabs} defaultTabId={1} />
-      </div>
+      {driverstandingsByRaceidList.length > 0 ? (
+        <div>
+          <LinkableH2>Driver Standings</LinkableH2>
+          <TabsContainer tabs={driverTabs} defaultTabId={1} />
+        </div>
+      ) : null}
+      {constructorstandingsByRaceidList.length > 0 ? (
+        <div>
+          <LinkableH2>Constructor Standings</LinkableH2>
+          <TabsContainer tabs={constructorTabs} defaultTabId={1} />
+        </div>
+      ) : null}
       <div>
         <LinkableH2>Races</LinkableH2>
         <RaceDetailsTable racesByYearList={racesByYearList} />

@@ -40,10 +40,12 @@ const IndexPage = () => {
               </p>
             </div>
             <div className="mt-5 mb-16 space-y-2">
-              <LinkList
-                target={`/races/${lastRace.raceSlug}`}
-                display={`Last Race: ${lastRace.name}`}
-              />
+              {lastRace && (
+                <LinkList
+                  target={`/races/${lastRace.raceSlug}`}
+                  display={`Last Race: ${lastRace.name}`}
+                />
+              )}
               <LinkList
                 target={`/seasons/${currentSeason}`}
                 display={`Current Season: ${currentSeason}`}
