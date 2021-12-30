@@ -61,8 +61,8 @@ const Races = ({ data }) => {
             {({ open }) => (
               <>
                 <dt className="text-lg">
-                  <Disclosure.Button className="text-left bg-white rounded shadow-muted-sm p-4 w-full flex justify-between items-start text-gray-400 hover:shadow-muted focus:outline-none focus:ring focus:ring-red-300">
-                    <span className="font-medium text-gray-900">{year}</span>
+                  <Disclosure.Button className="text-left bg-white rounded shadow-muted-sm p-4 w-full flex justify-between items-start text-zinc-400 hover:shadow-muted focus:outline-none focus:ring focus:ring-red-300">
+                    <span className="font-medium text-zinc-900">{year}</span>
                     <span className="ml-6 h-7 flex items-center">
                       <ChevronDownIcon
                         className={classNames(

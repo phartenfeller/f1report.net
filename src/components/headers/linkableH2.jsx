@@ -12,12 +12,12 @@ const LinkableH2 = ({ children }) => {
       >
         <h2
           id={id}
-          className="font-yrsa font-medium text-gray-900 group-hover:decoration-gray-400 group-hover:underline"
+          className="font-yrsa font-medium text-zinc-900 group-hover:decoration-zinc-400 group-hover:underline"
           style={{ fontSize: '42px', textDecorationThickness: '0.075em' }}
         >
           {children}
         </h2>
-        <span className="font-mono text-gray-400 ml-2 text-4xl hidden group-hover:block">
+        <span className="font-mono text-zinc-400 ml-2 text-4xl hidden group-hover:block">
           #
         </span>
       </a>

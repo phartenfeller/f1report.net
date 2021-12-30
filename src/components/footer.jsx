@@ -10,7 +10,7 @@ function getBuildTime() {
 }
 
 const Footer = () => (
-  <footer class="bg-blueGray-100">
+  <footer class="bg-slate-100">
     <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
       <nav
         class="-mx-5 -my-2 flex flex-wrap justify-center"
@@ -19,7 +19,7 @@ const Footer = () => (
         <div class="px-5 py-2">
           <Link
             to="/about/"
-            class="text-base text-gray-500 hover:text-gray-900"
+            class="text-base text-zinc-500 hover:text-zinc-900"
           >
             About
           </Link>
@@ -28,7 +28,7 @@ const Footer = () => (
         <div class="px-5 py-2">
           <a
             href="https://hartenfeller.dev/imprint"
-            class="text-base text-gray-500 hover:text-gray-900"
+            class="text-base text-zinc-500 hover:text-zinc-900"
           >
             Imprint
           </a>
@@ -37,7 +37,7 @@ const Footer = () => (
         <div class="px-5 py-2">
           <a
             href="https://hartenfeller.dev/privacy"
-            class="text-base text-gray-500 hover:text-gray-900"
+            class="text-base text-zinc-500 hover:text-zinc-900"
           >
             Privacy Policy
           </a>
@@ -46,7 +46,7 @@ const Footer = () => (
       <div class="mt-8 flex justify-center space-x-6">
         <a
           href="https://twitter.com/f1report_net"
-          class="text-gray-400 hover:text-gray-500"
+          class="text-zinc-400 hover:text-zinc-500"
         >
           <span class="sr-only">Twitter</span>
           <svg
@@ -61,7 +61,7 @@ const Footer = () => (
 
         <a
           href="https://github.com/phartenfeller/f1report.net"
-          class="text-gray-400 hover:text-gray-500"
+          class="text-zinc-400 hover:text-zinc-500"
         >
           <span class="sr-only">GitHub</span>
           <svg
@@ -80,24 +80,24 @@ const Footer = () => (
 
         <a
           href="mailto:hello@f1report.net"
-          class="text-gray-400 hover:text-gray-500"
+          class="text-zinc-400 hover:text-zinc-500"
         >
           <span class="sr-only">E-Mail</span>
           <MailIcon className="h-6 w-6" />
         </a>
       </div>
-      <p class="mt-8 text-center text-xs text-gray-400">No Cookies are used</p>
-      <p class="mt-8 text-center text-xs text-gray-400">
+      <p class="mt-8 text-center text-xs text-zinc-400">No Cookies are used</p>
+      <p class="mt-8 text-center text-xs text-zinc-400">
         This website is unofficial and is not associated in any way with the /
         Formula 1 companies. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD /
         CHAMPIONSHIP, GRAND PRIX and related marks are trade marks of Formula
         One / Licensing B.V.
       </p>
-      <p class="mt-8 text-center text-base text-gray-400">
+      <p class="mt-8 text-center text-base text-zinc-400">
         © {new Date().getFullYear()}, Built by{' '}
         <a
           href="https://hartenfeller.dev"
-          className="underline hover:text-gray-500 focus:text-gray-600"
+          className="underline hover:text-zinc-500 focus:text-zinc-600"
         >
           Philipp Hartenfeller
         </a>
@@ -105,7 +105,7 @@ const Footer = () => (
     </div>
   </footer>
 
-  // <footer className="bg-blueGray-200 px-8 pt-5 pb-2 text-sm text-gray-700 ">
+  // <footer className="bg-slate-200 px-8 pt-5 pb-2 text-sm text-zinc-700 ">
   //   <div className="flex items-center justify-between xl:grid xl:grid-cols-3">
   //     <div>
   //       © {new Date().getFullYear()}, Built by{' '}

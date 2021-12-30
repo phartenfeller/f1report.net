@@ -60,7 +60,7 @@ const TyreSelection = ({ startcompound, grandPrix, year }) => {
 
   return (
     <>
-      <h3 className="text-3xl font-bold mb-4 font-yrsa text-blueGray-800">
+      <h3 className="text-3xl font-bold mb-4 font-yrsa text-slate-800">
         Tyre selection
       </h3>
       <div className="grid grid-cols-5 select-none" aria-hidden="true">
@@ -68,14 +68,14 @@ const TyreSelection = ({ startcompound, grandPrix, year }) => {
           // eslint-disable-next-line react/no-array-index-key
           <div key={i} className="w-16 text-center">
             <div className="mx-auto">
-              <div className="font-semibold text-xl mb-3 text-blueGray-600">
+              <div className="font-semibold text-xl mb-3 text-slate-600">
                 {`C${i + 1}`}
               </div>
               <div>
                 {tyre ? (
                   <TyreLogo num={tyre} />
                 ) : (
-                  <span className="text-3xl text-blueGray-400">-</span>
+                  <span className="text-3xl text-slate-400">-</span>
                 )}
               </div>
             </div>
@@ -83,12 +83,12 @@ const TyreSelection = ({ startcompound, grandPrix, year }) => {
         ))}
       </div>
       <div className="mt-6">
-        <div className="text-gray-700">{sentence}</div>
-        <div className="mt-4 flex border border-gray-300 rounded-lg overflow-hidden">
-          <div className="px-4 flex items-center bg-gray-100">
-            <QuestionMarkCircleIcon className="text-gray-400 h-8 w-8" />
+        <div className="text-zinc-700">{sentence}</div>
+        <div className="mt-4 flex border border-zinc-300 rounded-lg overflow-hidden">
+          <div className="px-4 flex items-center bg-zinc-100">
+            <QuestionMarkCircleIcon className="text-zinc-400 h-8 w-8" />
           </div>
-          <span className="py-1 px-3 text-gray-600">
+          <span className="py-1 px-3 text-zinc-600">
             Out of five possible tyre combinations Pirelli selects three for
             each race weekend. C1 is the hardest available tyre and C5 is the
             softest one. Intermediate and wet tyres are the same each weekend.
@@ -106,41 +106,39 @@ const TyreRegulations = ({
   minstartingpressurerear,
 }) => (
   <>
-    <h3 className="text-3xl font-bold mb-4 font-yrsa text-blueGray-800">
+    <h3 className="text-3xl font-bold mb-4 font-yrsa text-slate-800">
       Tyre regulations
     </h3>
     <table className="text-xl">
       <thead>
         <tr>
-          <th className="text-left px-6 pb-2 text-blueGray-600 font-base">
+          <th className="text-left px-6 pb-2 text-slate-600 font-base">
             Category
           </th>
-          <th className="text-center px-6 pb-2 text-blueGray-600 font-base">
+          <th className="text-center px-6 pb-2 text-slate-600 font-base">
             Front
           </th>
-          <th className="text-center px-6 pb-2 text-blueGray-600 font-base">
+          <th className="text-center px-6 pb-2 text-slate-600 font-base">
             Rear
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td className="text-blueGray-800 px-6 py-1">
-            Min. Starting Pressures
-          </td>
-          <td className="text-blueGray-600 px-6 py-1 text-center">
+          <td className="text-slate-800 px-6 py-1">Min. Starting Pressures</td>
+          <td className="text-slate-600 px-6 py-1 text-center">
             {minstartingpressurefront.toFixed(1)} psi
           </td>
-          <td className="text-blueGray-600 px-6 py-1 text-center">
+          <td className="text-slate-600 px-6 py-1 text-center">
             {minstartingpressurerear.toFixed(1)} psi
           </td>
         </tr>
         <tr>
-          <td className="text-blueGray-800 px-6 py-1">EOS Camber Limit</td>
-          <td className="text-blueGray-600 px-6 py-1 text-center">
+          <td className="text-slate-800 px-6 py-1">EOS Camber Limit</td>
+          <td className="text-slate-600 px-6 py-1 text-center">
             {eoscamperlimitfront.toFixed(2)}°
           </td>
-          <td className="text-blueGray-600 px-6 py-1 text-center">
+          <td className="text-slate-600 px-6 py-1 text-center">
             {eoscamperlimitrear.toFixed(2)}°
           </td>
         </tr>
@@ -177,7 +175,7 @@ const CharacteristicsBlock = ({ name, value }) => {
     <div className="mt-5 max-w-xl">
       <dl className="flex justify-between mr-2 mb-2">
         <dt>
-          <h4 className="text-xl font-medium tracking-tight text-blueGray-700">
+          <h4 className="text-xl font-medium tracking-tight text-slate-700">
             {name}
           </h4>
         </dt>
@@ -234,7 +232,7 @@ const PirelliStats = ({ data, grandPrix, year }) => {
         </div>
       </div>
       <div>
-        <h3 className="text-3xl font-bold mt-8 mb-4 font-yrsa text-blueGray-800">
+        <h3 className="text-3xl font-bold mt-8 mb-4 font-yrsa text-slate-800">
           Pirelli Track Characteristics
         </h3>
         <CharacteristicsBlock name="Traction" value={traction} />

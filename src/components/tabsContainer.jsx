@@ -8,7 +8,7 @@ const TabsContainer = ({ tabs, defaultTabId }) => {
   return (
     <div>
       <div>
-        <div className="border-b border-gray-200">
+        <div className="border-b border-zinc-200">
           <nav className="-mb-px flex flex-wrap select-none" aria-label="Tabs">
             {tabs.map(({ tabId, tabName }, i) => (
               <button
@@ -18,7 +18,7 @@ const TabsContainer = ({ tabs, defaultTabId }) => {
                 className={classNames(
                   tabId === active
                     ? 'border-red-400 text-red-700'
-                    : 'border-transparent text-gray-600 hover:text-black hover:border-gray-300',
+                    : 'border-transparent text-zinc-600 hover:text-black hover:border-zinc-300',
                   i === 0 ? 'pr-2 lg:pr-4' : 'px-2 lg:px-4 xl:px-8',
                   'whitespace-nowrap py-4 px-1 border-b-2 lg:border-b-4 font-xs lg:font-medium text-sm lg:text-base xl:text-lg focus:outline-none focus:ring-1 focus:ring-red-300'
                 )}

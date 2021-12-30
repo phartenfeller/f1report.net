@@ -24,16 +24,16 @@ const ListItem = ({ rank, name, count, last, category, team = false }) => {
     <li
       className={classNames(
         'grid grid-cols-3 py-2 items-center',
-        last ? null : 'border-b border-gray-200'
+        last ? null : 'border-b border-zinc-200'
       )}
     >
       <span className={rankClass}>{rankText}</span>
       {team ? (
-        <TeamDisplay teamName={name} textClasses="text-blueGray-600" />
+        <TeamDisplay teamName={name} textClasses="text-slate-600" />
       ) : (
-        <span className="text-blueGray-600">{name}</span>
+        <span className="text-slate-600">{name}</span>
       )}
-      <span className="text-blueGray-600 text-right">{`${count} ${category}`}</span>
+      <span className="text-slate-600 text-right">{`${count} ${category}`}</span>
     </li>
   );
 };
@@ -58,7 +58,7 @@ const TeamCard = ({ list, allConstructorTeamsList, category }) => {
 
   return (
     <div className="px-4 py-5 bg-white shadow-muted rounded-lg overflow-hidden sm:p-6">
-      <h4 className="font-bold text-xl mb-6 tracking-wide text-gray-900">
+      <h4 className="font-bold text-xl mb-6 tracking-wide text-zinc-900">
         {`Most constructor ${category}`}
       </h4>
       <ol>
@@ -97,7 +97,7 @@ const DriverCard = ({ list, allDriversList, category }) => {
 
   return (
     <div className="px-4 py-5 bg-white shadow-muted rounded-lg overflow-hidden sm:p-6">
-      <h4 className="font-bold text-xl mb-6 tracking-wide text-gray-900">
+      <h4 className="font-bold text-xl mb-6 tracking-wide text-zinc-900">
         {`Most driver ${category}`}
       </h4>
       <ol>

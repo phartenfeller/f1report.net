@@ -24,16 +24,16 @@ const CardRank = ({ rank, name, value, last, team = false }) => {
       <dl
         className={classNames(
           'grid grid-cols-3 py-2 items-center',
-          last ? null : 'border-b border-gray-200'
+          last ? null : 'border-b border-zinc-200'
         )}
       >
         <span className={rankClass}>{rankText}</span>
         {team ? (
-          <TeamDisplay teamName={name} textClasses="text-blueGray-600" />
+          <TeamDisplay teamName={name} textClasses="text-slate-600" />
         ) : (
-          <dt className="text-blueGray-600">{name}</dt>
+          <dt className="text-slate-600">{name}</dt>
         )}
-        <dd className="text-blueGray-700 text-lg font-semibold text-right">
+        <dd className="text-slate-700 text-lg font-semibold text-right">
           {value}
         </dd>
       </dl>

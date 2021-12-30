@@ -273,7 +273,7 @@ const RaceTemplate = ({ data }) => {
           Wikipedia Article
         </a>
       </div>
-      <div className="md:hidden my-6 rounded border-2 border-gray-400">
+      <div className="md:hidden my-6 rounded border-2 border-zinc-400">
         <Infobox text="For a better experience and more Info please use a bigger screen" />
       </div>
       <div className="mt-5">
@@ -328,7 +328,7 @@ const RaceTemplate = ({ data }) => {
           />
         </div>
       ) : (
-        <div className="m-0 lg:m-16 rounded border-2 border-gray-300">
+        <div className="m-0 lg:m-16 rounded border-2 border-zinc-300">
           <Warningbox
             title="No data found"
             text="Either the race did not take place yet or there was an errror."

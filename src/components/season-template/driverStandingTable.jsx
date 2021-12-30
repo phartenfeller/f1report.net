@@ -8,10 +8,10 @@ const DriverStandingsTable = ({
   seasondrivermainconsByYearList,
 }) => (
   <div className="py-2 align-middle inline-block min-w-full">
-    <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+    <div className="shadow overflow-hidden border-b border-zinc-200 sm:rounded-lg">
       <div className="overflow-x-auto overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-zinc-200">
+          <thead className="bg-zinc-50">
             <tr>
               <th scope="col" className="c-table-heading">
                 #
@@ -35,7 +35,7 @@ const DriverStandingsTable = ({
               ({ position, points, wins, driverByDriverid, driverid }, i) => (
                 <tr
                   key={driverid}
-                  className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                  className={i % 2 === 0 ? 'bg-white' : 'bg-zinc-50'}
                 >
                   <td className="c-table-cell font-medium">{position}</td>
                   <td className="c-table-cell font-medium">

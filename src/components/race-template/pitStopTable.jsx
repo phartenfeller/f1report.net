@@ -94,12 +94,12 @@ const PitStopTable = ({
 
   return (
     <div className="py-2 align-middle min-w-full">
-      <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+      <div className="shadow overflow-hidden border-b border-zinc-200 sm:rounded-lg">
         <table
           {...getTableProps()}
-          className="min-w-full divide-y divide-gray-200"
+          className="min-w-full divide-y divide-zinc-200"
         >
-          <thead className="bg-gray-50">
+          <thead className="bg-zinc-50">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
@@ -119,7 +119,7 @@ const PitStopTable = ({
               return (
                 <tr
                   {...row.getRowProps()}
-                  className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                  className={i % 2 === 0 ? 'bg-white' : 'bg-zinc-50'}
                 >
                   {row.cells.map((cell) => (
                     <td

@@ -14,18 +14,21 @@ const NoteLink = ({ link, title, i }) => {
   }
 
   return (
-    <div className="ml-6 md:ml-12 my-2 space-x-1">
-      <span className="text-blueGray-600 font-light">{`[${i + 1}]`}</span>
+    <div
+      className="ml-6 md:ml-12 my-2 space-x-1 break-words"
+      style={{ maxWidth: '70ch' }}
+    >
+      <span className="text-slate-600 font-light">{`[${i + 1}]`}</span>
       <a
         href={link}
-        className="px-1 rounded hover:text-blueGray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="px-1 rounded hover:text-slate-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
         target="_blank"
         rel="noreferrer"
       >
         {title}
       </a>
-      <ExternalLinkIcon className="inline-block text-blueGray-400 w-4 h-4" />
-      <span className="text-blueGray-600 font-light">{`(${hostname})`}</span>
+      <ExternalLinkIcon className="inline-block text-slate-400 w-4 h-4" />
+      <span className="text-slate-600 font-light">{`(${hostname})`}</span>
     </div>
   );
 };
@@ -54,11 +57,14 @@ const RaceNotes = ({ racenotes }) => {
 
   return (
     <div className="col-span-2">
-      <h3 className="text-3xl font-yrsa font-medium text-gray-700 pt-4 pb-2">
+      <h3 className="text-3xl font-yrsa font-medium text-zinc-700 pt-4 pb-2">
         Race Notes
       </h3>
-      <div className="prose" style={{ maxWidth: '90ch' }}>
-        <ul className="md:text-lg text-blueGray-700">
+      <div
+        className="prose prose-sm md:prose-base overflow-hidden"
+        style={{ maxWidth: '90ch' }}
+      >
+        <ul className="md:text-lg text-slate-700">
           {notesArray.map((note) => (
             <li className="mb-4" key={note.text}>
               <span>{note.text}</span>

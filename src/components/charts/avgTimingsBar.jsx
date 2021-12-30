@@ -27,7 +27,7 @@ const AvgTimingsBar = ({ times, desc, annotations }) => {
 
   return (
     <div className="">
-      <div className="text-gray-600">
+      <div className="text-zinc-600">
         {annotations.map((a, i) => (
           <p key={a}>{`${'*'.repeat(i + 1)} ${a}`}</p>
         ))}

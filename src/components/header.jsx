@@ -122,17 +122,17 @@ const HeaderMenuItem = ({ items, name }) => (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="-m-3 p-3 flex items-center rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="-m-3 p-3 flex items-center rounded-lg hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-300"
                   >
                     <item.icon
                       className="flex-shrink-0 h-6 w-6 text-teal-400"
                       aria-hidden="true"
                     />
                     <div className="ml-4">
-                      <p className="text-base font-medium text-gray-900">
+                      <p className="text-base font-medium text-zinc-900">
                         {item.name}
                       </p>
-                      <p className="mt-1 text-sm text-gray-500">
+                      <p className="mt-1 text-sm text-zinc-500">
                         {item.description}
                       </p>
                     </div>

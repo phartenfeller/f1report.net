@@ -12,7 +12,7 @@ const DriverCard = ({ list, accessor, header, note = null }) => {
 
   return (
     <CardWrapper note={note}>
-      <h3 className="font-bold text-xl mb-6 tracking-wide text-gray-900">
+      <h3 className="font-bold text-xl mb-6 tracking-wide text-zinc-900">
         {header}
       </h3>
       <ol>

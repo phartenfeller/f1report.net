@@ -11,13 +11,13 @@ const LicenseDisplay = ({ licenseText }) => (
   <Disclosure>
     {({ open }) => (
       <>
-        <Disclosure.Button className="p-1 flex items-center border border-gray-300 rounded w-full hover:bg-blue-50 focus:ring focus:ring-blue-400">
+        <Disclosure.Button className="p-1 flex items-center border border-zinc-300 rounded w-full hover:bg-blue-50 focus:ring focus:ring-blue-400">
           <ChevronRightIcon
             className={`${open ? 'transform rotate-90' : ''} h-5 w-5`}
           />
           Open License
         </Disclosure.Button>
-        <Disclosure.Panel className="text-gray-500">
+        <Disclosure.Panel className="text-zinc-500">
           <pre>{licenseText}</pre>
         </Disclosure.Panel>
       </>
@@ -94,17 +94,17 @@ const LicenseInfo = ({ data }) => (
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="p-2 flex items-center border border-gray-300 rounded w-full hover:bg-blue-50 focus:ring focus:ring-blue-400">
+                <Disclosure.Button className="p-2 flex items-center border border-zinc-300 rounded w-full hover:bg-blue-50 focus:ring focus:ring-blue-400">
                   <ChevronRightIcon
                     className={`${open ? 'transform rotate-90' : ''} h-5 w-5`}
                   />
                   All Licenses
                 </Disclosure.Button>
-                <Disclosure.Panel className="text-gray-500">
+                <Disclosure.Panel className="text-zinc-500">
                   {data.allPackageLicense.edges.map(({ node }) => (
                     <div
                       key={node.identifier}
-                      className="border-b border-gray-300 mt-4 pb-4"
+                      className="border-b border-zinc-300 mt-4 pb-4"
                     >
                       {node.url ? (
                         <a className="standard-link" href={node.url}>

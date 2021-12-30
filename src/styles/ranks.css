@@ -17,6 +17,6 @@
   }
 
   .other-rank-styles {
-    @apply font-yrsa text-2xl text-blueGray-600;
+    @apply font-yrsa text-2xl text-slate-600;
   }
 }

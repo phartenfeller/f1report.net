@@ -47,11 +47,11 @@ const PaginationBar = ({
   nextPage,
   previousPage,
 }) => (
-  <div className="p-2 border-t border-gray-200 bg-gray-100">
-    <div className="space-x-3 text-center text-gray-700">
+  <div className="p-2 border-t border-zinc-200 bg-zinc-100">
+    <div className="space-x-3 text-center text-zinc-700">
       <button
         type="button"
-        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-gray-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-zinc-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
         onClick={() => gotoPage(0)}
         disabled={!canPreviousPage}
       >
@@ -59,7 +59,7 @@ const PaginationBar = ({
       </button>
       <button
         type="button"
-        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-gray-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-zinc-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
         onClick={() => previousPage()}
         disabled={!canPreviousPage}
       >
@@ -75,13 +75,13 @@ const PaginationBar = ({
         type="button"
         onClick={() => nextPage()}
         disabled={!canNextPage}
-        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-gray-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-zinc-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
       >
         {'>'}
       </button>
       <button
         type="button"
-        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-gray-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-zinc-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
         onClick={() => gotoPage(pageCount - 1)}
         disabled={!canNextPage}
       >
@@ -188,13 +188,13 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
 
   return (
     <div className="py-2 align-middle min-w-full">
-      <div className="shadow-muted border-b border-gray-200 sm:rounded-lg">
+      <div className="shadow-muted border-b border-zinc-200 sm:rounded-lg">
         <div className="overflow-x-auto overflow-hidden">
           <table
             {...getTableProps()}
-            className="min-w-full divide-y divide-gray-200"
+            className="min-w-full divide-y divide-zinc-200"
           >
-            <thead className="bg-gray-50">
+            <thead className="bg-zinc-50">
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
@@ -214,7 +214,7 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
                 return (
                   <tr
                     {...row.getRowProps()}
-                    className={i % 2 === 0 ? 'bg-white' : 'bg-blueGray-50'}
+                    className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}
                   >
                     {row.cells.map((cell) => (
                       <td

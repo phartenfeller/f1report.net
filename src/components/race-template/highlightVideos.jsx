@@ -7,7 +7,7 @@ const HighlightLink = ({ link, text }) => (
     <a href={link} className="standard-link">
       {text}
     </a>{' '}
-    <ExternalLinkIcon className="inline-block text-blueGray-400 w-4 h-4" />
+    <ExternalLinkIcon className="inline-block text-slate-400 w-4 h-4" />
   </span>
 );
 
@@ -34,10 +34,10 @@ const HighlightVideos = ({ highlightlinks }) => {
 
   return (
     <div>
-      <h3 className="text-3xl font-yrsa font-medium text-gray-700 pt-4 pb-2">
+      <h3 className="text-3xl font-yrsa font-medium text-zinc-700 pt-4 pb-2">
         Highlights
       </h3>
-      <ul className="md:text-lg list-disc list-inside text-blueGray-700">
+      <ul className="md:text-lg list-disc list-inside text-slate-700">
         {highlightObject.qualifyingHighlights ? (
           <li className="mb-2">
             <HighlightLink

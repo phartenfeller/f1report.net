@@ -71,11 +71,11 @@ const ColumnSelector = ({ selected, setSelected, columns }) => {
         Filters
       </h2>
       <div className="relative py-4">
-        <div className="max-w-7xl flex space-x-6 divide-x divide-gray-200 text-sm">
+        <div className="max-w-7xl flex space-x-6 divide-x divide-zinc-200 text-sm">
           <div>
-            <Disclosure.Button className="pr-2 py-1 rounded group text-gray-500 hover:text-gray-700 font-medium flex items-center select-none focus:outline-none focus:ring-1 focus:ring-blue-300">
+            <Disclosure.Button className="pr-2 py-1 rounded group text-zinc-500 hover:text-zinc-700 font-medium flex items-center select-none focus:outline-none focus:ring-1 focus:ring-blue-300">
               <FilterIcon
-                className="flex-none w-5 h-5 mr-2 text-gray-300 group-hover:text-gray-400"
+                className="flex-none w-5 h-5 mr-2 text-zinc-300 group-hover:text-zinc-400"
                 aria-hidden="true"
               />
               {selected.length} Columns selected
@@ -83,7 +83,7 @@ const ColumnSelector = ({ selected, setSelected, columns }) => {
           </div>
         </div>
       </div>
-      <Disclosure.Panel className="mb-8 p-4 rounded-lg bg-gray-50 max-w-5xl text-sm border-2 border-dashed border-gray-300">
+      <Disclosure.Panel className="mb-8 p-4 rounded-lg bg-zinc-50 max-w-5xl text-sm border-2 border-dashed border-zinc-300">
         <div className="">
           <fieldset>
             <legend className="block font-medium">Displayed Columns</legend>
@@ -98,14 +98,14 @@ const ColumnSelector = ({ selected, setSelected, columns }) => {
                     name={Header}
                     // defaultValue={option.value}
                     type="checkbox"
-                    className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-red-600 focus:ring-red-300"
+                    className="flex-shrink-0 h-4 w-4 border-zinc-300 rounded text-red-600 focus:ring-red-300"
                     checked={selected.includes(accessor)}
                     onChange={handleCheckbox}
                     data-value={accessor}
                   />
                   <label
                     htmlFor={`price-${accessor}`}
-                    className="ml-3 min-w-0 flex-1 text-gray-600 select-none"
+                    className="ml-3 min-w-0 flex-1 text-zinc-600 select-none"
                   >
                     {Header}
                   </label>
@@ -313,7 +313,7 @@ const AllTimeDriverStats = ({ data }) => {
       <SEO title="Races" />
       <Header1>All Time Driver Stats</Header1>
 
-      <div className="text-gray-600">
+      <div className="text-zinc-600">
         * all points are calculated after todays rules.
       </div>
 
