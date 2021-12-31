@@ -2,7 +2,7 @@ import React from 'react';
 import { StaticImage } from 'gatsby-plugin-image';
 
 const LandingHero = () => (
-  <>
+  <div>
     <div className="pt-4 sm:pt-12">
       <div className="relative select-none">
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-white" />
@@ -34,23 +34,23 @@ const LandingHero = () => (
         </div>
       </div>
     </div>
-    <div className="mt-8 text-right">
+    <div className="mt-3 text-slate-500">
       Photo by{' '}
       <a
-        className="black-link"
+        className="underline decoration-slate-300 hover:decoration-slate-700"
         href="https://unsplash.com/@abedismail?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
       >
         Abed Ismail
       </a>{' '}
       on{' '}
       <a
-        className="black-link"
+        className="underline decoration-slate-300 hover:decoration-slate-700"
         href="https://unsplash.com/s/photos/formula-1?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
       >
         Unsplash
       </a>
     </div>
-  </>
+  </div>
 );
 
 export default LandingHero;

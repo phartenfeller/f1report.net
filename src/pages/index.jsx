@@ -13,8 +13,29 @@ const IndexPage = () => {
     <Layout noMarginTop noMarginSides noMarginBottom>
       <SEO title="Home" />
       <div className="bg-white pb-24">
+        <div className="max-w-[2000px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-12 mx-4 md:mx-8 lg:mx-12 items-center">
+            <div className="xl:col-span-2">
+              <LandingHero />
+            </div>
+            <div className="space-y-4 mt-12 lg:mt-0">
+              {lastRace && (
+                <LinkList
+                  target={`/races/${lastRace.raceSlug}`}
+                  display={`Last Race: ${lastRace.name}`}
+                  primary
+                />
+              )}
+              <LinkList
+                target={`/seasons/${currentSeason}`}
+                display={`Current Season: ${currentSeason}`}
+              />
+              <LinkList target="/races/" display="All Races" />
+              <LinkList target="/circuits/" display="All Circuits" />
+            </div>
+          </div>
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <LandingHero />
           <div className="mt-12">
             <div className="mb-12">
               <Infobox text="This site is under active development, more data and analytics will be added soon" />
@@ -38,20 +59,6 @@ const IndexPage = () => {
                 </a>
                 .
               </p>
-            </div>
-            <div className="mt-5 mb-16 space-y-2">
-              {lastRace && (
-                <LinkList
-                  target={`/races/${lastRace.raceSlug}`}
-                  display={`Last Race: ${lastRace.name}`}
-                />
-              )}
-              <LinkList
-                target={`/seasons/${currentSeason}`}
-                display={`Current Season: ${currentSeason}`}
-              />
-              <LinkList target="/races/" display="All Races" />
-              <LinkList target="/circuits/" display="All Circuits" />
             </div>
           </div>
         </div>
