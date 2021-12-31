@@ -1,10 +1,18 @@
 import { graphql, useStaticQuery } from 'gatsby';
 
-const getLastRace = (data) => {
+const getLastRace = (seasons) => {
+  let pastRaces = [];
   try {
-    const pastRaces = data.postgres.allSeasons.nodes[0].racesByYearList.filter(
+    pastRaces = seasons[0].racesByYearList.filter(
       (race) => race.laptimesByRaceidList.length > 0
     );
+
+    // no race has yet taken place in new season, check last race of last season
+    if (pastRaces.length === 0) {
+      pastRaces = seasons[1].racesByYearList.filter(
+        (race) => race.laptimesByRaceidList.length > 0
+      );
+    }
 
     const lastRace = pastRaces.sort(
       (a, b) => parseInt(b.round) - parseInt(a.round)
@@ -18,12 +26,11 @@ const getLastRace = (data) => {
   }
 };
 
-const getNextRace = (data) => {
+const getNextRace = (seasons) => {
   try {
-    const futureRaces =
-      data.postgres.allSeasons.nodes[0].racesByYearList.filter(
-        (race) => race.laptimesByRaceidList.length === 0
-      );
+    const futureRaces = seasons[0].racesByYearList.filter(
+      (race) => race.laptimesByRaceidList.length === 0
+    );
 
     const nextRace = futureRaces.sort(
       (a, b) => parseInt(a.round) - parseInt(b.round)
@@ -40,7 +47,7 @@ export default () => {
   const data = useStaticQuery(graphql`
     {
       postgres {
-        allSeasons(last: 1) {
+        allSeasons(last: 2) {
           nodes {
             year
             racesByYearList(orderBy: DATE_DESC) {
@@ -67,8 +74,13 @@ export default () => {
     }
   `);
 
-  const lastRace = getLastRace(data);
-  const nextRace = getNextRace(data);
+  // highest year is with index 0
+  const seasons = data.postgres.allSeasons.nodes.sort(
+    (a, b) => b.year - a.year
+  );
+
+  const lastRace = getLastRace(seasons);
+  const nextRace = getNextRace(seasons);
 
   return {
     lastRace,
