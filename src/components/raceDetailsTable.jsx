@@ -91,11 +91,13 @@ const RaceDetailsTable = ({ racesByYearList }) => {
         Header: ' ',
         accessor: 'raceSlug',
         // eslint-disable-next-line react/prop-types
-        Cell: ({ value }) => (
-          <Link to={`/races/${value}`} className="standard-link">
-            Details
-          </Link>
-        ),
+        Cell: ({ value }) =>
+          // don't link unanounced races -> e.g. 2021-tba
+          value.match(/^[0-9]+-tba$/) ? null : (
+            <Link to={`/races/${value}`} className="standard-link">
+              Details
+            </Link>
+          ),
       },
     ],
     []
