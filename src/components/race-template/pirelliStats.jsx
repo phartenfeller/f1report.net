@@ -248,7 +248,7 @@ const PirelliStats = ({ data, grandPrix, year }) => {
           <CharacteristicsBlock name="Track Evolution" value={trackevolution} />
         )}
         <CharacteristicsBlock name="Asphalt Grip" value={asphaltgrip} />
-        <CharacteristicsBlock name="Asphalt Brasion" value={asphaltabrasion} />
+        <CharacteristicsBlock name="Asphalt Abrasion" value={asphaltabrasion} />
         <CharacteristicsBlock name="Downforce" value={downforce} />
       </div>
       <div className="text-right mt-3">
