@@ -183,7 +183,10 @@ const CharacteristicsBlock = ({ name, value }) => {
             {name}
           </h4>
         </dt>
-        <dd className="text-xl font-light">{`${value} / 5`}</dd>
+        <dd className="">
+          <span className="text-xl">{value}</span>
+          <span className="text-slate-400 font-light text-sm"> / 5</span>
+        </dd>
       </dl>
       <div className="grid grid-cols-5">
         {blocks.map((_, i) => (
