@@ -88,11 +88,13 @@ const TyreSelection = ({ startcompound, grandPrix, year }) => {
           <div className="px-4 flex items-center bg-zinc-100">
             <QuestionMarkCircleIcon className="text-zinc-400 h-8 w-8" />
           </div>
-          <span className="py-1 px-3 text-zinc-600">
-            Out of five possible tyre combinations Pirelli selects three for
-            each race weekend. C1 is the hardest available tyre and C5 is the
-            softest one. Intermediate and wet tyres are the same each weekend.
-          </span>
+          <p className="py-1 px-3 text-zinc-600">
+            Out of five possible tyre compounds Pirelli selects a set of three
+            for each race weekend. C1 is the hardest available tyre and C5 is
+            the softest one. Intermediate and wet tyres are the same each
+            weekend. The hardest tyre in a reace is always coloured white, the
+            middle one yellow and the softest one red.
+          </p>
         </div>
       </div>
     </>
@@ -163,6 +165,8 @@ function getBlockColor(i, value) {
       return '#4F46E5';
     case 5:
       return '#6D28D9';
+    case 6:
+      return '#8928d9';
     default:
       return null;
   }
@@ -203,6 +207,7 @@ const PirelliStats = ({ data, grandPrix, year }) => {
     braking,
     lateral,
     tyrestress,
+    trackevolution,
     asphaltgrip,
     asphaltabrasion,
     downforce,
@@ -239,6 +244,9 @@ const PirelliStats = ({ data, grandPrix, year }) => {
         <CharacteristicsBlock name="Braking" value={braking} />
         <CharacteristicsBlock name="Lateral" value={lateral} />
         <CharacteristicsBlock name="Tyre Stress" value={tyrestress} />
+        {trackevolution && (
+          <CharacteristicsBlock name="Track Evolution" value={trackevolution} />
+        )}
         <CharacteristicsBlock name="Asphalt Grip" value={asphaltgrip} />
         <CharacteristicsBlock name="Asphalt Brasion" value={asphaltabrasion} />
         <CharacteristicsBlock name="Downforce" value={downforce} />

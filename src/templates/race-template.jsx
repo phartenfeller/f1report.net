@@ -127,6 +127,7 @@ export const query = graphql`
         braking
         lateral
         tyrestress
+        trackevolution
         asphaltgrip
         asphaltabrasion
         downforce
@@ -225,6 +226,7 @@ const RaceTemplate = ({ data }) => {
     braking,
     lateral,
     tyrestress,
+    trackevolution,
     asphaltgrip,
     asphaltabrasion,
     downforce,
@@ -348,6 +350,7 @@ const RaceTemplate = ({ data }) => {
               braking,
               lateral,
               tyrestress,
+              trackevolution,
               asphaltgrip,
               asphaltabrasion,
               downforce,
@@ -396,6 +399,7 @@ RaceTemplate.propTypes = {
         braking: PropTypes.number,
         lateral: PropTypes.number,
         tyrestress: PropTypes.number,
+        trackevolution: PropTypes.number,
         asphaltgrip: PropTypes.number,
         asphaltabrasion: PropTypes.number,
         downforce: PropTypes.number,
