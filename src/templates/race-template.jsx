@@ -123,6 +123,7 @@ export const query = graphql`
         }
         pirellisource
         startcompound
+        compoundarr
         traction
         braking
         lateral
@@ -222,6 +223,7 @@ const RaceTemplate = ({ data }) => {
     pitstopsByRaceidList,
     pirellisource,
     startcompound,
+    compoundarr,
     traction,
     braking,
     lateral,
@@ -346,6 +348,7 @@ const RaceTemplate = ({ data }) => {
             data={{
               pirellisource,
               startcompound,
+              compoundarr,
               traction,
               braking,
               lateral,
@@ -395,6 +398,7 @@ RaceTemplate.propTypes = {
         pitstopsByRaceidList: pitstopsByRaceidListType.isRequired,
         pirellisource: PropTypes.string,
         startcompound: PropTypes.number,
+        compoundarr: PropTypes.string,
         traction: PropTypes.number,
         braking: PropTypes.number,
         lateral: PropTypes.number,

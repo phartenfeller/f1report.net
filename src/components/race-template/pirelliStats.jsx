@@ -36,27 +36,44 @@ const TyreLogo = ({ num }) => {
   );
 };
 
-const TyreSelection = ({ startcompound, grandPrix, year }) => {
-  const tyres = new Array(5).fill(null);
-  for (let i = 0; i < 3; i += 1) {
-    tyres[startcompound - 1 + i] = i + 1;
-  }
+function getDesc({ tyreArr, grandPrix, year }) {
+  const tyreSelection = [];
+  tyreArr.forEach((tyre, i) => {
+    if (tyre) tyreSelection.push(i + 1);
+  });
+  const text = tyreSelection.join('-');
 
-  let sentence;
-
-  switch (startcompound) {
-    case 1:
-      sentence = `The hardest tyre combination of C1, C2 and C3 was selected for the ${grandPrix} ${year}.`;
-      break;
-    case 2:
-      sentence = `The medium tyre combination of C2, C3, C4 was selected for the ${grandPrix} ${year}.`;
-      break;
-    case 3:
-      sentence = `The softest tyre combination of C3, C4, C5 was selected for the ${grandPrix} ${year}.`;
-      break;
+  switch (text) {
+    case '1-2-3':
+      return `The hardest compound combination of C1, C2 and C3 was selected for the ${grandPrix} ${year}.`;
+    case '2-3-4':
+      return `The medium compound combination of C2, C3, C4 was selected for the ${grandPrix} ${year}.`;
+    case '3-4-5':
+      return `The softest compound combination of C3, C4, C5 was selected for the ${grandPrix} ${year}.`;
+    case '2-3-5':
+      return `The C4 compound was skipped in favor of C5 in the ${grandPrix} ${year}.`;
     default:
-      sentence = null;
+      return null;
   }
+}
+
+const TyreSelection = ({ startcompound, compoundarr, grandPrix, year }) => {
+  if (!startcompound && !compoundarr) return <span>No data available!</span>;
+
+  const tyres = new Array(5).fill(null);
+
+  if (startcompound) {
+    for (let i = 0; i < 3; i += 1) {
+      tyres[startcompound - 1 + i] = i + 1;
+    }
+  } else {
+    const cpArr = JSON.parse(compoundarr);
+    cpArr.forEach((tyreNum, i) => {
+      tyres[tyreNum - 1] = i + 1;
+    });
+  }
+
+  const sentence = getDesc({ tyreArr: tyres, grandPrix, year });
 
   return (
     <>
@@ -206,6 +223,7 @@ const PirelliStats = ({ data, grandPrix, year }) => {
   const {
     pirellisource,
     startcompound,
+    compoundarr,
     traction,
     braking,
     lateral,
@@ -226,6 +244,7 @@ const PirelliStats = ({ data, grandPrix, year }) => {
         <div className="sm:w-1/2">
           <TyreSelection
             startcompound={startcompound}
+            compoundarr={compoundarr}
             grandPrix={grandPrix}
             year={year}
           />
