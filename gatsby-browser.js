@@ -5,3 +5,13 @@
  */
 
 // You can delete this file if you're not using it
+export const onServiceWorkerUpdateReady = () => {
+  const answer = window.confirm(
+    `This application has been updated. ` +
+      `Please confirm to reload and display the latest version.`
+  );
+
+  if (answer === true) {
+    window.location.reload();
+  }
+};
