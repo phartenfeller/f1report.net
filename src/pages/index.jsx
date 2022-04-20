@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Infobox from '../components/alerts/infobox';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
@@ -8,6 +8,18 @@ import useCurrentData from '../hooks/useCurrentData';
 
 const IndexPage = () => {
   const { lastRace, currentSeason } = useCurrentData();
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    setTimeout(() => {
+      const encoded =
+        '97-71-86-115-98-71-57-65-90-106-70-121-90-88-66-118-99-110-81-117-98-109-86-48';
+
+      const ascii = encoded.split('-');
+      const res = String.fromCharCode(...ascii);
+      setEmail(atob(res));
+    }, 2000);
+  }, [setEmail]);
 
   return (
     <Layout noMarginTop noMarginSides noMarginBottom>
@@ -47,8 +59,11 @@ const IndexPage = () => {
               </p>
               <p>
                 If you have any feedback or ideas feel free to contact me{' '}
-                <a className="standard-link" href="mailto:hello@f1report.net">
-                  via email
+                <a
+                  className="standard-link"
+                  href={email ? `mailto:${email}` : '#loading'}
+                >
+                  {email ? 'via email' : 'via email (loading...)'}
                 </a>{' '}
                 or on{' '}
                 <a
