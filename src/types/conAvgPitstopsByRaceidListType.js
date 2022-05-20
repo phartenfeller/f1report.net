@@ -3,7 +3,7 @@ import constructorType from './constructorType';
 
 export default PropTypes.arrayOf(
   PropTypes.shape({
-    avglaptimes: PropTypes.number.isRequired,
+    avgpittimes: PropTypes.number.isRequired,
     constructorTeamByConstructorid: constructorType,
   }).isRequired
 );

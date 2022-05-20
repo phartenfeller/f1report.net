@@ -22,7 +22,7 @@ const TyreLogo = ({ num }) => {
   }
 
   return (
-    <div className="w-12 h-12 mx-auto">
+    <div className="mx-auto h-12 w-12">
       <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
         <circle cx="239.5" cy="239.5" r="218.5" fill="#1E2427" />
         <circle cx="240" cy="240" r="109" fill="#B4BDC1" />
@@ -77,15 +77,15 @@ const TyreSelection = ({ startcompound, compoundarr, grandPrix, year }) => {
 
   return (
     <>
-      <h3 className="text-3xl font-bold mb-4 font-yrsa text-slate-800">
+      <h3 className="mb-4 font-yrsa text-3xl font-bold text-slate-800">
         Tyre selection
       </h3>
-      <div className="grid grid-cols-5 select-none" aria-hidden="true">
+      <div className="grid select-none grid-cols-5" aria-hidden="true">
         {tyres.map((tyre, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={i} className="w-16 text-center">
             <div className="mx-auto">
-              <div className="font-semibold text-xl mb-3 text-slate-600">
+              <div className="mb-3 text-xl font-semibold text-slate-600">
                 {`C${i + 1}`}
               </div>
               <div>
@@ -101,9 +101,9 @@ const TyreSelection = ({ startcompound, compoundarr, grandPrix, year }) => {
       </div>
       <div className="mt-6">
         <div className="text-zinc-700">{sentence}</div>
-        <div className="mt-4 flex border border-zinc-300 rounded-lg overflow-hidden">
-          <div className="px-4 flex items-center bg-zinc-100">
-            <QuestionMarkCircleIcon className="text-zinc-400 h-8 w-8" />
+        <div className="mt-4 flex overflow-hidden rounded-lg border border-zinc-300">
+          <div className="flex items-center bg-zinc-100 px-4">
+            <QuestionMarkCircleIcon className="h-8 w-8 text-zinc-400" />
           </div>
           <p className="py-1 px-3 text-zinc-600">
             Out of five possible tyre compounds Pirelli selects a set of three
@@ -125,39 +125,39 @@ const TyreRegulations = ({
   minstartingpressurerear,
 }) => (
   <>
-    <h3 className="text-3xl font-bold mb-4 font-yrsa text-slate-800">
+    <h3 className="mb-4 font-yrsa text-3xl font-bold text-slate-800">
       Tyre regulations
     </h3>
     <table className="text-xl">
       <thead>
         <tr>
-          <th className="text-left px-6 pb-2 text-slate-600 font-base">
+          <th className="font-base px-6 pb-2 text-left text-slate-600">
             Category
           </th>
-          <th className="text-center px-6 pb-2 text-slate-600 font-base">
+          <th className="font-base px-6 pb-2 text-center text-slate-600">
             Front
           </th>
-          <th className="text-center px-6 pb-2 text-slate-600 font-base">
+          <th className="font-base px-6 pb-2 text-center text-slate-600">
             Rear
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td className="text-slate-800 px-6 py-1">Min. Starting Pressures</td>
-          <td className="text-slate-600 px-6 py-1 text-center">
+          <td className="px-6 py-1 text-slate-800">Min. Starting Pressures</td>
+          <td className="px-6 py-1 text-center text-slate-600">
             {minstartingpressurefront.toFixed(1)} psi
           </td>
-          <td className="text-slate-600 px-6 py-1 text-center">
+          <td className="px-6 py-1 text-center text-slate-600">
             {minstartingpressurerear.toFixed(1)} psi
           </td>
         </tr>
         <tr>
-          <td className="text-slate-800 px-6 py-1">EOS Camber Limit</td>
-          <td className="text-slate-600 px-6 py-1 text-center">
+          <td className="px-6 py-1 text-slate-800">EOS Camber Limit</td>
+          <td className="px-6 py-1 text-center text-slate-600">
             {eoscamperlimitfront.toFixed(2)}°
           </td>
-          <td className="text-slate-600 px-6 py-1 text-center">
+          <td className="px-6 py-1 text-center text-slate-600">
             {eoscamperlimitrear.toFixed(2)}°
           </td>
         </tr>
@@ -194,7 +194,7 @@ const CharacteristicsBlock = ({ name, value }) => {
 
   return (
     <div className="mt-5 max-w-xl">
-      <dl className="flex justify-between mr-2 mb-2">
+      <dl className="mr-2 mb-2 flex justify-between">
         <dt>
           <h4 className="text-xl font-medium tracking-tight text-slate-700">
             {name}
@@ -202,7 +202,7 @@ const CharacteristicsBlock = ({ name, value }) => {
         </dt>
         <dd className="">
           <span className="text-xl">{value}</span>
-          <span className="text-slate-400 font-light text-sm"> / 5</span>
+          <span className="text-sm font-light text-slate-400"> / 5</span>
         </dd>
       </dl>
       <div className="grid grid-cols-5">
@@ -210,7 +210,7 @@ const CharacteristicsBlock = ({ name, value }) => {
           <div
             // eslint-disable-next-line react/no-array-index-key
             key={i}
-            className="h-6 mr-2 rounded"
+            className="mr-2 h-6 rounded"
             style={{ background: getBlockColor(i, value) }}
           />
         ))}
@@ -239,8 +239,8 @@ const PirelliStats = ({ data, grandPrix, year }) => {
   } = data;
 
   return (
-    <div className="rounded-lg shadow-muted w-full p-6 bg-white max-w-5xl mx-auto">
-      <div className="space-y-8 sm:space-y-0 sm:flex justify-between">
+    <div className="mx-auto w-full max-w-5xl rounded-lg bg-white p-6 shadow-muted">
+      <div className="justify-between space-y-8 sm:flex sm:space-y-0">
         <div className="sm:w-1/2">
           <TyreSelection
             startcompound={startcompound}
@@ -259,7 +259,7 @@ const PirelliStats = ({ data, grandPrix, year }) => {
         </div>
       </div>
       <div>
-        <h3 className="text-3xl font-bold mt-8 mb-4 font-yrsa text-slate-800">
+        <h3 className="mt-8 mb-4 font-yrsa text-3xl font-bold text-slate-800">
           Pirelli Track Characteristics
         </h3>
         <CharacteristicsBlock name="Traction" value={traction} />
@@ -273,8 +273,8 @@ const PirelliStats = ({ data, grandPrix, year }) => {
         <CharacteristicsBlock name="Asphalt Abrasion" value={asphaltabrasion} />
         <CharacteristicsBlock name="Downforce" value={downforce} />
       </div>
-      <div className="text-right mt-3">
-        <a href={pirellisource} className="text-lg black-link">
+      <div className="mt-3 text-right">
+        <a href={pirellisource} className="black-link text-lg">
           Source: Pirelli
         </a>
       </div>
@@ -286,7 +286,7 @@ PirelliStats.propTypes = {
   // eslint-disable-next-line react/require-default-props
   data: PropTypes.shape(PropTypes.any),
   grandPrix: PropTypes.string.isRequired,
-  year: PropTypes.number.isRequired,
+  year: PropTypes.string.isRequired,
 };
 
 export default PirelliStats;
