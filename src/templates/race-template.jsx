@@ -26,6 +26,7 @@ import arrayWithValues from '../util/arrayWithValues';
 import PitStopTimes from '../components/race-template/pitstopTimes';
 import pitstopsByRaceidListType from '../types/pitstopsByRaceidListType';
 import PirelliStats from '../components/race-template/pirelliStats';
+import RaceHeader from '../components/race-template/raceHeader';
 
 export const query = graphql`
   query raceData($raceid: PostGraphile_BigInt!, $year: PostGraphile_BigInt!) {
@@ -255,116 +256,119 @@ const RaceTemplate = ({ data }) => {
     typeof window !== 'undefined' ? new Date(date).toLocaleDateString() : date;
 
   return (
-    <Layout>
+    <Layout noMarginSides noMarginBottom noMarginTop>
       <SEO title={pageTitle} description={description} meta={meta} />
-      <Header1 dataId={raceid}>{pageTitle}</Header1>
-      <div>
-        <span>Date: </span>
-        <time dateTime={date}>{dateLocal}</time>
-      </div>
-      <div>
-        <span>Track: </span>
-        <Link to={`/circuits/${circuitref}`} className="standard-link">
-          {curcuit}
-        </Link>
-        <span>
-          {' '}
-          - {location} - {country}
-        </span>
-      </div>
-      <div>
-        <a href={url} className="standard-link">
-          Wikipedia Article
-        </a>
-      </div>
-      <div className="md:hidden my-6 rounded border-2 border-zinc-400">
-        <Infobox text="For a better experience and more Info please use a bigger screen" />
-      </div>
-      <div className="mt-5">
-        <LinkableH2>Race Results</LinkableH2>
-        <RaceResultsTable resultsByRaceidList={resultsByRaceidList} />
-        <Link to={`/seasons/${year}`} className="standard-link">
-          Season overview
-        </Link>
-        <div className="md:grid md:grid-cols-3 md:space-x-12">
-          <RaceNotes racenotes={racenotes} />
-          <HighlightVideos highlightlinks={highlightlinks} />
-        </div>
-      </div>
-      {resultsByRaceidList && resultsByRaceidList.length > 0 ? (
+      <RaceHeader pageTitle={pageTitle} year={year} raceid={raceid} />
+      <div className="mx-6 mt-8">
+        <Header1 dataId={raceid}>{pageTitle}</Header1>
         <div>
-          <div>
-            {laptimesByRaceidList && laptimesByRaceidList.length > 0 ? (
-              <>
-                <LinkableH2>Positions</LinkableH2>
-                <PositionChart
-                  laptimesByRaceidList={laptimesByRaceidList}
-                  driverMap={driverMap}
-                  resultsByRaceidList={resultsByRaceidList}
-                />
-              </>
-            ) : null}
+          <span>Date: </span>
+          <time dateTime={date}>{dateLocal}</time>
+        </div>
+        <div>
+          <span>Track: </span>
+          <Link to={`/circuits/${circuitref}`} className="standard-link">
+            {curcuit}
+          </Link>
+          <span>
+            {' '}
+            - {location} - {country}
+          </span>
+        </div>
+        <div>
+          <a href={url} className="standard-link">
+            Wikipedia Article
+          </a>
+        </div>
+        <div className="my-6 rounded border-2 border-zinc-400 md:hidden">
+          <Infobox text="For a better experience and more Info please use a bigger screen" />
+        </div>
+        <div className="mt-5">
+          <LinkableH2>Race Results</LinkableH2>
+          <RaceResultsTable resultsByRaceidList={resultsByRaceidList} />
+          <Link to={`/seasons/${year}`} className="standard-link">
+            Season overview
+          </Link>
+          <div className="md:grid md:grid-cols-3 md:space-x-12">
+            <RaceNotes racenotes={racenotes} />
+            <HighlightVideos highlightlinks={highlightlinks} />
           </div>
-          {driAvgLaptsByRaceidList && driAvgLaptsByRaceidList.length > 0 ? (
+        </div>
+        {resultsByRaceidList && resultsByRaceidList.length > 0 ? (
+          <div>
             <div>
-              <LinkableH2>Driver Lap Time Statistics</LinkableH2>
-              <DriverLapTimes
-                driAvgLaptsByRaceidList={driAvgLaptsByRaceidList}
-                driAvgLapt70PsByRaceidList={driAvgLapt70PsByRaceidList}
-                driverMap={driverMap}
-              />
+              {laptimesByRaceidList && laptimesByRaceidList.length > 0 ? (
+                <>
+                  <LinkableH2>Positions</LinkableH2>
+                  <PositionChart
+                    laptimesByRaceidList={laptimesByRaceidList}
+                    driverMap={driverMap}
+                    resultsByRaceidList={resultsByRaceidList}
+                  />
+                </>
+              ) : null}
             </div>
-          ) : null}
-          {conAvgLaptsByRaceidList && conAvgLaptsByRaceidList.length > 0 ? (
-            <div>
-              <LinkableH2>Constructor Lap Time Statistics</LinkableH2>
-              <ConstructorLapTimes
-                conAvgLaptsByRaceidList={conAvgLaptsByRaceidList}
-                conAvgLapt70PsByRaceidList={conAvgLapt70PsByRaceidList}
-                driverMap={driverMap}
-              />
-            </div>
-          ) : null}
-          <PitStopTimes
-            conAvgPitstopsByRaceidList={conAvgPitstopsByRaceidList}
-            pitstopsByRaceidList={pitstopsByRaceidList}
-            seasondrivermainconsByYearList={seasondrivermainconsByYearList}
-          />
-        </div>
-      ) : (
-        <div className="m-0 lg:m-16 rounded border-2 border-zinc-300">
-          <Warningbox
-            title="No data found"
-            text="Either the race did not take place yet or there was an errror."
-          />
-        </div>
-      )}
-      {pirellisource ? (
-        <div>
-          <LinkableH2>Tyre Usage</LinkableH2>
-          <PirelliStats
-            grandPrix={name}
-            year={year}
-            data={{
-              pirellisource,
-              startcompound,
-              compoundarr,
-              traction,
-              braking,
-              lateral,
-              tyrestress,
-              trackevolution,
-              asphaltgrip,
-              asphaltabrasion,
-              downforce,
-              eoscamperlimitfront,
-              eoscamperlimitrear,
-              minstartingpressurefront,
-              minstartingpressurerear,
-            }}
-          />
-        </div>
-      ) : null}
+            {driAvgLaptsByRaceidList && driAvgLaptsByRaceidList.length > 0 ? (
+              <div>
+                <LinkableH2>Driver Lap Time Statistics</LinkableH2>
+                <DriverLapTimes
+                  driAvgLaptsByRaceidList={driAvgLaptsByRaceidList}
+                  driAvgLapt70PsByRaceidList={driAvgLapt70PsByRaceidList}
+                  driverMap={driverMap}
+                />
+              </div>
+            ) : null}
+            {conAvgLaptsByRaceidList && conAvgLaptsByRaceidList.length > 0 ? (
+              <div>
+                <LinkableH2>Constructor Lap Time Statistics</LinkableH2>
+                <ConstructorLapTimes
+                  conAvgLaptsByRaceidList={conAvgLaptsByRaceidList}
+                  conAvgLapt70PsByRaceidList={conAvgLapt70PsByRaceidList}
+                  driverMap={driverMap}
+                />
+              </div>
+            ) : null}
+            <PitStopTimes
+              conAvgPitstopsByRaceidList={conAvgPitstopsByRaceidList}
+              pitstopsByRaceidList={pitstopsByRaceidList}
+              seasondrivermainconsByYearList={seasondrivermainconsByYearList}
+            />
+          </div>
+        ) : (
+          <div className="m-0 rounded border-2 border-zinc-300 lg:m-16">
+            <Warningbox
+              title="No data found"
+              text="Either the race did not take place yet or there was an errror."
+            />
+          </div>
+        )}
+        {pirellisource ? (
+          <div>
+            <LinkableH2>Tyre Usage</LinkableH2>
+            <PirelliStats
+              grandPrix={name}
+              year={year}
+              data={{
+                pirellisource,
+                startcompound,
+                compoundarr,
+                traction,
+                braking,
+                lateral,
+                tyrestress,
+                trackevolution,
+                asphaltgrip,
+                asphaltabrasion,
+                downforce,
+                eoscamperlimitfront,
+                eoscamperlimitrear,
+                minstartingpressurefront,
+                minstartingpressurerear,
+              }}
+            />
+          </div>
+        ) : null}
+      </div>
     </Layout>
   );
 };
