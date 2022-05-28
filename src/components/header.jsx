@@ -95,7 +95,7 @@ const HeaderMenuItem = ({ items, name }) => (
   <Popover className="relative">
     {({ open }) => (
       <>
-        <Popover.Button className="p-1 group rounded-md inline-flex items-center text-base font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-700">
+        <Popover.Button className="group inline-flex items-center rounded-md p-1 text-base font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-700">
           <span>{name}</span>
           <ChevronDownIcon
             className={classNames(
@@ -115,17 +115,17 @@ const HeaderMenuItem = ({ items, name }) => (
           leaveFrom="opacity-100 translate-y-0"
           leaveTo="opacity-0 translate-y-1"
         >
-          <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-sm sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
-            <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+          <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-sm transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
+            <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
               <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
                 {items.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="-m-3 p-3 flex items-center rounded-lg hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="-m-3 flex items-center rounded-lg p-3 hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-300"
                   >
                     <item.icon
-                      className="flex-shrink-0 h-6 w-6 text-teal-400"
+                      className="h-6 w-6 flex-shrink-0 text-teal-400"
                       aria-hidden="true"
                     />
                     <div className="ml-4">
@@ -153,7 +153,8 @@ HeaderMenuItem.propTypes = {
       name: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       href: PropTypes.string.isRequired,
-      icon: PropTypes.func.isRequired,
+      // eslint-disable-next-line react/forbid-prop-types
+      icon: PropTypes.object.isRequired,
     })
   ).isRequired,
   name: PropTypes.string.isRequired,
@@ -172,7 +173,7 @@ const Header = ({ siteTitle }) => {
         <span className="text-xl">
           <Link
             to="/"
-            className="text-white px-3 py-1 rounded hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-300"
+            className="rounded px-3 py-1 text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-300"
           >
             {siteTitle}
           </Link>
@@ -181,7 +182,7 @@ const Header = ({ siteTitle }) => {
         <div>
           <Popover.Group
             as="nav"
-            className="hidden md:flex space-x-6 items-center"
+            className="hidden items-center space-x-6 md:flex"
           >
             <MemoMenuItem items={races} name="Races" />
             <MemoMenuItem items={circuits} name="Circuits" />

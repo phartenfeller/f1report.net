@@ -30,9 +30,7 @@
     ],
     "camelcase": 0,
     "react/jsx-props-no-spreading": 0,
-    "react/function-component-definition": {
-      "namedComponents": "arrow-function"
-    }
+    "react/function-component-definition": 0
   },
   "plugins": ["prettier", "react-hooks", "jsx-a11y"],
   "settings": {

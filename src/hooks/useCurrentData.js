@@ -43,6 +43,15 @@ const getNextRace = (seasons) => {
   }
 };
 
+function getDriverStandings(seasons) {
+  return seasons?.[0]?.seasonlastracesByYearList?.[0]?.raceByLastraceid
+    ?.driverstandingsByRaceidList;
+}
+
+function getConstructorStandings(seasons) {
+  return seasons[0].seasonlastracesByYearList.constructorstandingsByRaceidList;
+}
+
 export default () => {
   const data = useStaticQuery(graphql`
     {
@@ -68,6 +77,28 @@ export default () => {
                 position
               }
             }
+            seasonlastracesByYearList {
+              raceByLastraceid {
+                driverstandingsByRaceidList(orderBy: POSITION_ASC) {
+                  position
+                  points
+                  wins
+                  driverid
+                  driverByDriverid {
+                    driverDisplayName
+                  }
+                }
+                constructorstandingsByRaceidList(orderBy: POSITION_ASC) {
+                  points
+                  position
+                  constructorid
+                  wins
+                  constructorTeamByConstructorid {
+                    name
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -81,10 +112,16 @@ export default () => {
 
   const lastRace = getLastRace(seasons);
   const nextRace = getNextRace(seasons);
+  const driverStandings = getDriverStandings(seasons);
+  const constructorStandings = getConstructorStandings(seasons);
+  const getCurrentYear = () => seasons[0].year;
 
   return {
     lastRace,
     nextRace,
     currentSeason: data.postgres.allSeasons.nodes[0].year,
+    driverStandings,
+    constructorStandings,
+    getCurrentYear,
   };
 };

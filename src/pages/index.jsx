@@ -4,6 +4,7 @@ import Layout from '../components/layout';
 import SEO from '../components/seo';
 import LinkList from '../components/index/LinkList';
 import LandingHero from '../components/landingPage/landingHero';
+import LpDriverStandings from '../components/landingPage/lpDriverStandings';
 import useCurrentData from '../hooks/useCurrentData';
 
 const IndexPage = () => {
@@ -25,12 +26,12 @@ const IndexPage = () => {
     <Layout noMarginTop noMarginSides noMarginBottom>
       <SEO title="Home" />
       <div className="bg-white pb-24">
-        <div className="max-w-[2000px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-12 mx-4 md:mx-8 lg:mx-12 items-center">
+        <div className="mx-auto max-w-[2000px]">
+          <div className="mx-4 grid grid-cols-1 items-center gap-x-12 md:mx-8 lg:mx-12 lg:grid-cols-2 xl:grid-cols-3">
             <div className="xl:col-span-2">
               <LandingHero />
             </div>
-            <div className="space-y-4 mt-12 lg:mt-0">
+            <div className="mt-12 space-y-4 lg:mt-0">
               {lastRace && (
                 <LinkList
                   target={`/races/${lastRace.raceSlug}`}
@@ -47,7 +48,10 @@ const IndexPage = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3">
+            <LpDriverStandings />
+          </div>
           <div className="mt-12">
             <div className="mb-12">
               <Infobox text="This site is under active development, more data and analytics will be added soon" />
