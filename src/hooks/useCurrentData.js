@@ -77,6 +77,8 @@ export default () => {
                 lap
                 position
               }
+              fp1Date
+              date
             }
             seasonlastracesByYearList {
               raceByLastraceid {

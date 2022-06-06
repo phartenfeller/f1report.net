@@ -7,6 +7,7 @@ import LandingHero from '../components/landingPage/landingHero';
 import LpDriverStandings from '../components/landingPage/lpDriverStandings';
 import useCurrentData from '../hooks/useCurrentData';
 import LpTeamStandings from '../components/landingPage/lpTeamStandings';
+import LpNextRaceCountdown from '../components/landingPage/lpNextRaceCountdown';
 
 const IndexPage = () => {
   const { lastRace, currentSeason } = useCurrentData();
@@ -50,9 +51,10 @@ const IndexPage = () => {
           </div>
         </div>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mt-12 grid space-x-4 sm:grid-cols-2 lg:grid-cols-3 lg:space-x-8">
+          <div className="mt-12 grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 lg:space-x-8">
             <LpDriverStandings />
             <LpTeamStandings />
+            <LpNextRaceCountdown />
           </div>
           <div className="mt-12">
             <div className="mb-12">
