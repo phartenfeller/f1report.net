@@ -49,7 +49,8 @@ function getDriverStandings(seasons) {
 }
 
 function getConstructorStandings(seasons) {
-  return seasons[0].seasonlastracesByYearList.constructorstandingsByRaceidList;
+  return seasons?.[0]?.seasonlastracesByYearList?.[0]?.raceByLastraceid
+    ?.constructorstandingsByRaceidList;
 }
 
 export default () => {
