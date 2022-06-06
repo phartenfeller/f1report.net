@@ -21,7 +21,7 @@ const LpNextRaceCountdown = () => {
     } else {
       setFp1Days('FP1 ✅');
     }
-  }, [nextRace, setRaceDays]);
+  }, [nextRace, setRaceDays, setFp1Days]);
 
   if (!nextRace) {
     return <div>No data on next race</div>;
