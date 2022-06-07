@@ -79,6 +79,8 @@ export default () => {
               }
               fp1Date
               date
+              qualiDate
+              sprintDate
             }
             seasonlastracesByYearList {
               raceByLastraceid {
