@@ -4,8 +4,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { Link } from 'gatsby';
 import useRaceHistory from '../../hooks/useRaceHistory';
 
-const NavigationButton = ({}) => {};
-
 const linkClasses =
   'rounded-md border border-slate-300/75 px-3 py-2 text-slate-500 hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-blue-500 ';
 const disabledButtonClasses =
@@ -28,7 +26,7 @@ const RaceNavigationButtons = ({ year, raceid }) => {
           />
         </Link>
       ) : (
-        <button disabled className={disabledButtonClasses}>
+        <button type="button" disabled className={disabledButtonClasses}>
           <ChevronLeftIcon
             className="h-5 w-5 flex-shrink-0 "
             aria-hidden="true"
@@ -43,7 +41,7 @@ const RaceNavigationButtons = ({ year, raceid }) => {
           />
         </Link>
       ) : (
-        <button disabled className={disabledButtonClasses}>
+        <button type="button" disabled className={disabledButtonClasses}>
           <ChevronRightIcon
             className="h-5 w-5 flex-shrink-0 "
             aria-hidden="true"
@@ -54,52 +52,55 @@ const RaceNavigationButtons = ({ year, raceid }) => {
   );
 };
 
-const RaceHeader = ({ pageTitle, year, raceid }) => {
-  return (
-    <div className="sticky top-0 z-10 hidden justify-between bg-white py-3 px-4 shadow-sm lg:flex">
-      <nav className="flex" aria-label="Breadcrumb">
-        <ol role="list" className="flex items-center space-x-4">
-          <li>
-            <div className="flex">
-              <Link
-                to="/races"
-                className="text-md font-medium text-slate-500 hover:text-slate-700"
-              >
-                All races
-              </Link>
-            </div>
-          </li>
-          <li>
-            <div className="flex items-center">
-              <ChevronRightIcon
-                className="h-5 w-5 flex-shrink-0 text-slate-400"
-                aria-hidden="true"
-              />
-              <Link
-                to={`/seasons/${year}#races`}
-                className="text-md ml-4 font-medium text-slate-500 hover:text-slate-700"
-              >
-                {year}
-              </Link>
-            </div>
-          </li>
-          <li>
-            <div className="flex items-center">
-              <ChevronRightIcon
-                className="h-5 w-5 flex-shrink-0 text-slate-400"
-                aria-hidden="true"
-              />
-              <span className="text-md ml-4 font-medium text-slate-500 ">
-                {pageTitle}
-              </span>
-            </div>
-          </li>
-        </ol>
-      </nav>
-      <RaceNavigationButtons year={year} raceid={raceid} />
-    </div>
-  );
+RaceNavigationButtons.propTypes = {
+  year: PropTypes.string.isRequired,
+  raceid: PropTypes.string.isRequired,
 };
+
+const RaceHeader = ({ pageTitle, year, raceid }) => (
+  <div className="sticky top-0 z-10 hidden justify-between bg-white py-3 px-4 shadow-sm lg:flex">
+    <nav className="flex" aria-label="Breadcrumb">
+      <ol className="flex items-center space-x-4">
+        <li>
+          <div className="flex">
+            <Link
+              to="/races"
+              className="text-md font-medium text-slate-500 hover:text-slate-700"
+            >
+              All races
+            </Link>
+          </div>
+        </li>
+        <li>
+          <div className="flex items-center">
+            <ChevronRightIcon
+              className="h-5 w-5 flex-shrink-0 text-slate-400"
+              aria-hidden="true"
+            />
+            <Link
+              to={`/seasons/${year}#races`}
+              className="text-md ml-4 font-medium text-slate-500 hover:text-slate-700"
+            >
+              {year}
+            </Link>
+          </div>
+        </li>
+        <li>
+          <div className="flex items-center">
+            <ChevronRightIcon
+              className="h-5 w-5 flex-shrink-0 text-slate-400"
+              aria-hidden="true"
+            />
+            <span className="text-md ml-4 font-medium text-slate-500 ">
+              {pageTitle}
+            </span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+    <RaceNavigationButtons year={year} raceid={raceid} />
+  </div>
+);
 
 RaceHeader.propTypes = {
   pageTitle: PropTypes.string.isRequired,
