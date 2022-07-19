@@ -7,6 +7,7 @@
 // You can delete this file if you're not using it
 
 const path = require(`path`);
+const slugify = require('./src/util/slugify');
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
@@ -77,6 +78,33 @@ exports.createPages = async ({ graphql, actions }) => {
       component: circuitTemplate,
       context: {
         circuitid: node.circuitid,
+      },
+    });
+  });
+
+  const blogPagesQuery = await graphql(`
+    {
+      pages: allMdx(
+        filter: { fileAbsolutePath: { glob: "**/content/blog/**" } }
+      ) {
+        nodes {
+          frontmatter {
+            slug
+          }
+          id
+        }
+      }
+    }
+  `);
+
+  const blogPages = blogPagesQuery?.data?.pages?.nodes ?? [];
+
+  blogPages.forEach((page) => {
+    actions.createPage({
+      path: `/blog/${slugify(page.frontmatter.slug)}`,
+      component: require.resolve('./src/templates/blog-page-template.jsx'),
+      context: {
+        id: page.id,
       },
     });
   });
