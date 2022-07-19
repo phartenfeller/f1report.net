@@ -13,10 +13,12 @@ import SEO from '../components/seo';
 import getBlogMeta from '../util/getBlogMeta';
 import { PostStats } from '../components/blog/PostStats';
 import ImageGetter from '../components/ImageGetter';
+import BlogTable from '../components/blog/BlogTable';
 
 const components = {
   // eslint-disable-next-line react/prop-types
   Image: ({ filename, alt }) => <ImageGetter filename={filename} alt={alt} />,
+  BlogTable,
 };
 
 export const query = graphql`
@@ -79,7 +81,7 @@ const BlogPostTemplate = ({ data }) => {
       <SEO title={title} description={description} meta={meta} blog />
       <div className="flex flex-grow bg-slate-100">
         <article className="m-auto flex-row-reverse bg-white px-2 pt-4 pb-6 shadow lg:flex lg:px-8 lg:pt-12">
-          <div className="flex-grow border-slate-200 lg:w-[330px] lg:border-l lg:pl-6">
+          <div className="flex-grow border-slate-200 lg:w-[330px] lg:max-w-[330px] lg:border-l lg:pl-6">
             <div className="prose prose-slate mb-5 flex h-full flex-col px-2 md:px-4 lg:prose-lg lg:mb-0 lg:px-0">
               <div className="flex-grow text-zinc-700 ">
                 <PostStats

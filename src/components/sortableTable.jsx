@@ -18,10 +18,10 @@ const SortedHeaderRenderer = ({ column }) => {
   }
 
   return (
-    <div className="flex justify-between w-full">
+    <div className="flex w-full justify-between">
       <span>{column.render('Header')}</span>
       <svg
-        className="h-4 w-4 mr-2"
+        className="mr-2 h-4 w-4"
         viewBox="0 0 128 128"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -47,11 +47,11 @@ const PaginationBar = ({
   nextPage,
   previousPage,
 }) => (
-  <div className="p-2 border-t border-zinc-200 bg-zinc-100">
+  <div className="border-t border-zinc-200 bg-zinc-100 p-2">
     <div className="space-x-3 text-center text-zinc-700">
       <button
         type="button"
-        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-zinc-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+        className="rounded bg-white px-2 shadow hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300 disabled:cursor-not-allowed disabled:bg-transparent disabled:text-zinc-300 disabled:shadow-none"
         onClick={() => gotoPage(0)}
         disabled={!canPreviousPage}
       >
@@ -59,7 +59,7 @@ const PaginationBar = ({
       </button>
       <button
         type="button"
-        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-zinc-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+        className="rounded bg-white px-2 shadow hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300 disabled:cursor-not-allowed disabled:bg-transparent disabled:text-zinc-300 disabled:shadow-none"
         onClick={() => previousPage()}
         disabled={!canPreviousPage}
       >
@@ -75,13 +75,13 @@ const PaginationBar = ({
         type="button"
         onClick={() => nextPage()}
         disabled={!canNextPage}
-        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-zinc-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+        className="rounded bg-white px-2 shadow hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300 disabled:cursor-not-allowed disabled:bg-transparent disabled:text-zinc-300 disabled:shadow-none"
       >
         {'>'}
       </button>
       <button
         type="button"
-        className="bg-white px-2 rounded shadow disabled:bg-transparent disabled:shadow-none disabled:text-zinc-300 disabled:cursor-not-allowed hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+        className="rounded bg-white px-2 shadow hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300 disabled:cursor-not-allowed disabled:bg-transparent disabled:text-zinc-300 disabled:shadow-none"
         onClick={() => gotoPage(pageCount - 1)}
         disabled={!canNextPage}
       >
@@ -178,8 +178,8 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
 
   if (!columns || columns.length === 0) {
     return (
-      <div className="py-2 align-middle min-w-full">
-        <div className="shadow-muted bg-white sm:rounded-lg p-8 text-center font-semibold">
+      <div className="min-w-full py-2 align-middle">
+        <div className="bg-white p-8 text-center font-semibold shadow-muted sm:rounded-lg">
           No columns selected to display...
         </div>
       </div>
@@ -187,9 +187,9 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
   }
 
   return (
-    <div className="py-2 align-middle min-w-full">
-      <div className="shadow-muted border-b border-zinc-200 sm:rounded-lg">
-        <div className="overflow-x-auto overflow-hidden">
+    <div className="min-w-full px-1 py-2 align-middle">
+      <div className="shadow-sm ring-1 ring-black ring-opacity-5">
+        <div className="overflow-hidden overflow-x-auto">
           <table
             {...getTableProps()}
             className="min-w-full divide-y divide-zinc-200"
