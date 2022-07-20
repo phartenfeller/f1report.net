@@ -47,6 +47,7 @@ const IndexPage = () => {
               />
               <LinkList target="/races/" display="All Races" />
               <LinkList target="/circuits/" display="All Circuits" />
+              <LinkList target="/blog/" display="Blog" />
             </div>
           </div>
         </div>

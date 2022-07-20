@@ -162,6 +162,20 @@ HeaderMenuItem.propTypes = {
 
 const MemoMenuItem = memo(HeaderMenuItem);
 
+const MenuLink = ({ text, link }) => (
+  <Link
+    to={link}
+    className="group inline-flex items-center rounded-md p-1 text-base font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-700"
+  >
+    <span>{text}</span>
+  </Link>
+);
+
+MenuLink.propTypes = {
+  text: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+};
+
 const Header = ({ siteTitle }) => {
   const { lastRace, nextRace, currentSeason } = useCurrentData();
   const races = getRaces({ lastRace, nextRace, currentSeason });
@@ -187,6 +201,7 @@ const Header = ({ siteTitle }) => {
             <MemoMenuItem items={races} name="Races" />
             <MemoMenuItem items={circuits} name="Circuits" />
             <MemoMenuItem items={statsHeaderItems} name="Stats" />
+            <MenuLink text="Blog" link="/blog" />
           </Popover.Group>
         </div>
 

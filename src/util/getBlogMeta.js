@@ -37,6 +37,10 @@ function getBlogMeta({
       name: `article:published_time`,
       content: publishISO,
     },
+    {
+      name: `og:locale`,
+      content: `en_US`,
+    },
   ];
 
   tags.forEach((tag) => {
