@@ -7610,6 +7610,11 @@ gatsby-plugin-typescript@^3.14.0:
     "@babel/runtime" "^7.15.4"
     babel-plugin-remove-graphql-queries "^3.14.0"
 
+gatsby-plugin-uninline-styles@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-uninline-styles/-/gatsby-plugin-uninline-styles-0.2.0.tgz#7a01556871703b7849c6e1cd377b7f95c0337d35"
+  integrity sha512-qzG3gcmRk6Vgt6Yf7x6d6hlie+IpbmmXRC2z3A+PPweu/TNh3qpRd8DCQgWBL2rFSatiuxdhqUn4GWaOx7OTgA==
+
 gatsby-plugin-utils@^1.14.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-utils/-/gatsby-plugin-utils-1.14.0.tgz#7813ce967a0bc2fd89560706db879fbf5b894795"
