@@ -6,7 +6,7 @@ import { GatsbyImage } from 'gatsby-plugin-image';
 import slugify from '../../util/slugify';
 
 const BlogPostList = ({ blogposts }) => (
-  <div className="divide-zinc-200md:mx-16 mx-4 mt-4 divide-y md:mt-12">
+  <div className="mx-4 mt-4 space-y-4 md:mx-8 md:mt-12">
     {blogposts.map(({ frontmatter }) => (
       <Link
         key={frontmatter.slug}

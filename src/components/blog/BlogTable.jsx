@@ -7,6 +7,7 @@ import { Disclosure } from '@headlessui/react';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import { Link } from 'gatsby';
 import SortableTable from '../sortableTable';
+import TeamDisplay from '../teamDisplay/teamDisplay';
 
 const Discl = ({ children }) => (
   <Disclosure>
@@ -112,6 +113,16 @@ const BlogTable = ({ data, columns, sortBy, sortDirection }) => {
                   row={row}
                   link={col.link}
                 />
+              ),
+            };
+          }
+
+          if (col.teamDisplay && col.teamDisplay === true) {
+            return {
+              ...col,
+              // eslint-disable-next-line react/no-unstable-nested-components
+              Cell: ({ value }) => (
+                <TeamDisplay teamName={value} textClasses={col.classes} />
               ),
             };
           }

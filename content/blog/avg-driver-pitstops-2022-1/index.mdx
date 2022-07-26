@@ -1,0 +1,352 @@
+---
+title: >
+  Average Driver Pitstops of 2022 so far
+date: 2022-07-26
+description: >
+  Some drivers change to new compounds a lot where some try to save their tyres. Let's see how many pitstops the drivers had in 2022 so far.
+slug: avg-driver-pitstops-2022-1
+titleImage: ./gustavo-campos-B87zMorEZRo-unsplash.jpg
+titleImageAlt: Ferrari pitstop photo from above
+titleImageSource:
+  {
+    text: 'Photo by gustavo Campos on Unsplash',
+    href: 'https://unsplash.com/photos/B87zMorEZRo',
+  }
+---
+
+It is no secret that some (mostly experienced) drivers are phenomenal at managing tyres.
+This can be a real strategic advantage when you manage to save time by doing fewer pit stops than your opponent.
+
+On the other hand, some drivers/cars can make up the time loss by using the pace advantage of new tyres or faster compounds.
+
+## Current season so far
+
+To see if some driver-specific patterns emerge I looked into the pitstop data of the current season so far (up until France GP).
+As DNFs occur or drivers like Vettel miss some races I am using average pitstops per 30 laps as the metric.
+30 is a good number for that because it is easy to understand and most results will be around 1.
+
+<BlogBarChart
+  axisRightLabel="Avg. Stops / 30 laps"
+  axisBottomLabel="Driver"
+  title="Average pitstops per 30 laps"
+  inputData={[
+    {
+      entity: 'S. Vettel',
+      constructor: 'Aston Martin',
+      value: '0.851',
+      aria: '0.851 average pitstops per 30 laps for S. Vettel',
+    },
+    {
+      entity: 'V. Bottas',
+      constructor: 'Alfa Romeo',
+      value: '0.858',
+      aria: '0.858 average pitstops per 30 laps for V. Bottas',
+    },
+    {
+      entity: 'E. Ocon',
+      constructor: 'Alpine F1 Team',
+      value: '0.862',
+      aria: '0.862 average pitstops per 30 laps for E. Ocon',
+    },
+    {
+      entity: 'K. Magnussen',
+      constructor: 'Haas F1 Team',
+      value: '0.863',
+      aria: '0.863 average pitstops per 30 laps for K. Magnussen',
+    },
+    {
+      entity: 'G. Russell',
+      constructor: 'Mercedes',
+      value: '0.864',
+      aria: '0.864 average pitstops per 30 laps for G. Russell',
+    },
+    {
+      entity: 'G. Zhou',
+      constructor: 'Alfa Romeo',
+      value: '0.955',
+      aria: '0.955 average pitstops per 30 laps for G. Zhou',
+    },
+    {
+      entity: 'P. Gasly',
+      constructor: 'AlphaTauri',
+      value: '0.957',
+      aria: '0.957 average pitstops per 30 laps for P. Gasly',
+    },
+    {
+      entity: 'L. Hamilton',
+      constructor: 'Mercedes',
+      value: '0.970',
+      aria: '0.970 average pitstops per 30 laps for L. Hamilton',
+    },
+    {
+      entity: 'C. Leclerc',
+      constructor: 'Ferrari',
+      value: '0.988',
+      aria: '0.988 average pitstops per 30 laps for C. Leclerc',
+    },
+    {
+      entity: 'A. Albon',
+      constructor: 'Williams',
+      value: '0.991',
+      aria: '0.991 average pitstops per 30 laps for A. Albon',
+    },
+    {
+      entity: 'L. Norris',
+      constructor: 'McLaren',
+      value: '0.996',
+      aria: '0.996 average pitstops per 30 laps for L. Norris',
+    },
+    {
+      entity: 'L. Stroll',
+      constructor: 'Aston Martin',
+      value: '1.024',
+      aria: '1.024 average pitstops per 30 laps for L. Stroll',
+    },
+    {
+      entity: 'F. Alonso',
+      constructor: 'Alpine F1 Team',
+      value: '1.036',
+      aria: '1.036 average pitstops per 30 laps for F. Alonso',
+    },
+    {
+      entity: 'M. Schumacher',
+      constructor: 'Haas F1 Team',
+      value: '1.062',
+      aria: '1.062 average pitstops per 30 laps for M. Schumacher',
+    },
+    {
+      entity: 'C. Sainz',
+      constructor: 'Ferrari',
+      value: '1.067',
+      aria: '1.067 average pitstops per 30 laps for C. Sainz',
+    },
+    {
+      entity: 'D. Ricciardo',
+      constructor: 'McLaren',
+      value: '1.081',
+      aria: '1.081 average pitstops per 30 laps for D. Ricciardo',
+    },
+    {
+      entity: 'S. Pérez',
+      constructor: 'Red Bull',
+      value: '1.098',
+      aria: '1.098 average pitstops per 30 laps for S. Pérez',
+    },
+    {
+      entity: 'N. Hülkenberg',
+      constructor: 'Aston Martin',
+      value: '1.121',
+      aria: '1.121 average pitstops per 30 laps for N. Hülkenberg',
+    },
+    {
+      entity: 'M. Verstappen',
+      constructor: 'Red Bull',
+      value: '1.132',
+      aria: '1.132 average pitstops per 30 laps for M. Verstappen',
+    },
+    {
+      entity: 'N. Latifi',
+      constructor: 'Williams',
+      value: '1.183',
+      aria: '1.183 average pitstops per 30 laps for N. Latifi',
+    },
+    {
+      entity: 'Y. Tsunoda',
+      constructor: 'AlphaTauri',
+      value: '1.204',
+      aria: '1.204 average pitstops per 30 laps for Y. Tsunoda',
+    },
+  ]}
+/>
+
+Looking at the current driver standings contenders you see Verstappen does way more stops than Leclerc.
+After the Monaco disaster for Charles, this seems to be a good strategy.
+With both teams having top cars they can also make up the lost time during a stop than the other teams.
+
+The drivers with the least average stops per 30 laps are Vettel and Bottas. They seem to be good at managing their tyres and try to save time to other midfield cars.
+
+Tsunoda and Latifi change their tyres very often.
+A factor for this is also damage to their car.
+When you need to get a new nose a compound change is free.
+
+I did not excpect Alonso and Ricciardo to appear that high in the list.
+Both their teammates pit less often and scored more point.
+How much correlation between these two stats exist is unclear.
+If I remember correctly McLaren experimented with early compound changes with Ricciardo in the past when he was not in the points.
+
+## Tabular Data
+
+Here you can have a more in-depth look into the data.
+
+<BlogTable
+  data={[
+    {
+      driver_display_name: 'S. Vettel',
+      constructor: 'Aston Martin',
+      lapcount: 564,
+      pitstops: 16,
+      stops_per_30: ' 0.851',
+    },
+    {
+      driver_display_name: 'V. Bottas',
+      constructor: 'Alfa Romeo',
+      lapcount: 664,
+      pitstops: 19,
+      stops_per_30: ' 0.858',
+    },
+    {
+      driver_display_name: 'E. Ocon',
+      constructor: 'Alpine F1 Team',
+      lapcount: 696,
+      pitstops: 20,
+      stops_per_30: ' 0.862',
+    },
+    {
+      driver_display_name: 'K. Magnussen',
+      constructor: 'Haas F1 Team',
+      lapcount: 626,
+      pitstops: 18,
+      stops_per_30: ' 0.863',
+    },
+    {
+      driver_display_name: 'G. Russell',
+      constructor: 'Mercedes',
+      lapcount: 660,
+      pitstops: 19,
+      stops_per_30: ' 0.864',
+    },
+    {
+      driver_display_name: 'G. Zhou',
+      constructor: 'Alfa Romeo',
+      lapcount: 534,
+      pitstops: 17,
+      stops_per_30: ' 0.955',
+    },
+    {
+      driver_display_name: 'P. Gasly',
+      constructor: 'AlphaTauri',
+      lapcount: 658,
+      pitstops: 21,
+      stops_per_30: ' 0.957',
+    },
+    {
+      driver_display_name: 'L. Hamilton',
+      constructor: 'Mercedes',
+      lapcount: 711,
+      pitstops: 23,
+      stops_per_30: ' 0.970',
+    },
+    {
+      driver_display_name: 'C. Leclerc',
+      constructor: 'Ferrari',
+      lapcount: 607,
+      pitstops: 20,
+      stops_per_30: ' 0.988',
+    },
+    {
+      driver_display_name: 'A. Albon',
+      constructor: 'Williams',
+      lapcount: 636,
+      pitstops: 21,
+      stops_per_30: ' 0.991',
+    },
+    {
+      driver_display_name: 'L. Norris',
+      constructor: 'McLaren',
+      lapcount: 693,
+      pitstops: 23,
+      stops_per_30: ' 0.996',
+    },
+    {
+      driver_display_name: 'L. Stroll',
+      constructor: 'Aston Martin',
+      lapcount: 703,
+      pitstops: 24,
+      stops_per_30: ' 1.024',
+    },
+    {
+      driver_display_name: 'F. Alonso',
+      constructor: 'Alpine F1 Team',
+      lapcount: 637,
+      pitstops: 22,
+      stops_per_30: ' 1.036',
+    },
+    {
+      driver_display_name: 'M. Schumacher',
+      constructor: 'Haas F1 Team',
+      lapcount: 565,
+      pitstops: 20,
+      stops_per_30: ' 1.062',
+    },
+    {
+      driver_display_name: 'C. Sainz',
+      constructor: 'Ferrari',
+      lapcount: 534,
+      pitstops: 19,
+      stops_per_30: ' 1.067',
+    },
+    {
+      driver_display_name: 'D. Ricciardo',
+      constructor: 'McLaren',
+      lapcount: 694,
+      pitstops: 25,
+      stops_per_30: ' 1.081',
+    },
+    {
+      driver_display_name: 'S. Pérez',
+      constructor: 'Red Bull',
+      lapcount: 601,
+      pitstops: 22,
+      stops_per_30: ' 1.098',
+    },
+    {
+      driver_display_name: 'N. Hülkenberg',
+      constructor: 'Aston Martin',
+      lapcount: 107,
+      pitstops: 4,
+      stops_per_30: ' 1.121',
+    },
+    {
+      driver_display_name: 'M. Verstappen',
+      constructor: 'Red Bull',
+      lapcount: 689,
+      pitstops: 26,
+      stops_per_30: ' 1.132',
+    },
+    {
+      driver_display_name: 'N. Latifi',
+      constructor: 'Williams',
+      lapcount: 634,
+      pitstops: 25,
+      stops_per_30: ' 1.183',
+    },
+    {
+      driver_display_name: 'Y. Tsunoda',
+      constructor: 'AlphaTauri',
+      lapcount: 598,
+      pitstops: 24,
+      stops_per_30: ' 1.204',
+    },
+  ]}
+  columns={[
+    {
+      Header: 'Driver',
+      accessor: 'driver_display_name',
+      classes: 'font-semibold',
+    },
+    {
+      Header: 'Constructor',
+      accessor: 'constructor',
+      teamDisplay: true,
+    },
+    { Header: 'Total Laps', accessor: 'lapcount', classes: 'text-right' },
+    { Header: 'Total Pitstops', accessor: 'pitstops', classes: 'text-right' },
+    {
+      Header: 'Avg. stops per 30 laps',
+      accessor: 'stops_per_30',
+      classes: 'font-semibold text-right',
+    },
+  ]}
+  sortBy={'stops_per_30'}
+  sortDirection={'asc'}
+/>

@@ -14,11 +14,13 @@ import getBlogMeta from '../util/getBlogMeta';
 import { PostStats } from '../components/blog/PostStats';
 import ImageGetter from '../components/ImageGetter';
 import BlogTable from '../components/blog/BlogTable';
+import BlogBarChart from '../components/blog/BlogBarChart';
 
 const components = {
   // eslint-disable-next-line react/prop-types
   Image: ({ filename, alt }) => <ImageGetter filename={filename} alt={alt} />,
   BlogTable,
+  BlogBarChart,
 };
 
 export const query = graphql`
