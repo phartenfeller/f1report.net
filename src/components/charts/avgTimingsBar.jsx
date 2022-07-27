@@ -7,7 +7,11 @@ function getColor(obj) {
   return getTeamColor(obj.data.constructor);
 }
 
-const AvgTimingsBar = ({ times, desc, annotations }) => {
+function getAria(obj) {
+  return obj.data.tooltip;
+}
+
+const AvgTimingsBar = ({ times, desc, annotations, title }) => {
   const data = times.sort((a, b) => a.time - b.time);
 
   const onlyTimes = times.map((t) => t.time);
@@ -15,9 +19,9 @@ const AvgTimingsBar = ({ times, desc, annotations }) => {
 
   function tooltip(obj) {
     return (
-      <div className="inline-flex items-center bg-white p-2 shadow rounded">
+      <div className="inline-flex items-center rounded bg-white p-2 shadow">
         <div
-          className="rounded-full h-4 w-4 mr-2"
+          className="mr-2 h-4 w-4 rounded-full"
           style={{ background: obj.color }}
         />
         <span>{obj.data.tooltip}</span>
@@ -32,46 +36,53 @@ const AvgTimingsBar = ({ times, desc, annotations }) => {
           <p key={a}>{`${'*'.repeat(i + 1)} ${a}`}</p>
         ))}
       </div>
-      <div className="" style={{ height: '450px' }}>
-        <ResponsiveBar
-          tooltip={tooltip}
-          layout="horizontal"
-          minValue={chartMinTime}
-          data={data}
-          keys={['time']}
-          indexBy="id"
-          margin={{ top: 20, right: 130, bottom: 20, left: 60 }}
-          padding={0.3}
-          valueScale={{ type: 'linear' }}
-          indexScale={{ type: 'band', round: true }}
-          colors={getColor}
-          borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-          axisTop={null}
-          axisLeft={null}
-          axisBottom={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: 'Seconds',
-            legendPosition: 'middle',
-            legendOffset: 32,
-          }}
-          axisRight={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: desc,
-            legendPosition: 'middle',
-            legendOffset: -40,
-          }}
-          labelSkipWidth={12}
-          labelSkipHeight={12}
-          labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-          animate
-          motionStiffness={90}
-          motionDamping={15}
-        />
-      </div>
+      <figure>
+        <div className="" style={{ height: '450px' }}>
+          <ResponsiveBar
+            // eslint-disable-next-line react/jsx-no-bind
+            tooltip={tooltip}
+            layout="horizontal"
+            minValue={chartMinTime}
+            data={data}
+            keys={['time']}
+            indexBy="id"
+            margin={{ top: 20, right: 130, bottom: 20, left: 60 }}
+            padding={0.3}
+            valueScale={{ type: 'linear' }}
+            indexScale={{ type: 'band', round: true }}
+            colors={getColor}
+            borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+            axisTop={null}
+            axisLeft={null}
+            axisBottom={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: 'Seconds',
+              legendPosition: 'middle',
+              legendOffset: 32,
+            }}
+            axisRight={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: desc,
+              legendPosition: 'middle',
+              legendOffset: -40,
+            }}
+            labelSkipWidth={12}
+            labelSkipHeight={12}
+            labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+            animate
+            motionStiffness={90}
+            motionDamping={15}
+            role="application"
+            ariaLabel={title}
+            barAriaLabel={getAria}
+          />
+        </div>
+        <figcaption className="mt-3">{title}</figcaption>
+      </figure>
     </div>
   );
 };
@@ -87,6 +98,7 @@ AvgTimingsBar.propTypes = {
   ).isRequired,
   desc: PropTypes.string.isRequired,
   annotations: PropTypes.arrayOf(PropTypes.string),
+  title: PropTypes.string.isRequired,
 };
 
 AvgTimingsBar.defaultProps = {

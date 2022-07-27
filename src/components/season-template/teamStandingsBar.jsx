@@ -8,7 +8,11 @@ function getColor(obj) {
   return getTeamColor(obj.data.constructor);
 }
 
-const TeamStandingsBar = ({ teamStandings }) => {
+function getAria(obj) {
+  return `${obj.data.constructor}: ${obj.data.points} points`;
+}
+
+const TeamStandingsBar = ({ teamStandings, year }) => {
   const data = teamStandings.map((s) => ({
     points: s.points,
     constructor: s.constructorTeamByConstructorid.name,
@@ -19,9 +23,9 @@ const TeamStandingsBar = ({ teamStandings }) => {
 
   function tooltip(obj) {
     return (
-      <div className="inline-flex items-center bg-white px-3 py-1 rounded shadow-lg">
+      <div className="inline-flex items-center rounded bg-white px-3 py-1 shadow-lg">
         <div
-          className="rounded-full h-4 w-4 mr-2"
+          className="mr-2 h-4 w-4 rounded-full"
           style={{ background: obj.color }}
         />
         <span>{obj.data.tooltip}</span>
@@ -31,50 +35,58 @@ const TeamStandingsBar = ({ teamStandings }) => {
 
   return (
     <div className="">
-      <div className="" style={{ height: '600px' }}>
-        <ResponsiveBar
-          tooltip={tooltip}
-          layout="horizontal"
-          minValue={0}
-          data={data}
-          keys={['points']}
-          indexBy="constructor"
-          margin={{ top: 2, right: 130 }}
-          padding={0.3}
-          valueScale={{ type: 'linear' }}
-          indexScale={{ type: 'band', round: true }}
-          colors={getColor}
-          borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-          axisBottom={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: 'Seconds',
-            legendPosition: 'middle',
-            legendOffset: 32,
-          }}
-          axisRight={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: 'Constructors',
-            legendPosition: 'middle',
-            legendOffset: -40,
-          }}
-          labelSkipWidth={12}
-          labelSkipHeight={12}
-          labelTextColor="#ffffff"
-          animate
-          motionStiffness={90}
-          motionDamping={15}
-        />
-      </div>
+      <figure>
+        <div className="" style={{ height: '600px' }}>
+          <ResponsiveBar
+            // eslint-disable-next-line react/jsx-no-bind
+            tooltip={tooltip}
+            layout="horizontal"
+            minValue={0}
+            data={data}
+            keys={['points']}
+            indexBy="constructor"
+            margin={{ top: 2, right: 130 }}
+            padding={0.3}
+            valueScale={{ type: 'linear' }}
+            indexScale={{ type: 'band', round: true }}
+            colors={getColor}
+            borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+            axisBottom={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: 'Seconds',
+              legendPosition: 'middle',
+              legendOffset: 32,
+            }}
+            axisRight={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: 'Constructors',
+              legendPosition: 'middle',
+              legendOffset: -40,
+            }}
+            labelSkipWidth={12}
+            labelSkipHeight={12}
+            labelTextColor="#ffffff"
+            animate
+            motionStiffness={90}
+            motionDamping={15}
+            role="application"
+            ariaLabel={`${year} Constructor Standings`}
+            barAriaLabel={getAria}
+          />
+        </div>
+        <figcaption>{`${year} Constructor Standings`}</figcaption>
+      </figure>
     </div>
   );
 };
 
 TeamStandingsBar.propTypes = {
   teamStandings: PropTypes.arrayOf(teamStandingsType).isRequired,
+  year: PropTypes.string.isRequired,
 };
 
 export default TeamStandingsBar;

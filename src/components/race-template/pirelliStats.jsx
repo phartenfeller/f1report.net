@@ -283,8 +283,8 @@ const PirelliStats = ({ data, grandPrix, year }) => {
 };
 
 PirelliStats.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  data: PropTypes.shape(PropTypes.any),
+  // eslint-disable-next-line react/forbid-prop-types
+  data: PropTypes.object.isRequired,
   grandPrix: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
 };

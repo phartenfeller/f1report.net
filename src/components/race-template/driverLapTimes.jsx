@@ -15,27 +15,27 @@ const DriverLapTimes = ({
   const avgTimes = driAvgLaptsByRaceidList.map((time) => ({
     id: driverMap[time.driverid].displayName,
     time: parseFloat(time.avglaptimes),
-    tooltip: `${time.avglaptimes} | ${driverMap[time.driverid].displayName} (${
+    tooltip: `${driverMap[time.driverid].displayName} (${
       driverMap[time.driverid].constructor
-    })`,
+    }): ${time.avglaptimes} seconds`,
     constructor: driverMap[time.driverid].constructor,
   }));
 
   const medianTimes = driAvgLaptsByRaceidList.map((time) => ({
     id: driverMap[time.driverid].displayName,
     time: parseFloat(time.medianlaptimes),
-    tooltip: `${time.medianlaptimes}  |  ${
-      driverMap[time.driverid].displayName
-    } (${driverMap[time.driverid].constructor})`,
+    tooltip: `${driverMap[time.driverid].displayName} (${
+      driverMap[time.driverid].constructor
+    }): ${time.medianlaptimes} seconds`,
     constructor: driverMap[time.driverid].constructor,
   }));
 
   const top70Times = driAvgLapt70PsByRaceidList.map((time) => ({
     id: driverMap[time.driverid].displayName,
     time: parseFloat(time.avglaptimes),
-    tooltip: `${time.avglaptimes}  |  ${
-      driverMap[time.driverid].displayName
-    } (${driverMap[time.driverid].constructor})`,
+    tooltip: `${driverMap[time.driverid].displayName} (${
+      driverMap[time.driverid].constructor
+    }): ${time.avglaptimes} seconds`,
     constructor: driverMap[time.driverid].constructor,
   }));
 
@@ -58,6 +58,7 @@ const DriverLapTimes = ({
             'of the drivers which finished',
             'without extreme laps (time < 1.5 * fastest lap)',
           ]}
+          title="Average Driver Lap Times"
         />
       ),
     },
@@ -72,6 +73,7 @@ const DriverLapTimes = ({
             'of the drivers which finished',
             'without extreme laps (time < 1.5 * fastest lap)',
           ]}
+          title="Median Driver Lap Times"
         />
       ),
     },
@@ -86,16 +88,13 @@ const DriverLapTimes = ({
             // eslint-disable-next-line dot-notation
             `of the drivers who drove ${relevantLapCount} Laps`,
           ]}
+          title="Average Top 70 % Driver Lap Times"
         />
       ),
     },
   ];
 
-  return (
-    <>
-      <TabsContainer tabs={tabs} defaultTabId={1} />
-    </>
-  );
+  return <TabsContainer tabs={tabs} defaultTabId={1} />;
 };
 
 DriverLapTimes.propTypes = {

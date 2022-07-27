@@ -21,7 +21,7 @@ const PitStopTimes = ({
       id: constructorTeamByConstructorid?.name,
       time: avgpittimes,
       constructor: constructorTeamByConstructorid?.name,
-      tooltip: `${avgpittimes} | ${constructorTeamByConstructorid?.name} `,
+      tooltip: `${constructorTeamByConstructorid?.name}: ${avgpittimes} seconds`,
     })
   );
   const tabs = [
@@ -29,7 +29,11 @@ const PitStopTimes = ({
       tabId: 1,
       tabName: 'Average Constructor Pitstops',
       component: (
-        <AvgTimingsBar times={conTimes} desc="Average Constructor Pitstops" />
+        <AvgTimingsBar
+          times={conTimes}
+          desc="Average Constructor Pitstops"
+          title="Average Constructor Pitstops"
+        />
       ),
     },
     {
@@ -44,16 +48,12 @@ const PitStopTimes = ({
     },
   ];
 
-  return (
-    <>
-      {arrayWithValues(conAvgPitstopsByRaceidList) ? (
-        <div>
-          <LinkableH2>Pitstop Times</LinkableH2>
-          <TabsContainer tabs={tabs} defaultTabId={1} />
-        </div>
-      ) : null}
-    </>
-  );
+  return arrayWithValues(conAvgPitstopsByRaceidList) ? (
+    <div>
+      <LinkableH2>Pitstop Times</LinkableH2>
+      <TabsContainer tabs={tabs} defaultTabId={1} />
+    </div>
+  ) : null;
 };
 
 PitStopTimes.propTypes = {

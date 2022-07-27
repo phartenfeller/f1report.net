@@ -14,21 +14,21 @@ const ConstructorLapTimes = ({
   const avgTimes = conAvgLaptsByRaceidList.map((time) => ({
     id: time.constructorTeamByConstructorid.name,
     time: parseFloat(time.avglaptimes),
-    tooltip: `${time.avglaptimes} | ${time.constructorTeamByConstructorid.name} `,
+    tooltip: `${time.constructorTeamByConstructorid.name}: ${time.avglaptimes} seconds`,
     constructor: time.constructorTeamByConstructorid.name,
   }));
 
   const mediumTimes = conAvgLaptsByRaceidList.map((time) => ({
     id: time.constructorTeamByConstructorid.name,
     time: parseFloat(time.medianlaptimes),
-    tooltip: `${time.medianlaptimes} | ${time.constructorTeamByConstructorid.name} `,
+    tooltip: `${time.constructorTeamByConstructorid.name}: ${time.medianlaptimes} seconds`,
     constructor: time.constructorTeamByConstructorid.name,
   }));
 
   const top70Times = conAvgLapt70PsByRaceidList.map((time) => ({
     id: time.constructorTeamByConstructorid.name,
     time: parseFloat(time.avglaptimes),
-    tooltip: `${time.avglaptimes} | ${time.constructorTeamByConstructorid.name} `,
+    tooltip: `${time.constructorTeamByConstructorid.name}: ${time.avglaptimes} seconds`,
     constructor: time.constructorTeamByConstructorid.name,
   }));
 
@@ -51,6 +51,7 @@ const ConstructorLapTimes = ({
             'of the drivers which finished',
             'without extreme laps (time < 1.5 * fastest lap)',
           ]}
+          title="Average Constructor Lap Times"
         />
       ),
     },
@@ -65,6 +66,7 @@ const ConstructorLapTimes = ({
             'of the drivers which finished',
             'without extreme laps (time < 1.5 * fastest lap)',
           ]}
+          title="Median Constructor Lap Times"
         />
       ),
     },
@@ -79,16 +81,13 @@ const ConstructorLapTimes = ({
             `Best ${relevantLapCount} Laps of both drivers`,
             `Only Teams that completed ${relevantLapCount} Laps`,
           ]}
+          title="Average Top 70 % Constructor Lap Times"
         />
       ),
     },
   ];
 
-  return (
-    <>
-      <TabsContainer tabs={tabs} defaultTabId={1} />
-    </>
-  );
+  return <TabsContainer tabs={tabs} defaultTabId={1} />;
 };
 
 ConstructorLapTimes.propTypes = {

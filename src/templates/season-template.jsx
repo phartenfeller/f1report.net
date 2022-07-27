@@ -177,6 +177,7 @@ const SeasonTemplate = ({ data }) => {
         <DriverStandingsBar
           standings={driverstandingsByRaceidList}
           resultsByRaceidList={resultsByRaceidList}
+          year={year}
         />
       ),
     },
@@ -215,7 +216,10 @@ const SeasonTemplate = ({ data }) => {
       tabId: 2,
       tabName: 'Bar Chart',
       component: (
-        <TeamStandingsBar teamStandings={constructorstandingsByRaceidList} />
+        <TeamStandingsBar
+          teamStandings={constructorstandingsByRaceidList}
+          year={year}
+        />
       ),
     },
     {
