@@ -17,8 +17,10 @@ const LpTeamStandings = () => {
         <Link
           className="standard-link font-light uppercase"
           to={`/seasons/${year}#constructor-standings`}
+          title="Constructor Standings Insights"
         >
           more
+          <span className="sr-only">Constructor Standings Insights</span>
         </Link>
       </div>
       {constructorStandings &&

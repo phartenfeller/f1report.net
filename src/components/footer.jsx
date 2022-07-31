@@ -2,13 +2,6 @@ import { Link } from 'gatsby';
 import React from 'react';
 import { MailIcon } from '@heroicons/react/solid';
 
-function getBuildTime() {
-  let date = new Date().toISOString();
-  [date] = date.split(':');
-  date = date.replace(`T`, '.');
-  return date;
-}
-
 const Footer = () => (
   <footer className="bg-slate-100">
     <div className="mx-auto max-w-7xl overflow-hidden py-12 px-4 sm:px-6 lg:px-8">
@@ -19,7 +12,7 @@ const Footer = () => (
         <div className="px-5 py-2">
           <Link
             to="/about/"
-            className="text-base text-zinc-500 hover:text-zinc-900"
+            className="text-base text-zinc-600 hover:text-zinc-900"
           >
             About
           </Link>
@@ -28,7 +21,7 @@ const Footer = () => (
         <div className="px-5 py-2">
           <a
             href="https://hartenfeller.dev/imprint"
-            className="text-base text-zinc-500 hover:text-zinc-900"
+            className="text-base text-zinc-600 hover:text-zinc-900"
           >
             Imprint
           </a>
@@ -37,7 +30,7 @@ const Footer = () => (
         <div className="px-5 py-2">
           <a
             href="https://hartenfeller.dev/privacy"
-            className="text-base text-zinc-500 hover:text-zinc-900"
+            className="text-base text-zinc-600 hover:text-zinc-900"
           >
             Privacy Policy
           </a>
@@ -46,7 +39,7 @@ const Footer = () => (
       <div className="mt-8 flex justify-center space-x-6">
         <a
           href="https://twitter.com/f1report_net"
-          className="text-zinc-400 hover:text-zinc-500"
+          className="text-zinc-400 hover:text-zinc-600"
         >
           <span className="sr-only">Twitter</span>
           <svg
@@ -61,7 +54,7 @@ const Footer = () => (
 
         <a
           href="https://github.com/phartenfeller/f1report.net"
-          className="text-zinc-400 hover:text-zinc-500"
+          className="text-zinc-400 hover:text-zinc-600"
         >
           <span className="sr-only">GitHub</span>
           <svg
@@ -80,79 +73,32 @@ const Footer = () => (
 
         <a
           href="mailto:hello@f1report.net"
-          className="text-zinc-400 hover:text-zinc-500"
+          className="text-zinc-400 hover:text-zinc-600"
         >
           <span className="sr-only">E-Mail</span>
           <MailIcon className="h-6 w-6" />
         </a>
       </div>
-      <p className="mt-8 text-center text-xs text-zinc-400">
+      <p className="mt-8 text-center text-xs text-zinc-600">
         No Cookies are used
       </p>
-      <p className="mt-8 text-center text-xs text-zinc-400">
+      <p className="mt-8 text-center text-xs text-zinc-600">
         This website is unofficial and is not associated in any way with the /
         Formula 1 companies. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD /
         CHAMPIONSHIP, GRAND PRIX and related marks are trade marks of Formula
         One / Licensing B.V.
       </p>
-      <p className="mt-8 text-center text-base text-zinc-400">
+      <p className="mt-8 text-center text-base text-zinc-700">
         © {new Date().getFullYear()}, Built by{' '}
         <a
           href="https://hartenfeller.dev"
-          className="underline hover:text-zinc-500 focus:text-zinc-600"
+          className="underline hover:text-zinc-400"
         >
           Philipp Hartenfeller
         </a>
       </p>
     </div>
   </footer>
-
-  // <footer className="bg-slate-200 px-8 pt-5 pb-2 text-sm text-zinc-700 ">
-  //   <div className="flex items-center justify-between xl:grid xl:grid-cols-3">
-  //     <div>
-  //       © {new Date().getFullYear()}, Built by{' '}
-  //       <a href="https://hartenfeller.dev" className="black-link">
-  //         Philipp Hartenfeller
-  //       </a>
-  //     </div>
-  //     <Link className="block black-link xl:text-center" to="/about/">
-  //       About
-  //     </Link>
-  //     <div className="hidden md:block xl:text-right">
-  //       Build {getBuildTime()}
-  //     </div>
-  //   </div>
-  //   <div className="mt-2 items-center justify-between grid grid-cols-1 xl:grid-cols-3">
-  //     <span>This website does not use Cookies!</span>
-  //     <a
-  //       className="block black-link xl:text-center"
-  //       href="https://twitter.com/f1report_net"
-  //     >
-  //       Twitter
-  //     </a>
-  //     <div className="flex items-center xl:text-right">
-  //       <a
-  //         className="black-link m-3 xl:text-right flex-grow"
-  //         href="https://hartenfeller.dev/imprint"
-  //       >
-  //         Imprint
-  //       </a>
-  //       {', '}
-  //       <a
-  //         className="black-link text-right xl:text-right"
-  //         href="https://hartenfeller.dev/privacy"
-  //       >
-  //         Privacy Policy
-  //       </a>
-  //     </div>
-  //   </div>
-  //   <div className="mt-2 text-xs">
-  //     This website is unofficial and is not associated in any way with the
-  //     Formula 1 companies. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD
-  //     CHAMPIONSHIP, GRAND PRIX and related marks are trade marks of Formula One
-  //     Licensing B.V.
-  //   </div>
-  // </footer>
 );
 
 export default Footer;

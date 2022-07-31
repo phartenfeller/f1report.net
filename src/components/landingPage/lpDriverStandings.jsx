@@ -18,8 +18,10 @@ const LpDriverStandings = () => {
         <Link
           className="standard-link font-light uppercase"
           to={`/seasons/${year}#driver-standings/`}
+          title="Driver Standings Insights"
         >
           more
+          <span className="sr-only">Driver Standings Insights</span>
         </Link>
       </div>
       {driverStandings && driverStandings.length && driverStandings.length > 0 && (

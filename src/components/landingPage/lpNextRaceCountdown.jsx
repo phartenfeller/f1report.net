@@ -45,8 +45,10 @@ const LpNextRaceCountdown = () => {
         <Link
           className="standard-link font-light uppercase"
           to={`/races/${nextRace.raceSlug}`}
+          title="Next Race Details"
         >
           more
+          <span className="sr-only">details on next race</span>
         </Link>
       </div>
 
