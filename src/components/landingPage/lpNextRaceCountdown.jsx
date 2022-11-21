@@ -23,6 +23,9 @@ const LpNextRaceCountdown = () => {
   const { nextRace } = useCurrentData();
   const [countdownState, setCountdownState] = useState({ loaded: false });
   useEffect(() => {
+    if (!nextRace) {
+      return;
+    }
     const state = {
       loaded: true,
       fp1: getText('FP1', nextRace.fp1Date),
@@ -34,7 +37,9 @@ const LpNextRaceCountdown = () => {
   }, [nextRace, setCountdownState]);
 
   if (!nextRace) {
-    return <div>No data on next race</div>;
+    return (
+      <div className="text-xl font-semibold">No data on next race yet</div>
+    );
   }
   return (
     <div className="">
