@@ -3,10 +3,7 @@ require('dotenv').config({
 });
 
 module.exports = {
-  flags: {
-    // PARALLEL_QUERY_RUNNING: true,
-    LMDB_STORE: false,
-  },
+  flags: {},
   siteMetadata: {
     title: `F1 Report`,
     description: `Data for every Formula 1 race ever`,
