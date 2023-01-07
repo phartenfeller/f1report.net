@@ -5,7 +5,7 @@ require('dotenv').config({
 module.exports = {
   flags: {
     // PARALLEL_QUERY_RUNNING: true,
-    LMDB_STORE: true,
+    // LMDB_STORE: true,
   },
   siteMetadata: {
     title: `F1 Report`,
