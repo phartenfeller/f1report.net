@@ -14,9 +14,9 @@ const NO_COLOR_FOUND = '#C9D1D2';
 const colors = {
   McLaren: '#FF8700',
   AlphaTauri: '#2B4562',
-  Williams: '#005AFF',
-  'Alpine F1 Team': '#0090FF',
-  'Red Bull': '#0600EF',
+  Williams: '#0ac9df',
+  'Alpine F1 Team': '#eb94c1',
+  'Red Bull': '#2e313a',
   Ferrari: '#DC0000',
   Mercedes: '#00D2BE',
   'Alfa Romeo': '#900000',
@@ -25,7 +25,7 @@ const colors = {
   Renault: '#e6c317',
   'Racing Point': '#F596C8',
   'Manor Marussia': '#323232',
-  Sauber: '#006EFF',
+  Sauber: '#03ed03',
   'Force India': '#FF5F0F',
   'Toro Rosso': '#0000FF',
   Virgin: '#cc0000',
@@ -169,6 +169,7 @@ const colors = {
   Apollon: '#F1B643',
   Tecno: '#DA344A',
   Bellasi: '#BF403B',
+  'RB F1 Team': '#1a31ca',
 };
 
 function getTeamColor(team) {
