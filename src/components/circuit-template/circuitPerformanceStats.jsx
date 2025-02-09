@@ -23,7 +23,7 @@ const ListItem = ({ rank, name, count, last, category, team = false }) => {
   return (
     <li
       className={classNames(
-        'grid grid-cols-3 py-2 items-center',
+        'grid grid-cols-3 items-center py-2',
         last ? null : 'border-b border-zinc-200'
       )}
     >
@@ -33,7 +33,7 @@ const ListItem = ({ rank, name, count, last, category, team = false }) => {
       ) : (
         <span className="text-slate-600">{name}</span>
       )}
-      <span className="text-slate-600 text-right">{`${count} ${category}`}</span>
+      <span className="text-right text-slate-600">{`${count} ${category}`}</span>
     </li>
   );
 };
@@ -55,17 +55,20 @@ const TeamCard = ({ list, allConstructorTeamsList, category }) => {
   if (!list) return <></>;
 
   const teamArray = JSON.parse(list).sort((a, b) => a.rank - b.rank);
+  for (let i = 0; i < teamArray.length; i++) {
+    teamArray[i] = JSON.parse(teamArray[i]);
+  }
 
   return (
-    <div className="px-4 py-5 bg-white shadow-muted rounded-lg overflow-hidden sm:p-6">
-      <h4 className="font-bold text-xl mb-6 tracking-wide text-zinc-900">
+    <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-muted sm:p-6">
+      <h4 className="mb-6 text-xl font-bold tracking-wide text-zinc-900">
         {`Most constructor ${category}`}
       </h4>
       <ol>
         {teamArray.map((p, i) => {
           const constructor = allConstructorTeamsList.find(
             (c) => parseInt(c.constructorid) === parseInt(p.constructorid)
-          ).name;
+          )?.name;
 
           return (
             <ListItem
@@ -94,17 +97,20 @@ const DriverCard = ({ list, allDriversList, category }) => {
   if (!list) return <></>;
 
   const driverArray = JSON.parse(list).sort((a, b) => a.rank - b.rank);
+  for (let i = 0; i < driverArray.length; i++) {
+    driverArray[i] = JSON.parse(driverArray[i]);
+  }
 
   return (
-    <div className="px-4 py-5 bg-white shadow-muted rounded-lg overflow-hidden sm:p-6">
-      <h4 className="font-bold text-xl mb-6 tracking-wide text-zinc-900">
+    <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-muted sm:p-6">
+      <h4 className="mb-6 text-xl font-bold tracking-wide text-zinc-900">
         {`Most driver ${category}`}
       </h4>
       <ol>
         {driverArray.map((p, i) => {
           const name = allDriversList.find(
             (c) => parseInt(c.driverid) === parseInt(p.driverId)
-          ).driverDisplayName;
+          )?.driverDisplayName;
 
           return (
             <ListItem
@@ -142,7 +148,7 @@ const CircuitPerformanceStats = ({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-12">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:gap-12">
       <DriverCard
         list={mostdriverwins}
         allDriversList={allDriversList}
