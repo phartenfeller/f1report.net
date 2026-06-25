@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LandingHero from '../components/landingPage/LandingHero.astro';
+import LinkList from '../components/LinkList.astro';
+import LpDriverStandings from '../components/landingPage/LpDriverStandings.astro';
+import LpTeamStandings from '../components/landingPage/LpTeamStandings.astro';
+import LpNextRaceCountdown from '../components/landingPage/LpNextRaceCountdown.astro';
+import Infobox from '../components/Infobox.astro';
+import { getCurrentData, getSeasonDriverMainConstructors } from '../lib/db';
+import getTeamColor from '../util/f1TeamColors';
+
+const { lastRace, nextRace, currentSeason, driverStandings, constructorStandings } = getCurrentData();
+
+let driversExtra = [];
+if (currentSeason) {
+    const mainConstructors = getSeasonDriverMainConstructors(currentSeason);
+    // map driverId to (teamName, color)
+    const map = new Map();
+    // mainConstructors is { driverId, teamName, driverDisplayName, ... }
+    // Note: getSeasonDriverMainConstructors returns an array of objects
+    // row has driverId, teamName (aliased from c.name)
+    // TypeScript check: it returns any[] effectively
+    mainConstructors.forEach(m => {
+        // @ts-ignore
+        map.set(m.driverId, {
+            name: m.teamName,
+            color: getTeamColor(m.teamName)
+        });
+    });
+    
+    driversExtra = driverStandings.map(d => {
+        const team = map.get(d.driverId) || { name: 'Unknown', color: '#ccc' };
+        return {
+            ...d,
+            teamName: team.name,
+            teamColor: team.color
+        };
+    });
+}
+---
+
+<Layout title="Home" noMarginTop noMarginSides noMarginBottom>
+  <div class="bg-white pb-24">
+    <div class="mx-auto max-w-[2000px]">
+      <div class="mx-4 grid grid-cols-1 items-center gap-x-12 md:mx-8 lg:mx-12 lg:grid-cols-2 xl:grid-cols-3">
+        <div class="xl:col-span-2">
+          <LandingHero />
+        </div>
+        <div class="mt-12 space-y-4 lg:mt-0">
+          {lastRace && (
+            <LinkList
+              target={`/races/${lastRace.raceSlug}`}
+              display={`Last Race: ${lastRace.name}`}
+              primary
+            />
+          )}
+          {currentSeason && (
+            <LinkList
+              target={`/seasons/${currentSeason}`}
+              display={`Current Season: ${currentSeason}`}
+            />
+          )}
+          <LinkList target="/races" display="All Races" />
+          <LinkList target="/circuits" display="All Circuits" />
+          <LinkList target="/blog" display="Blog" />
+        </div>
+      </div>
+    </div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mt-12 grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 lg:space-x-8">
+        <LpDriverStandings driverStandings={driversExtra} year={currentSeason} />
+        <LpTeamStandings constructorStandings={constructorStandings} year={currentSeason} />
+        <LpNextRaceCountdown nextRace={nextRace} />
+      </div>
+      <div class="mt-12">
+        <div class="mb-12">
+          <Infobox text="This site is under active development, more data and analytics will be added soon" />
+        </div>
+        <div class="prose-lg max-w-none">
+          <p>
+            Stats are generated <b>after a race has happened</b>. I do not
+            have access to live data and training data.
+          </p>
+          <p>
+            If you have any feedback or ideas feel free to contact me{' '}
+            <a
+              class="standard-link"
+              href="#loading"
+              id="email-link"
+            >
+              via email (loading...)
+            </a>{' '}
+            or on{' '}
+            <a
+              class="standard-link"
+              href="https://twitter.com/f1report_net"
+            >
+              twitter
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+    setTimeout(() => {
+        const encoded = '97-71-86-115-98-71-57-65-90-106-70-121-90-88-66-118-99-110-81-117-98-109-86-48';
+        const ascii = encoded.split('-').map(Number);
+        const res = String.fromCharCode(...ascii);
+        const email = atob(res);
+        const link = document.getElementById('email-link');
+        if (link) {
+            link.href = `mailto:${email}`;
+            link.textContent = 'via email';
+        }
+    }, 2000);
+</script>

@@ -1,0 +1,35 @@
+---
+const {
+  firstrace,
+  lastrace,
+  racecount,
+  racecountrank,
+} = Astro.props;
+---
+<dl class="mt-5 grid grid-cols-1 gap-5 xl:gap-12 sm:grid-cols-3">
+    <div class="px-4 py-5 bg-white shadow-muted rounded-lg overflow-hidden sm:p-6">
+      <dt class="text-sm font-medium text-zinc-500 truncate">First Race</dt>
+      <dd class="mt-1 font-yrsa text-5xl font-semibold text-zinc-900">
+        {firstrace ?? '-'}
+      </dd>
+    </div>
+
+    <div class="px-4 py-5 bg-white shadow-muted rounded-lg overflow-hidden sm:p-6">
+      <dt class="text-sm font-medium text-zinc-500 truncate">Last Race</dt>
+      <dd class="mt-1 font-yrsa text-5xl font-semibold text-zinc-900">
+        {lastrace ?? '-'}
+      </dd>
+    </div>
+
+    <div class="px-4 py-5 bg-white shadow-muted rounded-lg overflow-hidden sm:p-6">
+      <dt class="text-sm font-medium text-zinc-500 truncate">
+        Total Races
+      </dt>
+      <dd class="mt-1">
+        <span class="font-yrsa text-5xl font-semibold text-zinc-900">
+          {racecount}
+        </span>
+        <span class="ml-3 font-light text-lg text-slate-600">{`(rank ${racecountrank})`}</span>
+      </dd>
+    </div>
+</dl>

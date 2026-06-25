@@ -1,0 +1,34 @@
+---
+import CardWrapper from './CardWrapper.astro';
+import CardRank from './CardRank.astro';
+
+const { list, accessor, header, note = null } = Astro.props;
+
+if (!list) return;
+
+// We need to look up driver names if they are just IDs in the list.
+// However, looking at the Gatsby code `DriverCard.jsx`, it uses `useDriverIndex` hook to get names.
+// In Astro, we should probably pass the full data with names already joined, or pass a lookup map.
+// The `db.ts` `getAllTimeDriverStatsPrepared` returns prepared JSON which likely has IDs.
+// BUT `getAllTimeDriverStats` returns a row-based list with `driverDisplayName`.
+// The `CardStats` component in Gatsby parses the JSON.
+// Let's assume the parent component will process the data and pass a list of objects with { rank, driverDisplayName, [accessor] }.
+
+const sortedList = (list as any[]).sort((a: any, b: any) => a.rank - b.rank);
+---
+
+<CardWrapper note={note}>
+  <h3 class="font-bold text-xl mb-6 tracking-wide text-zinc-900">
+    {header}
+  </h3>
+  <ol class="m-0 p-0">
+    {sortedList.map((p: any, i: number) => (
+      <CardRank
+        rank={p.rank}
+        name={p.driverDisplayName || p.name}
+        value={p[accessor]}
+        last={i === list.length - 1}
+      />
+    ))}
+  </ol>
+</CardWrapper>

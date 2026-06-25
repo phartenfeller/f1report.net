@@ -1,0 +1,114 @@
+---
+import Search from "astro-pagefind/components/Search.astro";
+
+interface Props {
+	id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<div
+  id={id}
+  class="fixed inset-0 z-50 hidden bg-gray-900/50 backdrop-blur-sm transition-opacity"
+  aria-labelledby="search-modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="fixed inset-0 z-10 w-screen overflow-y-auto p-4 sm:p-6 md:p-20">
+    <div
+      class="mx-auto max-w-2xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
+    >
+      <div class="relative">
+        <div class="absolute top-4 right-4">
+          <button
+            type="button"
+            class="close-search rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-cappuccino focus:ring-offset-2"
+          >
+            <span class="sr-only">Close</span>
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="p-6">
+          <h2 class="text-lg font-medium text-gray-900 mb-4" id="search-modal-title">
+            Search data
+          </h2>
+          <Search id="search" class="pagefind-ui" uiOptions={{ showImages: false }} />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ id }}>
+  const modal = document.getElementById(id);
+  const closeButtons = modal.querySelectorAll(".close-search");
+
+  const closeModal = () => {
+    modal.classList.add("hidden");
+    document.body.style.overflow = "";
+  };
+
+  const openModal = () => {
+    modal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    // Focus input after a short delay to allow rendering
+    setTimeout(() => {
+      const input = modal.querySelector("input");
+      if (input) input.focus();
+    }, 100);
+  };
+
+  closeButtons.forEach((btn) => {
+    btn.addEventListener("click", closeModal);
+  });
+
+  // Close on click outside
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+
+  // Listen for open event
+  document.addEventListener("open-search-modal", openModal);
+</script>
+
+<style is:global>
+  .pagefind-ui {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: #e7000b;
+    --pagefind-ui-text: #393939;
+    --pagefind-ui-background: #ffffff;
+    --pagefind-ui-border: #eeeeee;
+    --pagefind-ui-tag: #eeeeee;
+    --pagefind-ui-border-width: 2px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-image-border-radius: 8px;
+    --pagefind-ui-image-box-ratio: 3 / 2;
+    --pagefind-ui-font: sans-serif;
+  }
+
+  .pagefind-ui__search-input {
+    outline-color: #e7000b;
+  }
+</style>

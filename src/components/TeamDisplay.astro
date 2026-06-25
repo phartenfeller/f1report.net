@@ -1,0 +1,16 @@
+---
+import getTeamColor from '../util/f1TeamColors';
+const { teamName, textClasses = '' } = Astro.props;
+const color = getTeamColor(teamName);
+---
+
+{teamName && (
+  <div class="inline-flex items-center">
+    <div
+      aria-hidden="true"
+      class="h-4 w-4 rounded-full mr-2"
+      style={{ background: color }}
+    />
+    <span class={textClasses}>{teamName}</span>
+  </div>
+)}

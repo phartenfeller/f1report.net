@@ -1,7 +1,6 @@
 import React from 'react';
-import { conAvgLapt70PType, conAvgLaptType } from '../../types';
-import TabsContainer from '../tabsContainer';
-import AvgTimingsBar from '../charts/avgTimingsBar';
+import TabsContainer from '../TabsContainer';
+import AvgTimingsBar from '../charts/AvgTimingsBar';
 
 const AVG = 'Average Lap Times';
 const MEDIAN = 'Median Lap Times';
@@ -12,24 +11,24 @@ const ConstructorLapTimes = ({
   conAvgLapt70PsByRaceidList,
 }) => {
   const avgTimes = conAvgLaptsByRaceidList.map((time) => ({
-    id: time.constructorTeamByConstructorid.name,
-    time: parseFloat(time.avglaptimes),
-    tooltip: `${time.constructorTeamByConstructorid.name}: ${time.avglaptimes} seconds`,
-    constructor: time.constructorTeamByConstructorid.name,
+    id: time.name,
+    time: parseFloat(time.avgLapTimeS),
+    tooltip: `${time.name}: ${time.avgLapTimeS} seconds`,
+    constructor: time.name,
   }));
 
   const mediumTimes = conAvgLaptsByRaceidList.map((time) => ({
-    id: time.constructorTeamByConstructorid.name,
-    time: parseFloat(time.medianlaptimes),
-    tooltip: `${time.constructorTeamByConstructorid.name}: ${time.medianlaptimes} seconds`,
-    constructor: time.constructorTeamByConstructorid.name,
+    id: time.name,
+    time: parseFloat(time.medianLapTimeS),
+    tooltip: `${time.name}: ${time.medianLapTimeS} seconds`,
+    constructor: time.name,
   }));
 
   const top70Times = conAvgLapt70PsByRaceidList.map((time) => ({
-    id: time.constructorTeamByConstructorid.name,
-    time: parseFloat(time.avglaptimes),
-    tooltip: `${time.constructorTeamByConstructorid.name}: ${time.avglaptimes} seconds`,
-    constructor: time.constructorTeamByConstructorid.name,
+    id: time.name,
+    time: parseFloat(time.avgLapTimeS),
+    tooltip: `${time.name}: ${time.avgLapTimeS} seconds`,
+    constructor: time.name,
   }));
 
   const relevantLapCount =
@@ -88,11 +87,6 @@ const ConstructorLapTimes = ({
   ];
 
   return <TabsContainer tabs={tabs} defaultTabId={1} />;
-};
-
-ConstructorLapTimes.propTypes = {
-  conAvgLapt70PsByRaceidList: conAvgLapt70PType.isRequired,
-  conAvgLaptsByRaceidList: conAvgLaptType.isRequired,
 };
 
 export default ConstructorLapTimes;

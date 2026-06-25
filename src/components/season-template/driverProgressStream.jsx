@@ -1,49 +1,46 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import getTeamColor from '../../util/f1TeamColors';
-import {
-  raceType,
-  seasonDriverMainConsType,
-  driverStandingsType,
-} from '../../types';
-import useDriverIndex from '../../hooks/useDriverIndex';
 
 const DriverProgressStream = ({
-  racesByYearList,
+  driverStandingsBySeason,
   seasondrivermainconsByYearList,
-  driverstandingsByRaceidList,
+  currentStandings
 }) => {
-  const { getDriver } = useDriverIndex();
-  // sorted by position
-  const drivers = driverstandingsByRaceidList.map((s) => s.driverid);
+  // sorted by position from current standings
+  const drivers = currentStandings.map((s) => s.driverId);
 
   const map = {};
   const pointsInRound = {};
 
-  for (let i = 0; i < racesByYearList.length; i += 1) {
-    const race = racesByYearList[i];
-    if (!map[race.round]) {
-      map[race.round] = {};
-      drivers.forEach((d) => {
-        map[race.round][d] = 0;
-      });
-      pointsInRound[race.round] = 0;
-      for (let j = 0; j < race.driverstandingsByRaceidList.length; j += 1) {
-        pointsInRound[race.round] += race.driverstandingsByRaceidList[j].points;
+  // driverStandingsBySeason is flat list: { raceId, round, driverId, points, ... }
+  driverStandingsBySeason.forEach(stat => {
+      const round = stat.round;
+      if (!map[round]) {
+          map[round] = {};
+          drivers.forEach(d => map[round][d] = 0);
+          pointsInRound[round] = 0;
       }
-    }
+      // Sum points for the round (accumulate all drivers' points in that round)
+      // wait, loop below calculates pointsInRound by iterating again.
+      // We can just accumulate here.
+  });
+  
+  // Need to populate map fully first
+  Object.keys(map).forEach(round => {
+      // Find all stats for this round
+      const stats = driverStandingsBySeason.filter(s => s.round == round);
+      let total = 0;
+      stats.forEach(s => total += s.points);
+      pointsInRound[round] = total;
 
-    for (let j = 0; j < race.driverstandingsByRaceidList.length; j += 1) {
-      const result = race.driverstandingsByRaceidList[j];
-      if (result.points && typeof result.points === 'number') {
-        const pctOfAllPoints = Math.round(
-          (result.points / pointsInRound[race.round]) * 100
-        );
-        map[race.round][result.driverid] = pctOfAllPoints;
-      }
-    }
-  }
+       stats.forEach(s => {
+           if (s.points && typeof s.points === 'number') {
+              const pct = Math.round((s.points / total) * 100);
+              map[round][s.driverId] = pct; 
+           }
+       });
+  });
 
   const data = [];
   Object.keys(map).forEach((round) => {
@@ -53,14 +50,15 @@ const DriverProgressStream = ({
   });
 
   function getColor({ id }) {
-    const info = seasondrivermainconsByYearList.find((s) => s.driverid === id);
-
-    return getTeamColor(info?.constructorTeamByConstructorid?.name);
+    const info = seasondrivermainconsByYearList.find((s) => s.driverId === id);
+    return getTeamColor(info?.teamName);
   }
 
   function getDriverById({ id }) {
-    const { driverDisplayName } = getDriver(id);
-    return driverDisplayName;
+    // We need driver displayName. 
+    // We can find it in seasondrivermainconsByYearList or currentStandings
+    const info = seasondrivermainconsByYearList.find((s) => s.driverId === id);
+    return info?.driverDisplayName || id;
   }
 
   return (
@@ -100,14 +98,6 @@ const DriverProgressStream = ({
       />
     </div>
   );
-};
-
-DriverProgressStream.propTypes = {
-  racesByYearList: PropTypes.arrayOf(raceType).isRequired,
-  driverstandingsByRaceidList:
-    PropTypes.arrayOf(driverStandingsType).isRequired,
-  seasondrivermainconsByYearList: PropTypes.arrayOf(seasonDriverMainConsType)
-    .isRequired,
 };
 
 export default DriverProgressStream;

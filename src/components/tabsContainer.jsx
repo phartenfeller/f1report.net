@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import classNames from '../util/classNames';
 
@@ -41,18 +40,6 @@ const TabsContainer = ({ tabs, defaultTabId }) => {
       ))}
     </div>
   );
-};
-
-TabsContainer.propTypes = {
-  tabs: PropTypes.arrayOf(
-    PropTypes.shape({
-      component: PropTypes.element.isRequired,
-      tabId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
-      tabName: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  defaultTabId: PropTypes.number.isRequired,
 };
 
 export default TabsContainer;

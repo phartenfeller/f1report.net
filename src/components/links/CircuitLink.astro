@@ -1,0 +1,16 @@
+---
+const { name, circuitref, location, country } = Astro.props;
+
+let tooltipText = null;
+if (country && location) {
+  tooltipText = `${country} - ${location}`;
+} else {
+  tooltipText = country || location || '';
+}
+---
+
+<span title={tooltipText}>
+  <a href={`/circuits/${circuitref}`} class="standard-link">
+    {name}
+  </a>
+</span>

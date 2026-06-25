@@ -1,0 +1,115 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header1 from "../../components/headers/Header1.astro";
+import LinkableH2 from "../../components/headers/LinkableH2.astro";
+import RaceDetailsTable from "../../components/RaceDetailsTable.astro";
+import SeasonDriverTabs from "../../components/season-template/SeasonDriverTabs.jsx";
+import SeasonConstructorTabs from "../../components/season-template/SeasonConstructorTabs.jsx";
+
+import {
+  getAllSeasons,
+  getSeasonByYear,
+  getSeasonDriverMainConstructors,
+  getSeasonLastRace,
+  getDriverStandings,
+  getConstructorStandings,
+  getRacesByYear,
+  getDriverStandingsBySeason,
+  getConstructorStandingsBySeason
+} from "../../lib/db";
+import arrayWithValues from "../../util/arrayWithValues";
+import { SITE_URL } from "../../util/jsonld";
+
+export async function getStaticPaths() {
+  const seasons = getAllSeasons();
+  return seasons.map((s) => ({
+    params: { year: s.year.toString() },
+  }));
+}
+
+const { year } = Astro.params;
+const season = getSeasonByYear(year);
+
+if (!season) {
+  return Astro.redirect("/404");
+}
+
+const racesByYearList = getRacesByYear(year); // Flat list of races
+const seasonDriverMainCons = getSeasonDriverMainConstructors(year);
+const seasonLastRace = getSeasonLastRace(year);
+
+let driverStandings = [];
+let constructorStandings = [];
+
+if (seasonLastRace) {
+  driverStandings = getDriverStandings(seasonLastRace.lastraceid);
+  constructorStandings = getConstructorStandings(seasonLastRace.lastraceid);
+}
+
+// Fetch full history for charts
+const driverStandingsBySeason = getDriverStandingsBySeason(year);
+const constructorStandingsBySeason = getConstructorStandingsBySeason(year);
+
+// Meta tags logic
+let description;
+if (arrayWithValues(driverStandings)) {
+    const one = driverStandings.find(r => r.position === 1)?.driverDisplayName;
+    const two = driverStandings.find(r => r.position === 2)?.driverDisplayName;
+    const third = driverStandings.find(r => r.position === 3)?.driverDisplayName;
+    description = `Results the ${year} season: 1st ${one}, 2nd: ${two}, 3rd ${third}`;
+} else {
+    description = `Details of the upcoming season of ${year}`;
+}
+
+// JSON-LD: the season page is a CollectionPage listing the season's races.
+const seasonItemList = {
+  '@type': 'ItemList',
+  name: `${year} Formula 1 races`,
+  itemListElement: (racesByYearList ?? []).map((race: any, idx: number) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    name: race.name,
+    url: `${SITE_URL}/races/${race.raceSlug}`,
+  })),
+};
+---
+
+<Layout title={`Season ${year}`} description={description} contentSite jsonLdType="CollectionPage" jsonLd={[seasonItemList]}>
+  <Header1>{`${year} Season`}</Header1>
+  
+  <div class="mb-5 px-4 font-serif text-lg text-gray-800 underline">
+    <a href={season.url} class="standard-link" target="_blank" rel="noopener noreferrer">
+      Wikipedia Article
+    </a>
+  </div>
+
+  {driverStandings.length > 0 && (
+    <div class="mb-10">
+      <LinkableH2 text="Driver Standings" />
+      <SeasonDriverTabs
+        client:visible
+        driverStandings={driverStandings}
+        seasonDriverMainCons={seasonDriverMainCons}
+        driverStandingsBySeason={driverStandingsBySeason}
+        year={year}
+      />
+    </div>
+  )}
+
+  {constructorStandings.length > 0 && (
+    <div class="mb-10">
+      <LinkableH2 text="Constructor Standings" />
+      <SeasonConstructorTabs
+        client:visible
+        constructorStandings={constructorStandings}
+        constructorStandingsBySeason={constructorStandingsBySeason}
+        year={year}
+      />
+    </div>
+  )}
+
+  <div class="mb-10">
+    <LinkableH2 text="Races" />
+    <RaceDetailsTable races={racesByYearList} />
+  </div>
+</Layout>

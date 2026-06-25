@@ -1,0 +1,39 @@
+@import "./fonts.css";
+@import "./ranks.css";
+@import "./blog.css";
+@import "./yt-player.css";
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+
+@theme {
+  --shadow-muted-sm: 0px 4px 20px rgb(81 102 167 / 12%);
+  --shadow-muted: 0 8px 30px rgb(81 102 167 / 24%);
+  --shadow-3d-red: 0px 2px 4px rgb(66 35 35 / 40%), 0px 7px 13px -3px rgb(66 35 35 / 30%), inset 0px -3px 0px rgb(161 70 70 / 50%);
+  --shadow-3d-gray: 0px 2px 4px rgb(94 78 78 / 20%), 0px 7px 13px -3px rgb(137 123 123 / 10%), inset 0px -3px 0px rgb(199 199 199);
+  
+  --color-f1red: #E10600;
+  
+  --font-yrsa: 'Yrsa', ui-serif, serif;
+  
+  --max-width-4k-limit: 120rem;
+}
+
+/* Typography Overrides */
+@layer utilities {
+  .prose a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .prose a:hover {
+    color: rgb(30, 64, 175);
+  }
+
+  .standard-link {
+    @apply rounded px-1 text-blue-600 underline hover:text-blue-800 focus:outline-none focus:ring-1 focus:ring-blue-500;
+  }
+
+  .black-link {
+    @apply rounded px-1 text-black underline decoration-zinc-400 hover:decoration-black focus:outline-none focus:ring-1 focus:ring-blue-300;
+  }
+}

@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header1 from '../../components/headers/Header1.astro';
+---
+
+<Layout title="About" noMarginTop>
+  <div class="flex justify-center">
+    <div class="bg-white lg:w-2/3 mx-4 shadow pb-12">
+      <div class="mx-4 lg:mx-16 my-8">
+        <Header1>About</Header1>
+      </div>
+      <div class="mx-4 lg:mx-16 prose md:prose-lg">
+        <p>
+          Website by{' '}
+          <a class="standard-link" href="https://hartenfeller.dev">
+            Philipp Hartenfeller
+          </a>. Published as{' '}
+          <a class="standard-link" href="https://github.com/phartenfeller/f1report.net">
+            Open Source Software
+          </a>.
+        </p>
+        <p>
+          Data from{' '}
+          <a class="standard-link" href="http://ergast.com/">ergast.com</a>
+          {' '}under{' '}
+          <a class="standard-link" href="http://ergast.com/mrd/terms/">
+            these conditions
+          </a>.
+        </p>
+        <p>
+          The Website was developed with{' '}
+          <a class="standard-link" href="https://astro.build/">Astro</a>{' '}
+          and uses{' '}
+          <a class="standard-link" href="https://reactjs.org/">React</a>{' '}
+          for interactive components.
+        </p>
+        <p>
+          The charts are developed with{' '}
+          <a class="standard-link" href="https://nivo.rocks/">Nivo</a>.
+        </p>
+        <p>
+          Styled with{' '}
+          <a class="standard-link" href="https://tailwindcss.com/">TailwindCSS</a>.
+        </p>
+        <div>
+          <a href="/license-info" class="standard-link">
+            List of all open source software and licenses
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

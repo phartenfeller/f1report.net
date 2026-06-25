@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import { teamStandingsType } from '../../types';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getColor(obj) {
@@ -15,15 +13,15 @@ function getAria(obj) {
 const TeamStandingsBar = ({ teamStandings, year }) => {
   const data = teamStandings.map((s) => ({
     points: s.points,
-    constructor: s.constructorTeamByConstructorid.name,
-    constructorid: s.constructorid,
-    tooltip: `${s.constructorTeamByConstructorid.name}: ${s.points}`,
-    color: getTeamColor(s.constructorTeamByConstructorid.name),
+    constructor: s.name,
+    constructorId: s.constructorId,
+    tooltip: `${s.name}: ${s.points}`,
+    color: getTeamColor(s.name),
   }));
 
   function tooltip(obj) {
     return (
-      <div className="inline-flex items-center rounded bg-white px-3 py-1 shadow-lg">
+      <div className="inline-flex items-center rounded bg-white px-3 py-1 shadow-lg text-black">
         <div
           className="mr-2 h-4 w-4 rounded-full"
           style={{ background: obj.color }}
@@ -38,7 +36,6 @@ const TeamStandingsBar = ({ teamStandings, year }) => {
       <figure>
         <div className="" style={{ height: '600px' }}>
           <ResponsiveBar
-            // eslint-disable-next-line react/jsx-no-bind
             tooltip={tooltip}
             layout="horizontal"
             minValue={0}
@@ -55,7 +52,7 @@ const TeamStandingsBar = ({ teamStandings, year }) => {
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
-              legend: 'Seconds',
+              legend: 'Points',
               legendPosition: 'middle',
               legendOffset: 32,
             }}
@@ -82,11 +79,6 @@ const TeamStandingsBar = ({ teamStandings, year }) => {
       </figure>
     </div>
   );
-};
-
-TeamStandingsBar.propTypes = {
-  teamStandings: PropTypes.arrayOf(teamStandingsType).isRequired,
-  year: PropTypes.string.isRequired,
 };
 
 export default TeamStandingsBar;

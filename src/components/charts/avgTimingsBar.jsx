@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import getTeamColor from '../../util/f1TeamColors';
@@ -7,19 +6,32 @@ function getColor(obj) {
   return getTeamColor(obj.data.constructor);
 }
 
+
+function getContrastColor(hexColor) {
+  if (!hexColor || !hexColor.startsWith('#')) return 'black';
+  const r = parseInt(hexColor.substr(1, 2), 16);
+  const g = parseInt(hexColor.substr(3, 2), 16);
+  const b = parseInt(hexColor.substr(5, 2), 16);
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  return yiq >= 128 ? 'black' : 'white';
+}
+
 function getAria(obj) {
   return obj.data.tooltip;
 }
 
-const AvgTimingsBar = ({ times, desc, annotations, title }) => {
+const AvgTimingsBar = ({ times, desc, annotations = [], title }) => {
   const data = times.sort((a, b) => a.time - b.time);
 
-  const onlyTimes = times.map((t) => t.time);
-  const chartMinTime = Math.min(...onlyTimes).toFixed(0) - 1;
+  const validTimes = times
+    .map((t) => t.time)
+    .filter((t) => t > 0 && Number.isFinite(t));
+  const minTime = validTimes.length > 0 ? Math.min(...validTimes) : 0;
+  const chartMinTime = Math.floor(minTime) - 1;
 
   function tooltip(obj) {
     return (
-      <div className="inline-flex items-center rounded bg-white p-2 shadow">
+      <div className="flex items-center whitespace-nowrap rounded bg-white p-2 text-black shadow">
         <div
           className="mr-2 h-4 w-4 rounded-full"
           style={{ background: obj.color }}
@@ -39,10 +51,9 @@ const AvgTimingsBar = ({ times, desc, annotations, title }) => {
       <figure>
         <div className="" style={{ height: '450px' }}>
           <ResponsiveBar
-            // eslint-disable-next-line react/jsx-no-bind
             tooltip={tooltip}
             layout="horizontal"
-            minValue={chartMinTime}
+            minValue={chartMinTime > 0 ? chartMinTime : 'auto'}
             data={data}
             keys={['time']}
             indexBy="id"
@@ -70,39 +81,29 @@ const AvgTimingsBar = ({ times, desc, annotations, title }) => {
               legendPosition: 'middle',
               legendOffset: -40,
             }}
+            labelPosition="end"
+            labelOffset={-50}
             labelSkipWidth={12}
             labelSkipHeight={12}
-            labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+            labelTextColor={(d) => getContrastColor(d.color.trim())}
             animate
             motionStiffness={90}
             motionDamping={15}
             role="application"
             ariaLabel={title}
             barAriaLabel={getAria}
+            motionConfig={{
+              mass: 1,
+              tension: 200,
+              friction: 25,
+              clamp: true
+            }}
           />
         </div>
         <figcaption className="mt-3">{title}</figcaption>
       </figure>
     </div>
   );
-};
-
-AvgTimingsBar.propTypes = {
-  times: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      time: PropTypes.number.isRequired,
-      tooltip: PropTypes.string.isRequired,
-      constructor: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  desc: PropTypes.string.isRequired,
-  annotations: PropTypes.arrayOf(PropTypes.string),
-  title: PropTypes.string.isRequired,
-};
-
-AvgTimingsBar.defaultProps = {
-  annotations: [],
 };
 
 export default AvgTimingsBar;

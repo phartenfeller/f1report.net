@@ -1,0 +1,40 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Header1 from '../../../components/headers/Header1.astro';
+import AnalyticsData from '../../../components/AnalyticsData';
+import { 
+  getConstructorByRef, 
+  getConstructorAnalytics, 
+  getAllConstructorsSimple 
+} from '../../../lib/db';
+
+export async function getStaticPaths() {
+  const constructors = getAllConstructorsSimple();
+  return constructors.map((c: any) => ({
+    params: { constructorRef: c.constructorRef },
+  }));
+}
+
+const { constructorRef } = Astro.params;
+const constructorData = getConstructorByRef(constructorRef);
+
+if (!constructorData) {
+  return Astro.redirect('/404');
+}
+
+const analytics = getConstructorAnalytics(constructorData.constructorId);
+---
+
+<Layout title={`${constructorData.name} Stats`}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <Header1>{constructorData.name}</Header1>
+    
+    <div class="mt-8">
+        {analytics ? (
+            <AnalyticsData client:load data={analytics} />
+        ) : (
+             <p>No analytics data available for this constructor.</p>
+        )}
+    </div>
+  </div>
+</Layout>

@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import { raceResultsType, driverStandingsType } from '../../types';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getColor(obj) {
@@ -12,26 +10,26 @@ function getAria(obj) {
   return `${obj.data.driver}: ${obj.data.points} points`;
 }
 
-const DriverStandingsBar = ({ standings, resultsByRaceidList, year }) => {
+const DriverStandingsBar = ({ standings, seasondrivermainconsByYearList, year }) => {
   const data = standings.map((s) => ({
     points: s.points,
-    driver: s.driverByDriverid.driverDisplayName,
-    driverId: s.driverid,
-    tooltip: `${s.driverByDriverid.driverDisplayName}: ${s.points}`,
+    driver: s.driverDisplayName,
+    driverId: s.driverId,
+    tooltip: `${s.driverDisplayName}: ${s.points}`,
   }));
 
   for (let i = 0; i < data.length; i += 1) {
-    const constr = resultsByRaceidList.find(
-      (r) => r.driverid === data[i].driverId
+    const constr = seasondrivermainconsByYearList.find(
+      (r) => r.driverId === data[i].driverId
     );
     if (constr) {
-      data[i].constructor = constr.constructorTeamByConstructorid.name;
+      data[i].constructor = constr.teamName;
     }
   }
 
   function tooltip(obj) {
     return (
-      <div className="inline-flex items-center rounded bg-white px-3 py-1 shadow-lg">
+      <div className="inline-flex items-center rounded bg-white px-3 py-1 shadow-lg text-black">
         <div
           className="mr-2 h-4 w-4 rounded-full"
           style={{ background: obj.color }}
@@ -46,7 +44,6 @@ const DriverStandingsBar = ({ standings, resultsByRaceidList, year }) => {
       <figure className="">
         <div className="" style={{ height: '600px' }}>
           <ResponsiveBar
-            // eslint-disable-next-line react/jsx-no-bind
             tooltip={tooltip}
             layout="horizontal"
             minValue={0}
@@ -63,7 +60,7 @@ const DriverStandingsBar = ({ standings, resultsByRaceidList, year }) => {
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
-              legend: 'Seconds',
+              legend: 'Points',
               legendPosition: 'middle',
               legendOffset: 32,
             }}
@@ -90,12 +87,6 @@ const DriverStandingsBar = ({ standings, resultsByRaceidList, year }) => {
       </figure>
     </div>
   );
-};
-
-DriverStandingsBar.propTypes = {
-  standings: PropTypes.arrayOf(driverStandingsType).isRequired,
-  resultsByRaceidList: PropTypes.arrayOf(raceResultsType).isRequired,
-  year: PropTypes.string.isRequired,
 };
 
 export default DriverStandingsBar;

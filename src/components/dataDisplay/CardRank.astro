@@ -1,0 +1,36 @@
+---
+import TeamDisplay from '../TeamDisplay.astro';
+
+const { rank, name, value, last, team = false } = Astro.props;
+
+let rankText = `${rank}th`;
+let rankClass = "other-rank-styles";
+
+if (rank === 1) {
+  rankText = "1st";
+  rankClass = "first-styles";
+} else if (rank === 2) {
+  rankText = "2nd";
+  rankClass = "second-styles";
+} else if (rank === 3) {
+  rankText = "3rd";
+  rankClass = "third-styles";
+}
+---
+
+<li class="list-none">
+  <dl class:list={[
+    "grid grid-cols-3 py-2 items-center",
+    !last && "border-b border-zinc-200"
+  ]}>
+    <span class={rankClass}>{rankText}</span>
+    {team ? (
+      <TeamDisplay teamName={name} textClasses="text-slate-600" />
+    ) : (
+      <dt class="text-slate-600">{name}</dt>
+    )}
+    <dd class="text-slate-700 text-lg font-semibold text-right">
+      {value}
+    </dd>
+  </dl>
+</li>

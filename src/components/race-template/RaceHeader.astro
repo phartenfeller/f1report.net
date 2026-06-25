@@ -1,0 +1,21 @@
+---
+const { pageTitle, year, raceid } = Astro.props;
+import headerImage from '../../images/f1report-hero.jpg';
+import { Image } from 'astro:assets';
+---
+
+<div class="relative bg-zinc-800 pb-32">
+  <div class="absolute inset-0">
+    <Image
+      class="h-full w-full object-cover"
+      src={headerImage}
+      alt=""
+      aria-hidden="true"
+    />
+    <div
+      class="absolute inset-0 bg-f1red mix-blend-multiply"
+      aria-hidden="true"
+    />
+  </div>
+  <div class="relative mx-auto max-w-7xl py-24 px-4 sm:py-32 sm:px-6 lg:px-8" />
+</div>

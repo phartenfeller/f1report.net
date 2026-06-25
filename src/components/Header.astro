@@ -1,0 +1,277 @@
+---
+import { getCurrentData } from '../lib/db';
+import { 
+  HiChevronDown, 
+  HiArrowCircleLeft, 
+  HiArrowCircleRight, 
+  HiCalendar, 
+  HiClipboardList, 
+  HiUser,
+  HiUserGroup,
+  HiChartBar,
+  HiCollection,
+  HiSearch
+} from 'react-icons/hi';
+import Search from './Search.astro';
+
+const { lastRace, nextRace, currentSeason } = getCurrentData();
+
+const getRaces = () => {
+  const arr = [];
+
+  if (lastRace) {
+    arr.push({
+      name: 'Last',
+      description: `${lastRace.name} ${lastRace.year}`,
+      href: `/races/${lastRace.raceSlug}`,
+      icon: HiArrowCircleLeft,
+    });
+  }
+
+  if (nextRace) {
+    arr.push({
+      name: 'Next',
+      description: `${nextRace.name} ${nextRace.year}`,
+      href: `/races/${nextRace.raceSlug}`,
+      icon: HiArrowCircleRight,
+    });
+  }
+
+  if (currentSeason) {
+    arr.push({
+      name: 'Current season',
+      description: `Races of the year ${currentSeason}`,
+      href: `/seasons/${currentSeason}#races`,
+      icon: HiCalendar,
+    });
+  }
+
+  arr.push({
+    name: 'All',
+    description: `All races ever`,
+    href: `/races`,
+    icon: HiClipboardList,
+  });
+
+  return arr;
+};
+
+const getCircuits = () => {
+  const arr = [];
+
+  if (lastRace) {
+    arr.push({
+      name: 'Last Race',
+      description: `${lastRace.circuitByCircuitid.name} - ${lastRace.circuitByCircuitid.country}`,
+      href: `/circuits/${lastRace.circuitByCircuitid.circuitref}`,
+      icon: HiArrowCircleLeft,
+    });
+  }
+
+  if (nextRace) {
+    arr.push({
+      name: 'Next Race',
+      description: `${nextRace.circuitByCircuitid.name} - ${nextRace.circuitByCircuitid.country}`,
+      href: `/circuits/${nextRace.circuitByCircuitid.circuitref}`,
+      icon: HiArrowCircleRight,
+    });
+  }
+
+  arr.push({
+    name: 'All',
+    description: `All circuits ever`,
+    href: `/circuits`,
+    icon: HiClipboardList,
+  });
+
+  return arr;
+};
+
+const statsHeaderItems = [
+  {
+    name: 'Driver Stats',
+    description: `Alltime Driver Stats`,
+    href: `/all-time-driver-stats`,
+    icon: HiUser,
+  },
+  {
+    name: 'Constructor Stats',
+    description: `Alltime Constructor Stats`,
+    href: `/all-time-constructor-stats`,
+    icon: HiChartBar,
+  },
+  {
+    name: 'All Drivers',
+    description: `List of all drivers`,
+    href: `/drivers`,
+    icon: HiUserGroup,
+  },
+  {
+    name: 'All Constructors',
+    description: `List of all constructors`,
+    href: `/constructors`,
+    icon: HiUserGroup,
+  },
+  {
+    name: 'Legacy Franchises',
+    description: `List of legacy teams`,
+    href: `/constructors-legacy`,
+    icon: HiCollection,
+  },
+];
+
+const racesItems = getRaces();
+const circuitsItems = getCircuits();
+
+const { siteTitle = 'F1 Report' } = Astro.props;
+---
+
+<header class="bg-f1red py-3 pl-3 pr-6">
+  <div class="flex justify-between">
+    <span class="text-xl">
+      <a
+        href="/"
+        class="rounded px-3 py-1 text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-300"
+      >
+        {siteTitle}
+      </a>
+    </span>
+
+    <div>
+      <nav class="hidden items-center space-x-6 md:flex">
+        
+        {/* Races Menu */}
+        <details class="group relative header-menu">
+          <summary class="group inline-flex items-center rounded-md p-1 text-base font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-700 cursor-pointer list-none">
+            <span>Races</span>
+            <HiChevronDown className="ml-2 h-5 w-5 text-white group-hover:text-red-300 transition-transform group-open:rotate-180" />
+          </summary>
+          <div class="absolute z-20 -ml-4 mt-3 w-screen max-w-sm transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
+            <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 text-black">
+                {racesItems.map((item) => (
+                  <a
+                    href={item.href}
+                    class="-m-3 flex items-center rounded-lg p-3 hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    aria-label={item.name}
+                  >
+                    <item.icon className="h-6 w-6 flex-shrink-0 text-teal-400" />
+                    <div class="ml-4">
+                      <p class="text-base font-medium text-zinc-900">
+                        {item.name}
+                      </p>
+                      <p class="mt-1 text-sm text-zinc-500">
+                        {item.description}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </details>
+
+        {/* Circuits Menu */}
+        <details class="group relative header-menu">
+          <summary class="group inline-flex items-center rounded-md p-1 text-base font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-700 cursor-pointer list-none">
+            <span>Circuits</span>
+            <HiChevronDown className="ml-2 h-5 w-5 text-white group-hover:text-red-300 transition-transform group-open:rotate-180" />
+          </summary>
+          <div class="absolute z-20 -ml-4 mt-3 w-screen max-w-sm transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
+            <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 text-black">
+                {circuitsItems.map((item) => (
+                  <a
+                    href={item.href}
+                    class="-m-3 flex items-center rounded-lg p-3 hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    aria-label={item.name}
+                  >
+                    <item.icon className="h-6 w-6 flex-shrink-0 text-teal-400" />
+                    <div class="ml-4">
+                      <p class="text-base font-medium text-zinc-900">
+                        {item.name}
+                      </p>
+                      <p class="mt-1 text-sm text-zinc-500">
+                        {item.description}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </details>
+
+        {/* Stats Menu */}
+        <details class="group relative header-menu">
+          <summary class="group inline-flex items-center rounded-md p-1 text-base font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-700 cursor-pointer list-none">
+            <span>Stats</span>
+            <HiChevronDown className="ml-2 h-5 w-5 text-white group-hover:text-red-300 transition-transform group-open:rotate-180" />
+          </summary>
+          <div class="absolute z-20 -ml-4 mt-3 w-screen max-w-sm transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
+            <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 text-black">
+                {statsHeaderItems.map((item) => (
+                  <a
+                    href={item.href}
+                    class="-m-3 flex items-center rounded-lg p-3 hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    aria-label={item.name}
+                  >
+                    <item.icon className="h-6 w-6 flex-shrink-0 text-teal-400" />
+                    <div class="ml-4">
+                      <p class="text-base font-medium text-zinc-900">
+                        {item.name}
+                      </p>
+                      <p class="mt-1 text-sm text-zinc-500">
+                        {item.description}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <a
+          href="/blog"
+          class="group inline-flex items-center rounded-md p-1 text-base font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-700"
+        >
+          <span>Blog</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="flex items-center">
+      <button
+        id="open-search-btn"
+        type="button"
+        class="rounded p-1 text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-700"
+        aria-label="Search"
+      >
+        <HiSearch className="h-6 w-6" />
+      </button>
+    </div>
+    <Search id="search-modal" />
+  </div>
+</header>
+
+
+<script>
+  // Open search modal
+  const searchBtn = document.getElementById('open-search-btn');
+  searchBtn?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('open-search-modal'));
+  });
+
+  // Close details when clicking outside
+  document.addEventListener('click', (event) => {
+    const details = document.querySelectorAll('details.header-menu');
+    details.forEach((detail) => {
+      // @ts-ignore
+      if (detail.hasAttribute('open') && !detail.contains(event.target)) {
+        detail.removeAttribute('open');
+      }
+    });
+  });
+</script>

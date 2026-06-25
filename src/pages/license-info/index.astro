@@ -1,0 +1,132 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import Layout from '../../layouts/Layout.astro';
+import Header1 from '../../components/headers/Header1.astro';
+
+// Build-time scan of installed packages to list open source software & licenses.
+// Replaces Gatsby's allPackageLicense (gatsby-source-package-licenses).
+type Pkg = { name: string; version: string; license: string; url: string | null };
+
+function readLicense(p: any): string {
+  if (typeof p.license === 'string') return p.license;
+  if (p.license && typeof p.license === 'object' && p.license.type) return p.license.type;
+  if (Array.isArray(p.licenses)) {
+    return p.licenses.map((l: any) => l.type || l).filter(Boolean).join(', ') || '?';
+  }
+  return '?';
+}
+
+function readUrl(p: any): string | null {
+  if (p.homepage) return p.homepage;
+  const repo = p.repository;
+  let url: string | undefined = typeof repo === 'string' ? repo : repo?.url;
+  if (!url) return null;
+  return url.replace(/^git\+/, '').replace(/^git:\/\//, 'https://').replace(/\.git$/, '');
+}
+
+function collect(): Pkg[] {
+  const root = path.join(process.cwd(), 'node_modules');
+  const out: Pkg[] = [];
+  let entries: string[] = [];
+  try {
+    entries = fs.readdirSync(root);
+  } catch {
+    return out;
+  }
+  for (const entry of entries) {
+    if (entry.startsWith('.')) continue;
+    if (entry.startsWith('@')) {
+      let scoped: string[] = [];
+      try {
+        scoped = fs.readdirSync(path.join(root, entry));
+      } catch {
+        continue;
+      }
+      for (const sub of scoped) {
+        addPkg(out, path.join(root, entry, sub), `${entry}/${sub}`);
+      }
+    } else {
+      addPkg(out, path.join(root, entry), entry);
+    }
+  }
+  return out.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function addPkg(out: Pkg[], dir: string, fallbackName: string) {
+  try {
+    const p = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf-8'));
+    out.push({
+      name: p.name || fallbackName,
+      version: p.version || '',
+      license: readLicense(p),
+      url: readUrl(p),
+    });
+  } catch {
+    // ignore non-package dirs (e.g. .bin)
+  }
+}
+
+const packages = collect();
+---
+
+<Layout title="License Info" noMarginTop noIndex>
+  <div class="flex justify-center">
+    <div class="bg-white lg:w-2/3 mx-4 shadow pb-12">
+      <div class="mx-4 lg:mx-16 my-8">
+        <Header1>Licenses</Header1>
+      </div>
+      <div class="mx-4 lg:mx-16 prose md:prose-lg" style="max-width: none;">
+        <p>
+          This Website relies heavily on awesome Open Source Software. Thanks to
+          all the awesome developers behind it!
+        </p>
+        <div>
+          Notable mentions are:
+          <ul>
+            <li>
+              <a class="standard-link" href="https://astro.build/">Astro</a>
+              <span> - and its whole awesome ecosystem</span>
+            </li>
+            <li>
+              <a class="standard-link" href="https://reactjs.org/">React</a>
+              <span> (used for interactive components)</span>
+            </li>
+            <li>
+              <a class="standard-link" href="https://nivo.rocks/">Nivo</a>
+              <span> (Charts Library)</span>
+            </li>
+            <li>
+              <a class="standard-link" href="https://tailwindcss.com/">TailwindCSS</a>
+              <span> (CSS Library)</span>
+            </li>
+          </ul>
+        </div>
+
+        <details class="not-prose mt-2">
+          <summary
+            class="p-2 flex items-center gap-1 border border-zinc-300 rounded cursor-pointer hover:bg-blue-50 select-none"
+          >
+            All Licenses ({packages.length})
+          </summary>
+          <div class="text-zinc-500 mt-2">
+            {packages.map((pkg) => (
+              <div class="border-b border-zinc-300 mt-4 pb-4">
+                {pkg.url ? (
+                  <a class="standard-link" href={pkg.url}>
+                    {pkg.name}{pkg.version ? ` @ ${pkg.version}` : ''}
+                  </a>
+                ) : (
+                  <span class="text-black">
+                    {pkg.name}{pkg.version ? ` @ ${pkg.version}` : ''}
+                  </span>
+                )}
+                <div>License: {pkg.license || '?'}</div>
+              </div>
+            ))}
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</Layout>

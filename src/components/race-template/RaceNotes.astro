@@ -1,0 +1,13 @@
+---
+const { racenotes } = Astro.props;
+import LinkableH2 from '../headers/LinkableH2.astro';
+---
+
+{racenotes && (
+  <div>
+    <LinkableH2 text="Notes" />
+    <div class="prose whitespace-pre-line text-zinc-900">
+      {racenotes}
+    </div>
+  </div>
+)}

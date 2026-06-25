@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header1 from '../../components/headers/Header1.astro';
+import RaceDetailsTable from '../../components/RaceDetailsTable.astro';
+import { getAllRacesWithWinners } from '../../lib/db';
+import { HiChevronDown } from 'react-icons/hi';
+
+const races = getAllRacesWithWinners();
+
+const racesByYear = races.reduce((acc, race) => {
+  // @ts-ignore
+  if (!acc[race.year]) acc[race.year] = [];
+  // @ts-ignore
+  acc[race.year].push(race);
+  return acc;
+}, {} as Record<string, any[]>);
+
+const sortedYears = Object.keys(racesByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<Layout title="Races">
+  <Header1>All Races</Header1>
+
+  <div class="mx-auto max-w-4k-limit">
+    {sortedYears.map((year, i) => (
+      <details class="group pt-6" open={i === 0}>
+        <summary class="text-left bg-white rounded shadow-muted-sm p-4 w-full flex justify-between items-start text-zinc-400 hover:shadow-muted focus:outline-none focus:ring focus:ring-red-300 cursor-pointer list-none">
+          <span class="font-medium text-zinc-900">{year}</span>
+          <span class="ml-6 h-7 flex items-center group-open:-rotate-180 transform transition-transform">
+            <HiChevronDown className="h-6 w-6" />
+          </span>
+        </summary>
+        <div class="my-6 px-3">
+          <RaceDetailsTable races={racesByYear[year]} />
+        </div>
+      </details>
+    ))}
+  </div>
+</Layout>

@@ -1,0 +1,237 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { 
+  getAllRaces, 
+  getRaceBySlug, 
+  getResultsByRaceId, 
+  getLapTimesByRaceId, 
+  getPitStopsByRaceId,
+  getDriverAvgLapTimes,
+  getDriverAvgLapTimes70P,
+  getConstructorAvgLapTimes,
+  getConstructorAvgLapTimes70P,
+  getConstructorAvgPitStops,
+  getSeasonDriverMainConstructors,
+  getCircuitById
+} from '../../lib/db';
+import { sportsEventNode, canonicalUrlFor } from '../../util/jsonld';
+
+// Components
+import RaceHeader from '../../components/race-template/RaceHeader.astro';
+import Header1 from '../../components/headers/Header1.astro';
+import LinkableH2 from '../../components/headers/LinkableH2.astro';
+import RaceResultsTable from '../../components/race-template/RaceResultsTable.astro';
+import RaceNotes from '../../components/race-template/RaceNotes.astro';
+import HighlightVideos from '../../components/race-template/HighlightVideos.astro';
+import PirelliStats from '../../components/race-template/PirelliStats.astro';
+import Warningbox from '../../components/Warningbox.astro';
+import CircuitLink from '../../components/links/CircuitLink.astro';
+import Infobox from '../../components/Infobox.astro';
+
+// React Components (to be migrated/copied)
+import PositionChart from '../../components/race-template/PositionChart';
+import DriverLapTimes from '../../components/race-template/DriverLapTimes';
+import ConstructorLapTimes from '../../components/race-template/ConstructorLapTimes';
+import PitStopTimes from '../../components/race-template/PitStopTimes';
+
+export async function getStaticPaths() {
+  const races = getAllRaces();
+  return races.map((race) => ({
+    params: { slug: race.raceSlug },
+    props: { raceId: race.raceId },
+  }));
+}
+
+const { slug } = Astro.params;
+const { raceId } = Astro.props;
+
+// Fetch Data
+const race = getRaceBySlug(slug as string);
+if (!race) {
+  return Astro.redirect('/404');
+}
+
+const results = getResultsByRaceId(race.raceId);
+const laptimes = getLapTimesByRaceId(race.raceId);
+const pitstops = getPitStopsByRaceId(race.raceId);
+const driverAvgLapt = getDriverAvgLapTimes(race.raceId);
+const driverAvgLapt70P = getDriverAvgLapTimes70P(race.raceId);
+const constructorAvgLapt = getConstructorAvgLapTimes(race.raceId);
+const constructorAvgLapt70P = getConstructorAvgLapTimes70P(race.raceId);
+const constructorAvgPitstops = getConstructorAvgPitStops(race.raceId);
+const seasonDriverMainCons = getSeasonDriverMainConstructors(race.year);
+const circuit = getCircuitById(race.circuitId);
+
+const pageTitle = `${race.name} (${race.year})`;
+
+// Prepare Driver Map for Charts
+const driverMap = {};
+results.forEach((res) => {
+  // @ts-ignore
+  driverMap[res.driverId] = {
+    constructor: res.teamName, // query aliases this
+    forename: res.forename,
+    surname: res.surname,
+    displayName: res.driverDisplayName,
+    number: res.driverNumber,
+  };
+});
+
+// Meta description
+const top3 = results.slice(0, 3).map((r: any) => r.driverDisplayName).join(', ');
+const description = top3 
+  ? `Results of the race in ${circuit.country}: ${top3}`
+  : `Details of the upcoming race in ${circuit.country}`;
+
+const dateLocal = new Date(race.date).toLocaleDateString();
+
+const hasResults = results && results.length > 0;
+const hasLaptimes = laptimes && laptimes.length > 0;
+const hasDriverAvg = driverAvgLapt && driverAvgLapt.length > 0;
+const hasConAvg = constructorAvgLapt && constructorAvgLapt.length > 0;
+
+// Helper data object for Pirelli Stats
+const pirelliData = {
+    pirellisource: race.pirelliSource,
+    startcompound: race.startCompound,
+    compoundarr: race.compoundArr,
+    traction: race.traction,
+    braking: race.braking,
+    lateral: race.lateral,
+    tyrestress: race.tyreStress,
+    trackevolution: race.trackEvolution,
+    asphaltgrip: race.asphaltGrip,
+    asphaltabrasion: race.asphaltAbrasion,
+    downforce: race.downforce,
+    eoscamperlimitfront: race.eosCamperLimitFront,
+    eoscamperlimitrear: race.eosCamperLimitRear,
+    minstartingpressurefront: race.minStartingPressureFront,
+    minstartingpressurerear: race.minStartingPressureRear,
+};
+
+// JSON-LD: model the race as a SportsEvent held at the circuit.
+const { canonicalUrl } = canonicalUrlFor(Astro.url, Astro.site);
+const startDate = race.time ? `${race.date}T${race.time}Z` : race.date;
+const raceJsonLd = sportsEventNode({
+  canonicalUrl,
+  name: pageTitle,
+  startDate,
+  location: {
+    name: circuit?.name,
+    country: circuit?.country,
+    locality: circuit?.location,
+  },
+});
+---
+
+<Layout title={pageTitle} description={description} contentSite jsonLd={[raceJsonLd]}>
+  <div class="mx-6 mt-8">
+    <Header1 dataId={race.raceId}>{pageTitle}</Header1>
+    <div>
+        <span>Date: </span>
+        <time datetime={race.date}>{dateLocal}</time>
+    </div>
+    <div>
+        <span>Track: </span>
+        <CircuitLink 
+            name={circuit.name} 
+            circuitref={circuit.circuitRef} 
+            location={circuit.location} 
+            country={circuit.country} 
+        />
+        <span>
+        {' '}
+        - {circuit.location} - {circuit.country}
+        </span>
+    </div>
+    <div>
+        <a href={race.url} class="standard-link">
+        Wikipedia Article
+        </a>
+    </div>
+    
+    <div class="my-8 md:hidden">
+        <Infobox text="For a better experience and more Info please use a bigger screen" />
+    </div>
+
+    <div class="mt-16 space-y-16">
+        <div>
+            <LinkableH2 text="Race Results" />
+            <RaceResultsTable results={results} />
+            <div class="mt-4">
+                 <a href={`/seasons/${race.year}`} class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline transition-colors">
+                    ← Back to {race.year} Season overview
+                </a>
+            </div>
+            <div class="mt-8 md:grid md:grid-cols-3 md:gap-12 md:space-x-0 space-y-8 md:space-y-0">
+                <RaceNotes racenotes={race.raceNotes} />
+                <HighlightVideos highlightlinks={race.highlightLinks} />
+            </div>
+        </div>
+
+    {hasResults ? (
+        <div>
+            <div>
+                {hasLaptimes && (
+                    <>
+                        <LinkableH2 text="Positions" />
+                        <PositionChart 
+                            laptimesByRaceidList={laptimes} 
+                            driverMap={driverMap} 
+                            resultsByRaceidList={results} 
+                            client:visible
+                        />
+                    </>
+                )}
+            </div>
+            {hasDriverAvg && (
+                <div>
+                   <LinkableH2 text="Driver Lap Time Statistics" />
+                   <DriverLapTimes
+                        driAvgLaptsByRaceidList={driverAvgLapt}
+                        driAvgLapt70PsByRaceidList={driverAvgLapt70P}
+                        driverMap={driverMap}
+                        client:visible
+                   />
+                </div>
+            )}
+             {hasConAvg && (
+              <div>
+                <LinkableH2 text="Constructor Lap Time Statistics" />
+                <ConstructorLapTimes
+                  conAvgLaptsByRaceidList={constructorAvgLapt}
+                  conAvgLapt70PsByRaceidList={constructorAvgLapt70P}
+                  driverMap={driverMap}
+                  client:visible
+                />
+              </div>
+            )}
+            <PitStopTimes
+              conAvgPitstopsByRaceidList={constructorAvgPitstops}
+              pitstopsByRaceidList={pitstops}
+              seasondrivermainconsByYearList={seasonDriverMainCons}
+              client:visible
+            />
+        </div>
+    ) : (
+         <div class="m-0 rounded border-2 border-zinc-300 lg:m-16">
+            <Warningbox
+              title="No data found"
+              text="Either the race did not take place yet or there was an errror."
+            />
+          </div>
+    )}
+
+    {race.pirelliSource && (
+        <div>
+            <LinkableH2 text="Tyre Usage" />
+            <PirelliStats
+                grandPrix={race.name}
+                year={race.year}
+                data={pirelliData}
+            />
+        </div>
+    )}
+    </div>
+  </div>
+</Layout>

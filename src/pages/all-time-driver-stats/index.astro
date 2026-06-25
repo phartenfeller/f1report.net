@@ -1,0 +1,96 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header1 from '../../components/headers/Header1.astro';
+import LinkableH2 from '../../components/headers/LinkableH2.astro';
+import DriverCard from '../../components/dataDisplay/DriverCard.astro';
+import AllTimeStatsTable from '../../components/AllTimeStatsTable.jsx';
+import { getAllTimeDriverStats, getAllTimeDriverStatsPrepared } from '../../lib/db';
+
+const statsList = getAllTimeDriverStats();
+const preparedStats = getAllTimeDriverStatsPrepared();
+
+// Create driver lookup map
+const driverMap = new Map();
+statsList.forEach((s: any) => {
+  driverMap.set(s.driverid, s.driverDisplayName);
+});
+
+// Parse prepared stats
+const cardData: Record<string, any[]> = {};
+preparedStats.forEach((item: any) => {
+  try {
+    const list = JSON.parse(item.json);
+    // Enhance list with driver names
+    if (Array.isArray(list)) {
+      list.forEach(p => {
+        if (p.driverId) {
+          p.driverDisplayName = driverMap.get(p.driverId) || 'Unknown';
+        }
+      });
+    }
+    cardData[item.key] = list;
+  } catch (e) {
+    console.error(`Error parsing stats for ${item.key}`, e);
+    cardData[item.key] = [];
+  }
+});
+---
+
+<Layout title="All Time Driver Stats">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <Header1>All Time Driver Stats</Header1>
+
+    <div class="text-zinc-600 mb-6">
+      * all points are calculated after todays rules.
+    </div>
+
+    <div class="my-6 space-y-12">
+      <!-- General -->
+      <div>
+        <LinkableH2 id="general">General</LinkableH2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-12 mt-4">
+          <DriverCard list={cardData.points} accessor="val" header="Most Points" />
+          <DriverCard list={cardData.wins} accessor="val" header="Most Wins" />
+          <DriverCard list={cardData.podiums} accessor="val" header="Most Podiums" />
+          <DriverCard list={cardData.poles} accessor="val" header="Most Poles" />
+          <DriverCard list={cardData.fastestlaps} accessor="val" header="Most Fastest Laps" />
+        </div>
+      </div>
+
+      <!-- Finish Position -->
+      <div>
+        <LinkableH2 id="finish-position">Finish Position</LinkableH2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-12 mt-4">
+           <DriverCard list={cardData.toptens} accessor="val" header="Most Top 10 Finishes" />
+           <DriverCard list={cardData.undertens} accessor="val" header="Most Finishes Out of Top 10" />
+        </div>
+      </div>
+
+      <!-- Average -->
+      <div>
+        <LinkableH2 id="average">Average</LinkableH2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-12 mt-4">
+          <DriverCard list={cardData.avgPointsPerRace} accessor="val" header="Best Average Points per Race" note="At least 5 races" />
+          <DriverCard list={cardData.avgGridPosition} accessor="val" header="Best Average Grid Position" note="At least 5 races" />
+        </div>
+      </div>
+
+      <!-- Ratios -->
+      <div>
+        <LinkableH2 id="ratios">Ratios</LinkableH2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-12 mt-4">
+          <DriverCard list={cardData.winratio} accessor="val" header="Best Win Ratio" note="At least 5 races" />
+          <DriverCard list={cardData.podiumratio} accessor="val" header="Best Podium Ratio" note="At least 5 races" />
+          <DriverCard list={cardData.toptensratio} accessor="val" header="Best Top 10 Finishes Ratio" note="At least 5 races" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12">
+      <LinkableH2 id="table-stats">Table Stats</LinkableH2>
+      <div class="mt-4">
+        <AllTimeStatsTable client:load data={statsList} />
+      </div>
+    </div>
+  </div>
+</Layout>

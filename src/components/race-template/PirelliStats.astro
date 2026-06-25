@@ -1,0 +1,100 @@
+---
+const { grandPrix, year, data } = Astro.props;
+
+const labels = {
+  traction: 'Traction',
+  braking: 'Braking',
+  lateral: 'Lateral',
+  tyrestress: 'Tyre Stress',
+  asphaltgrip: 'Asphalt Grip',
+  asphaltabrasion: 'Asphalt Abrasion',
+  downforce: 'Downforce',
+  trackevolution: 'Track Evolution',
+};
+
+const levels = {
+  1: 'Low',
+  2: 'Low',
+  3: 'Medium',
+  4: 'High',
+  5: 'High',
+  null: '-',
+};
+
+const keys = [
+  'traction',
+  'braking',
+  'lateral',
+  'tyrestress',
+  'asphaltgrip',
+  'asphaltabrasion',
+  'downforce',
+  'trackevolution',
+];
+
+const getImage = (compound) => {
+    // We don't have these images yet, using placeholder or failing gracefully.
+    // Assuming they are in /images/pirelli/...
+    // For now, render text or simpler representation
+    return `/images/pirelli/${compound}.png`; // Setup later
+}
+---
+
+<div class="mt-8 overflow-hidden bg-white shadow sm:rounded-lg">
+  <div class="px-4 py-5 sm:px-6">
+    <h3 class="text-lg font-medium leading-6 text-zinc-900">
+      Pirelli Tyre Stats
+    </h3>
+    <p class="mt-1 max-w-2xl text-sm text-zinc-500">
+      Stats provided by Pirelli for the {grandPrix} {year}.
+    </p>
+  </div>
+  <div class="border-t border-zinc-200 px-4 py-5 sm:p-0">
+    <dl class="sm:divide-y sm:divide-zinc-200">
+      {/* Compounds */}
+      <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+        <dt class="text-sm font-medium text-zinc-500">Compounds</dt>
+        <dd class="mt-1 text-sm text-zinc-900 sm:col-span-2 sm:mt-0">
+           {data.compoundarr}
+        </dd>
+      </div>
+
+      {/* Stats Grid */}
+       {keys.map((key) => (
+           data[key] && (
+            <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                <dt class="text-sm font-medium text-zinc-500">{labels[key]}</dt>
+                <dd class="mt-1 text-sm text-zinc-900 sm:col-span-2 sm:mt-0 flex items-center">
+                    <span class="mr-4 w-12 font-semibold">{data[key]}</span>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 max-w-xs">
+                        <div class="bg-f1red h-2.5 rounded-full" style={`width: ${(data[key]/5)*100}%`}></div>
+                    </div>
+                </dd>
+            </div>
+           )
+       ))}
+       
+       <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+        <dt class="text-sm font-medium text-zinc-500">Pressures (Front/Rear)</dt>
+        <dd class="mt-1 text-sm text-zinc-900 sm:col-span-2 sm:mt-0">
+            {data.minstartingpressurefront} psi / {data.minstartingpressurerear} psi
+        </dd>
+      </div>
+      
+       <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+        <dt class="text-sm font-medium text-zinc-500">Camber Limit (Front/Rear)</dt>
+        <dd class="mt-1 text-sm text-zinc-900 sm:col-span-2 sm:mt-0">
+            {data.eoscamperlimitfront}° / {data.eoscamperlimitrear}°
+        </dd>
+      </div>
+       
+       <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+        <dt class="text-sm font-medium text-zinc-500">Source</dt>
+        <dd class="mt-1 text-sm text-zinc-900 sm:col-span-2 sm:mt-0">
+            <a href={data.pirellisource} class="standard-link" target="_blank" rel="noopener noreferrer">Pirelli Infographic</a>
+        </dd>
+      </div>
+
+    </dl>
+  </div>
+</div>

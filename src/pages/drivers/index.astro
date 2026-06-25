@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LinkableH2 from '../../components/headers/LinkableH2.astro';
+import DriversTable from '../../components/DriversTable.jsx';
+import { getAllTimeDriverStats } from '../../lib/db';
+
+const stats = getAllTimeDriverStats();
+---
+
+<Layout title="All Drivers">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold text-slate-900 mb-6">All Drivers</h1>
+    
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <DriversTable client:load data={stats} />
+    </div>
+  </div>
+</Layout>

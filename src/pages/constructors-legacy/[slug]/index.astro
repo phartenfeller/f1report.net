@@ -1,0 +1,49 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Header1 from '../../../components/headers/Header1.astro';
+import AnalyticsData from '../../../components/AnalyticsData';
+import { 
+  getLegacyConstructorBySlug, 
+  getLegacyConstructorAnalytics, 
+  getAllLegacyConstructors,
+  slugify
+} from '../../../lib/db';
+
+export async function getStaticPaths() {
+  const legacies = getAllLegacyConstructors();
+  return legacies.map((l) => ({
+    params: { slug: slugify(l.legacy_name) },
+  }));
+}
+
+const { slug } = Astro.params;
+const legacy = getLegacyConstructorBySlug(slug);
+
+if (!legacy) {
+  return Astro.redirect('/404');
+}
+
+const analytics = getLegacyConstructorAnalytics(legacy.legacy_id);
+---
+
+<Layout title={`${legacy.legacy_name} Stats`}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+     <div class="flex items-center space-x-4 mb-4">
+        {legacy.legacy_color && (
+            <div 
+                class="w-8 h-8 rounded-full shadow-sm"
+                style={{ backgroundColor: legacy.legacy_color }}
+            />
+        )}
+        <Header1>{legacy.legacy_name} Stats</Header1>
+    </div>
+    
+    <div class="mt-8">
+        {analytics ? (
+            <AnalyticsData client:load data={analytics} />
+        ) : (
+             <p>No analytics data available for this legacy constructor.</p>
+        )}
+    </div>
+  </div>
+</Layout>

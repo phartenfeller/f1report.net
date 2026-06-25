@@ -1,0 +1,188 @@
+---
+import TeamDisplay from '../teamDisplay/TeamDisplay.jsx';
+
+const {
+  allConstructorTeams,
+  allDrivers,
+  mostconstructorpodiums,
+  mostcostructorwins,
+  mostdriverpodiums,
+  mostdriverstarts,
+  mostdriverwins,
+} = Astro.props;
+
+const parseList = (listStr) => {
+    if (!listStr) return [];
+    try {
+        const arr = JSON.parse(listStr);
+        // It seems the array is array of STRINGS that are JSON?
+        // Gatsby code: 
+        // const teamArray = JSON.parse(list).sort((a, b) => a.rank - b.rank);
+        // for (let i = 0; i < teamArray.length; i++) { teamArray[i] = JSON.parse(teamArray[i]); }
+        // So yes, double parse? Or maybe array of strings.
+        // Let's assume it matches Gatsby logic.
+        return arr.map(item => typeof item === 'string' ? JSON.parse(item) : item).sort((a, b) => a.rank - b.rank);
+    } catch(e) {
+        console.error("Error parsing stats list", e);
+        return [];
+    }
+};
+
+const getRankText = (rank) => {
+  switch (rank) {
+    case 1:
+      return ['1st', 'first-styles'];
+    case 2:
+      return ['2nd', 'second-styles'];
+    case 3:
+      return ['3rd', 'third-styles'];
+    default:
+      return [`${rank}th`, 'other-rank-styles text-zinc-600'];
+  }
+};
+
+const driverWins = parseList(mostdriverwins);
+const driverPodiums = parseList(mostdriverpodiums);
+const driverStarts = parseList(mostdriverstarts);
+const constructorWins = parseList(mostcostructorwins);
+const constructorPodiums = parseList(mostconstructorpodiums);
+
+const hasData = driverWins.length || driverPodiums.length || driverStarts.length || constructorWins.length || constructorPodiums.length;
+
+// Helper component for ListItem? Can define detailed HTML here.
+---
+
+{!hasData && <div class="text-2xl">No data yet!</div>}
+
+{hasData && (
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:gap-12">
+        {/* Driver Wins */}
+        {driverWins.length > 0 && (
+            <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-muted sm:p-6">
+                <h4 class="mb-6 text-xl font-bold tracking-wide text-zinc-900">Most driver wins</h4>
+                <ol>
+                    {driverWins.map((p, i) => {
+                        const driver = allDrivers.find(d => d.driverId === p.driverId);
+                        const name = driver ? driver.driverDisplayName : 'Unknown';
+                        const [rankText, rankClass] = getRankText(p.rank);
+                        const isLast = i === driverWins.length - 1;
+                        return (
+                            <li class={`grid grid-cols-3 items-center py-2 ${!isLast ? 'border-b border-zinc-200' : ''}`}>
+                                <span class={rankClass}>{rankText}</span>
+                                <span class="text-slate-600">{name}</span>
+                                <span class="text-right text-slate-600">{p.cnt} wins</span>
+                            </li>
+                        )
+                    })}
+                </ol>
+            </div>
+        )}
+
+        {/* Driver Podiums */}
+        {driverPodiums.length > 0 && (
+             <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-muted sm:p-6">
+                <h4 class="mb-6 text-xl font-bold tracking-wide text-zinc-900">Most driver podiums</h4>
+                <ol>
+                    {driverPodiums.map((p, i) => {
+                        const driver = allDrivers.find(d => d.driverId === p.driverId);
+                        const name = driver ? driver.driverDisplayName : 'Unknown';
+                        const [rankText, rankClass] = getRankText(p.rank);
+                        const isLast = i === driverPodiums.length - 1;
+                        return (
+                            <li class={`grid grid-cols-3 items-center py-2 ${!isLast ? 'border-b border-zinc-200' : ''}`}>
+                                <span class={rankClass}>{rankText}</span>
+                                <span class="text-slate-600">{name}</span>
+                                <span class="text-right text-slate-600">{p.cnt} podiums</span>
+                            </li>
+                        )
+                    })}
+                </ol>
+            </div>
+        )}
+
+         {/* Driver Starts */}
+        {driverStarts.length > 0 && (
+             <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-muted sm:p-6">
+                <h4 class="mb-6 text-xl font-bold tracking-wide text-zinc-900">Most driver starts</h4>
+                <ol>
+                    {driverStarts.map((p, i) => {
+                        const driver = allDrivers.find(d => d.driverId === p.driverId);
+                        const name = driver ? driver.driverDisplayName : 'Unknown';
+                        const [rankText, rankClass] = getRankText(p.rank);
+                        const isLast = i === driverStarts.length - 1;
+                        return (
+                            <li class={`grid grid-cols-3 items-center py-2 ${!isLast ? 'border-b border-zinc-200' : ''}`}>
+                                <span class={rankClass}>{rankText}</span>
+                                <span class="text-slate-600">{name}</span>
+                                <span class="text-right text-slate-600">{p.cnt} starts</span>
+                            </li>
+                        )
+                    })}
+                </ol>
+            </div>
+        )}
+
+        {/* Constructor Wins */}
+        {constructorWins.length > 0 && (
+             <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-muted sm:p-6">
+                <h4 class="mb-6 text-xl font-bold tracking-wide text-zinc-900">Most constructor wins</h4>
+                <ol>
+                    {constructorWins.map((p, i) => {
+                        const team = allConstructorTeams.find(c => c.constructorId === p.constructorId);
+                        const name = team ? team.name : 'Unknown';
+                        const [rankText, rankClass] = getRankText(p.rank);
+                        const isLast = i === constructorWins.length - 1;
+                        return (
+                            <li class={`grid grid-cols-3 items-center py-2 ${!isLast ? 'border-b border-zinc-200' : ''}`}>
+                                <span class={rankClass}>{rankText}</span>
+                                <div class="text-slate-600">
+                                    <TeamDisplay client:visible teamName={name} textClasses="text-slate-600"/>
+                                </div>
+                                <span class="text-right text-slate-600">{p.cnt} wins</span>
+                            </li>
+                        )
+                    })}
+                </ol>
+            </div>
+        )}
+
+         {/* Constructor Podiums */}
+        {constructorPodiums.length > 0 && (
+             <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-muted sm:p-6">
+                <h4 class="mb-6 text-xl font-bold tracking-wide text-zinc-900">Most constructor podiums</h4>
+                <ol>
+                    {constructorPodiums.map((p, i) => {
+                        const team = allConstructorTeams.find(c => c.constructorId === p.constructorId);
+                        const name = team ? team.name : 'Unknown';
+                        const [rankText, rankClass] = getRankText(p.rank);
+                        const isLast = i === constructorPodiums.length - 1;
+                        return (
+                            <li class={`grid grid-cols-3 items-center py-2 ${!isLast ? 'border-b border-zinc-200' : ''}`}>
+                                <span class={rankClass}>{rankText}</span>
+                                <div class="text-slate-600">
+                                     <TeamDisplay client:visible teamName={name} textClasses="text-slate-600"/>
+                                </div>
+                                <span class="text-right text-slate-600">{p.cnt} podiums</span>
+                            </li>
+                        )
+                    })}
+                </ol>
+            </div>
+        )}
+    </div>
+)}
+
+<style>
+.first-styles {
+  font-weight: 700;
+  color: #c2992d;
+}
+.second-styles {
+  font-weight: 700;
+  color: #929292;
+}
+.third-styles {
+  font-weight: 700;
+  color: #9d501b;
+}
+</style>

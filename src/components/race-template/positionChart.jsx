@@ -1,7 +1,5 @@
 import React from 'react';
 import { ResponsiveBump } from '@nivo/bump';
-import PropTypes from 'prop-types';
-import { driverMapType, lapTimesType, raceResultsType } from '../../types';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getLaps(count, amount) {
@@ -39,10 +37,10 @@ function getChartData(arr, relevantLaps, driverMap, resultsByRaceidList) {
 
   // add starting position as lap 0
   resultsByRaceidList.forEach((res) => {
-    drivers.push(res.driverByDriverid.driverDisplayName);
+    drivers.push(res.driverDisplayName);
 
-    const display = res.driverByDriverid.driverDisplayName;
-    const { driverid } = res.driverByDriverid;
+    const display = res.driverDisplayName;
+    const { driverId } = res;
     let { grid } = res;
 
     if (parseInt(grid) === 0) {
@@ -52,22 +50,23 @@ function getChartData(arr, relevantLaps, driverMap, resultsByRaceidList) {
 
     data.push({
       id: display,
-      constructor_name: driverMap[driverid].constructor,
+      constructor_name: driverMap[driverId].constructor,
       data: [{ y: parseInt(grid), x: 0 }],
     });
   });
 
   arr.forEach((curr) => {
-    const { driverDisplayName } = curr.driverByDriverid;
+    const { driverDisplayName } = curr;
 
     if (!relevantLaps.includes(parseInt(curr.lap))) return;
 
     const index = data.findIndex((e) => e.id === driverDisplayName);
-    data[index].data.push({ y: curr.position, x: curr.lap });
+    if (index !== -1) {
+         data[index].data.push({ y: curr.position, x: curr.lap });
+    }
   });
 
   // set last pos of retired drivers to null
-  // otherwise e. g. first one crashes halfway -> chart still same pos because no data update
   for (let i = 0; i < data.length; i += 1) {
     if (data[i].data.length < relevantLaps.length) {
       const nextLapEntry = relevantLaps[data[i].data.length];
@@ -89,7 +88,7 @@ function getColor(obj) {
 
 function tooltip(obj) {
   return (
-    <div className="p-2 rounded shadow bg-white inline-flex items-center">
+    <div className="p-2 rounded shadow bg-white inline-flex items-center text-black">
       <div
         className="rounded-full h-4 w-4 mr-2"
         style={{ background: obj.serie.color }}
@@ -160,12 +159,6 @@ const PositionChart = ({
       />
     </div>
   );
-};
-
-PositionChart.propTypes = {
-  laptimesByRaceidList: lapTimesType.isRequired,
-  driverMap: driverMapType.isRequired,
-  resultsByRaceidList: PropTypes.arrayOf(raceResultsType).isRequired,
 };
 
 export default PositionChart;

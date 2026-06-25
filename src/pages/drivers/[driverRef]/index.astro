@@ -1,0 +1,58 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Header1 from '../../../components/headers/Header1.astro';
+import AnalyticsData from '../../../components/AnalyticsData';
+import { 
+  getDriverByRef,
+  getDriverAnalytics,
+  getAllDriversSimple
+} from '../../../lib/db';
+import { athleteNode, canonicalUrlFor } from '../../../util/jsonld';
+
+export async function getStaticPaths() {
+  const drivers = getAllDriversSimple();
+  return drivers.map((d: any) => ({
+    params: { driverRef: d.driverRef },
+  }));
+}
+
+const { driverRef } = Astro.params;
+const driver = getDriverByRef(driverRef);
+
+if (!driver) {
+  return Astro.redirect('/404');
+}
+
+const analytics = getDriverAnalytics(driver.driverId);
+
+// JSON-LD: model the driver as a Person/Athlete, exposed as the page's mainEntity.
+// `getDriverByRef` is `SELECT *`, so nationality/url exist at runtime though the
+// declared type omits them.
+const driverAny = driver as any;
+const { canonicalUrl } = canonicalUrlFor(Astro.url, Astro.site);
+const driverJsonLd = athleteNode({
+  canonicalUrl,
+  name: `${driver.forename} ${driver.surname}`,
+  nationality: driverAny.nationality,
+  url: driverAny.url,
+});
+---
+
+<Layout
+  title={`${driver.forename} ${driver.surname} Stats`}
+  jsonLdType="ProfilePage"
+  jsonLdMainEntityId={`${canonicalUrl}#athlete`}
+  jsonLd={[driverJsonLd]}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <Header1>{`${driver.forename} ${driver.surname}`}</Header1>
+    
+    <div class="mt-8">
+        {analytics ? (
+            <AnalyticsData client:load data={analytics} />
+        ) : (
+             <p>No analytics data available for this driver.</p>
+        )}
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,61 @@
+---
+const { driverStandings, year } = Astro.props;
+---
+
+<div>
+  <div class="flex items-center justify-between">
+    <h2 class="mb-2 text-xl font-semibold tracking-wide text-zinc-900">
+      Driver Standings
+    </h2>
+    <a
+      class="standard-link font-light uppercase"
+      href={`/seasons/${year}#driver-standings`}
+      title="Driver Standings Insights"
+    >
+      more
+      <span class="sr-only">Driver Standings Insights</span>
+    </a>
+  </div>
+  {driverStandings && driverStandings.length > 0 && (
+    <div class="overflow-x-auto -mx-4 sm:mx-0">
+      <table class="min-w-full text-left text-sm whitespace-nowrap">
+        <thead class="uppercase tracking-wider border-b-2 border-slate-100">
+          <tr>
+            <th scope="col" class="px-4 py-3 font-semibold text-slate-500">
+              #
+            </th>
+            <th scope="col" class="px-4 py-3 font-semibold text-slate-500">
+              Driver
+            </th>
+            <th scope="col" class="px-4 py-3 font-semibold text-slate-500 text-right">
+              Points
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {driverStandings.slice(0, 10).map((driver, i) => (
+            <tr>
+              <td class="px-4 py-4 font-medium tabular-nums text-slate-900">
+                {driver.position}
+              </td>
+              <td class="px-4 py-4 flex items-center font-medium text-slate-900">
+                <div
+                  title={driver.teamName}
+                  aria-hidden="true"
+                  class="mr-3 h-3 w-3 rounded-full ring-1 ring-slate-200"
+                  style={{
+                    background: driver.teamColor,
+                  }}
+                />
+                <span>{driver.driverDisplayName}</span>
+              </td>
+              <td class="px-4 py-4 text-right font-bold tabular-nums text-slate-900">
+                {driver.points}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>

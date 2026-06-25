@@ -1,44 +1,35 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import getTeamColor from '../../util/f1TeamColors';
-import { raceType, teamStandingsType } from '../../types';
 
-const ConstructorProgressStream = ({ racesByYearList, teamStandings }) => {
+const ConstructorProgressStream = ({ constructorStandingsBySeason, currentStandings }) => {
   // sorted by position
-  const teams = teamStandings.map((t) => t.constructorid);
+  const teams = currentStandings.map((t) => t.constructorId);
 
   const map = {};
   const pointsInRound = {};
 
-  for (let i = 0; i < racesByYearList.length; i += 1) {
-    const race = racesByYearList[i];
-    if (!map[race.round]) {
-      map[race.round] = {};
-      teams.forEach((t) => {
-        map[race.round][t] = 0;
-      });
-      pointsInRound[race.round] = 0;
-      for (
-        let j = 0;
-        j < race.constructorstandingsByRaceidList.length;
-        j += 1
-      ) {
-        pointsInRound[race.round] +=
-          race.constructorstandingsByRaceidList[j].points;
+  constructorStandingsBySeason.forEach(stat => {
+      const round = stat.round;
+      if (!map[round]) {
+          map[round] = {};
+          teams.forEach(t => map[round][t] = 0);
       }
-    }
+  });
 
-    for (let j = 0; j < race.constructorstandingsByRaceidList.length; j += 1) {
-      const result = race.constructorstandingsByRaceidList[j];
-      if (result.points && typeof result.points === 'number') {
-        const pctOfAllPoints = Math.round(
-          (result.points / pointsInRound[race.round]) * 100
-        );
-        map[race.round][result.constructorid] = pctOfAllPoints;
-      }
-    }
-  }
+  Object.keys(map).forEach(round => {
+      const stats = constructorStandingsBySeason.filter(s => s.round == round);
+      let total = 0;
+      stats.forEach(s => total += s.points);
+      pointsInRound[round] = total;
+
+      stats.forEach(s => {
+          if (s.points && typeof s.points === 'number' && pointsInRound[round] > 0) {
+             const pct = Math.round((s.points / total) * 100);
+             map[round][s.constructorId] = pct;
+          }
+      });
+  });
 
   const data = [];
   Object.keys(map).forEach((round) => {
@@ -48,13 +39,13 @@ const ConstructorProgressStream = ({ racesByYearList, teamStandings }) => {
   });
 
   function getColor({ id }) {
-    const info = teamStandings.find((t) => t.constructorid === id);
-    return getTeamColor(info?.constructorTeamByConstructorid?.name);
+    const info = currentStandings.find((t) => t.constructorId === id);
+    return getTeamColor(info?.name);
   }
 
   function getDriverById({ id }) {
-    const info = teamStandings.find((t) => t.constructorid === id);
-    return info?.constructorTeamByConstructorid?.name;
+    const info = currentStandings.find((t) => t.constructorId === id);
+    return info?.name;
   }
 
   return (
@@ -94,11 +85,6 @@ const ConstructorProgressStream = ({ racesByYearList, teamStandings }) => {
       />
     </div>
   );
-};
-
-ConstructorProgressStream.propTypes = {
-  racesByYearList: PropTypes.arrayOf(raceType).isRequired,
-  teamStandings: PropTypes.arrayOf(teamStandingsType).isRequired,
 };
 
 export default ConstructorProgressStream;

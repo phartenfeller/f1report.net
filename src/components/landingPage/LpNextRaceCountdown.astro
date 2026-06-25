@@ -1,0 +1,85 @@
+---
+const { nextRace } = Astro.props;
+
+// Prepare data for client-side script
+// Note: DB returns snake_case columns
+const raceData = nextRace ? {
+  fp1Date: nextRace.fp1_date,
+  qualiDate: nextRace.quali_date,
+  sprintDate: nextRace.sprint_date,
+  date: nextRace.date,
+} : null;
+---
+
+<div>
+  <div class="flex items-center justify-between">
+    <h2 class="mb-2 text-xl font-semibold tracking-wide text-zinc-900">
+      Next Race
+    </h2>
+    {nextRace && (
+      <a
+        class="standard-link font-light uppercase"
+        href={`/races/${nextRace.raceSlug}`}
+        title="Next Race Details"
+      >
+        more
+        <span class="sr-only">details on next race</span>
+      </a>
+    )}
+  </div>
+
+  {nextRace ? (
+    <div class="inline-block min-w-full py-2 align-middle">
+      <div class="overflow-hidden border-2 border-zinc-300/50 p-2 sm:rounded-lg">
+        <h3 class="mb-3 text-xl font-light">
+          {nextRace.name} {nextRace.year}
+        </h3>
+        <ul id="countdown-list" class="list-inside list-disc pl-2 text-slate-800" data-race={JSON.stringify(raceData)}>
+          {/* Populated by JS */}
+        </ul>
+      </div>
+    </div>
+  ) : (
+    <div class="text-xl font-semibold">No data on next race yet</div>
+  )}
+</div>
+
+<script>
+  function getText(event, dateString) {
+    if (!dateString) {
+      return null;
+    }
+
+    const timeMs = new Date(dateString).getTime() - new Date(new Date().toDateString()).getTime();
+
+    if (timeMs > 0) {
+      const timeDays = Math.floor(timeMs / (1000 * 60 * 60 * 24));
+      if (timeDays === 0) {
+        return `${event} is today`;
+      }
+      return `${event} in ${timeDays} days`;
+    }
+    return `${event} ✅`;
+  }
+
+  const list = document.getElementById('countdown-list');
+  if (list && list.dataset.race) {
+    const data = JSON.parse(list.dataset.race);
+    
+    const items = [
+      { label: 'FP1', date: data.fp1Date },
+      { label: 'Qualifying', date: data.qualiDate },
+      { label: 'Sprint', date: data.sprintDate },
+      { label: 'Race', date: data.date }
+    ];
+
+    items.forEach(item => {
+       const text = getText(item.label, item.date);
+       if (text) {
+          const li = document.createElement('li');
+          li.textContent = text;
+          list.appendChild(li);
+       }
+    });
+  }
+</script>

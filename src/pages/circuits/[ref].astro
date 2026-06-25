@@ -1,0 +1,91 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header1 from "../../components/headers/Header1.astro";
+import LinkableH2 from "../../components/headers/LinkableH2.astro";
+import CircuitTimeStats from "../../components/circuit-template/CircuitTimeStats.astro";
+import CircuitPerformanceStats from "../../components/circuit-template/CircuitPerformanceStats.astro";
+import CircuitRacesTable from "../../components/circuit-template/CircuitRacesTable.jsx";
+
+import {
+  getAllCircuits,
+  getCircuitByRef,
+  getRacesByCircuitId,
+  getAllDriversSimple,
+  getAllConstructorsSimple
+} from "../../lib/db";
+import { placeNode, canonicalUrlFor } from "../../util/jsonld";
+
+export async function getStaticPaths() {
+  const circuits = getAllCircuits();
+  return circuits.map((c) => ({
+    params: { ref: c.circuitRef },
+  }));
+}
+
+const { ref } = Astro.params;
+const circuit = getCircuitByRef(ref);
+
+if (!circuit) {
+    return Astro.redirect("/404");
+}
+
+const races = getRacesByCircuitId(circuit.circuitId);
+const allDrivers = getAllDriversSimple();
+const allConstructors = getAllConstructorsSimple();
+
+const pageTitle = circuit.name.toLowerCase().includes('circuit')
+    ? circuit.name
+    : `${circuit.name} (Circuit)`;
+const description = `${circuit.country} ${circuit.location}`;
+
+// JSON-LD: model the circuit as a Place / SportsActivityLocation.
+const { canonicalUrl } = canonicalUrlFor(Astro.url, Astro.site);
+const circuitJsonLd = placeNode({
+  canonicalUrl,
+  name: circuit.name,
+  country: circuit.country,
+  location: circuit.location,
+  url: circuit.url,
+});
+---
+
+<Layout title={pageTitle} description={description} contentSite jsonLd={[circuitJsonLd]}>
+  <Header1>{pageTitle}</Header1>
+  
+  <div class="mb-5 px-4 font-serif text-lg text-gray-800 underline">
+    <a href={circuit.url} class="standard-link" target="_blank" rel="noopener noreferrer">
+      Circuit Wikipedia Page
+    </a>
+  </div>
+
+  <div class="mb-10">
+    <LinkableH2 text="Time Stats" />
+    <CircuitTimeStats
+        firstrace={circuit.firstRace}
+        lastrace={circuit.lastRace}
+        racecount={circuit.raceCount}
+        racecountrank={circuit.raceCountRank}
+   />
+  </div>
+
+  <div class="mb-10">
+    <LinkableH2 text="Performance Stats" />
+    <CircuitPerformanceStats
+        allConstructorTeams={allConstructors}
+        allDrivers={allDrivers}
+        mostconstructorpodiums={circuit.mostConstructorPodiums}
+        mostcostructorwins={circuit.mostCostructorWins}
+        mostdriverpodiums={circuit.mostDriverPodiums}
+        mostdriverstarts={circuit.mostDriverStarts}
+        mostdriverwins={circuit.mostDriverWins}
+   />
+  </div>
+
+  {races.length > 0 && (
+      <div class="mb-10">
+        <LinkableH2 text="Race List" />
+        <CircuitRacesTable client:visible racesByCircuitidList={races} />
+      </div>
+  )}
+
+</Layout>

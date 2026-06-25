@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/forbid-prop-types */
-import PropTypes from 'prop-types';
 import React from 'react';
 import { usePagination, useSortBy, useTable } from 'react-table';
 
@@ -31,10 +28,6 @@ const SortedHeaderRenderer = ({ column }) => {
       </svg>
     </div>
   );
-};
-
-SortedHeaderRenderer.propTypes = {
-  column: PropTypes.object.isRequired,
 };
 
 const PaginationBar = ({
@@ -92,53 +85,22 @@ const PaginationBar = ({
 );
 
 const cellClasses = (column) => {
-  const arr = [];
-
-  // needed to be written out for purging styles
+  const base = 'px-4 py-4 whitespace-nowrap text-slate-600 font-medium tabular-nums';
   if (column.showAt) {
-    switch (column.showAt) {
-      case 'sm':
-        arr.push('hidden sm:c-table-cell');
-        break;
-      case 'md':
-        arr.push('hidden md:c-table-cell');
-        break;
-      case 'lg':
-        arr.push('hidden lg:c-table-cell');
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.error(`SortableTable => Unknown showAt "${column.showAt}"`);
-        arr.push('c-table-cell');
-    }
-  } else {
-    arr.push('c-table-cell');
+    return `${base} hidden ${column.showAt}:table-cell`;
   }
-
   if (column.className) {
-    arr.push(column.className);
+      return `${base} ${column.className}`;
   }
-
-  return arr.join(' ');
+  return base;
 };
 
 const headerClasses = (column) => {
+  const base = 'px-4 py-3 font-semibold text-slate-500 text-left uppercase tracking-wider';
   if (column.showAt) {
-    switch (column.showAt) {
-      case 'sm':
-        return 'hidden sm:c-table-heading';
-      case 'md':
-        return 'hidden md:c-table-heading';
-      case 'lg':
-        return 'hidden lg:c-table-heading';
-      default:
-        // eslint-disable-next-line no-console
-        console.error(`SortableTable => Unknown showAt "${column.showAt}"`);
-        return 'c-table-heading';
-    }
+    return `${base} hidden ${column.showAt}:table-cell`;
   }
-
-  return 'c-table-heading';
+  return base;
 };
 
 const SortableTable = ({ data, columns, defaultSort, pagination }) => {
@@ -187,77 +149,57 @@ const SortableTable = ({ data, columns, defaultSort, pagination }) => {
   }
 
   return (
-    <div className="min-w-full px-1 py-2 align-middle">
-      <div className="shadow-sm ring-1 ring-black ring-opacity-5">
-        <div className="overflow-hidden overflow-x-auto">
-          <table
-            {...getTableProps()}
-            className="min-w-full divide-y divide-zinc-200"
-          >
-            <thead className="bg-zinc-50">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      className={headerClasses(column)}
-                    >
-                      <SortedHeaderRenderer column={column} />
-                    </th>
-                  ))}
-                </tr>
+    <div className="overflow-x-auto -mx-4 sm:mx-0">
+      <table
+        {...getTableProps()}
+        className="min-w-full text-left text-sm whitespace-nowrap"
+      >
+        <thead className="uppercase tracking-wider border-b-2 border-slate-100">
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className={headerClasses(column)}
+                >
+                  <SortedHeaderRenderer column={column} />
+                </th>
               ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {iterator.map((row, i) => {
-                prepareRow(row);
-                return (
-                  <tr
-                    {...row.getRowProps()}
-                    className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()} className="divide-y divide-slate-100">
+          {iterator.map((row, i) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => (
+                  <td
+                    {...cell.getCellProps()}
+                    className={cellClasses(cell.column)}
                   >
-                    {row.cells.map((cell) => (
-                      <td
-                        {...cell.getCellProps()}
-                        className={cellClasses(cell.column)}
-                      >
-                        {cell.render('Cell')}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        {pagination && (
-          <PaginationBar
-            canPreviousPage={canPreviousPage}
-            canNextPage={canNextPage}
-            pageCount={pageCount}
-            pageIndex={pageIndex}
-            pageOptions={pageOptions}
-            gotoPage={gotoPage}
-            nextPage={nextPage}
-            previousPage={previousPage}
-          />
-        )}
-      </div>
+                    {cell.render('Cell')}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      {pagination && (
+        <PaginationBar
+          canPreviousPage={canPreviousPage}
+          canNextPage={canNextPage}
+          pageCount={pageCount}
+          pageIndex={pageIndex}
+          pageOptions={pageOptions}
+          gotoPage={gotoPage}
+          nextPage={nextPage}
+          previousPage={previousPage}
+        />
+      )}
     </div>
   );
-};
-
-SortableTable.propTypes = {
-  data: PropTypes.array.isRequired,
-  columns: PropTypes.array,
-  defaultSort: PropTypes.array,
-  pagination: PropTypes.number,
-};
-
-SortableTable.defaultProps = {
-  defaultSort: null,
-  pagination: null,
-  columns: [],
 };
 
 export default SortableTable;

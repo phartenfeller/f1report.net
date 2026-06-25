@@ -1,10 +1,6 @@
-/* eslint-disable react/prop-types */
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { useSortBy, useTable } from 'react-table';
-import { seasonDriverMainConsType } from '../../types';
-import pitstopsByRaceidListType from '../../types/pitstopsByRaceidListType';
-import DriverTeamDisplay from '../teamDisplay/driverTeamDisplay';
+import DriverTeamDisplay from '../teamDisplay/DriverTeamDisplay';
 
 const NO_FILL = `#D1D5DB`;
 const FILL = `#374151`;
@@ -36,17 +32,19 @@ const SortedHeaderRenderer = ({ column }) => {
 };
 
 const cellClasses = (column) => {
+  const base = 'px-4 py-4 whitespace-nowrap text-slate-600 font-medium tabular-nums';
   if (column.showAt) {
-    return `hidden ${column.showAt}:c-table-cell`;
+    return `${base} hidden ${column.showAt}:table-cell`;
   }
-  return 'c-table-cell';
+  return base;
 };
 
 const headerClasses = (column) => {
+  const base = 'px-4 py-3 font-semibold text-slate-500 text-left uppercase tracking-wider';
   if (column.showAt) {
-    return `hidden ${column.showAt}:c-table-heading`;
+    return `${base} hidden ${column.showAt}:table-cell`;
   }
-  return 'c-table-heading';
+  return base;
 };
 
 const PitStopTable = ({
@@ -57,11 +55,11 @@ const PitStopTable = ({
     () => [
       {
         Header: 'Driver',
-        accessor: 'driverByDriverid.driverDisplayName',
+        accessor: 'driverDisplayName',
       },
       {
         Header: 'Constructor',
-        accessor: 'driverByDriverid.driverid',
+        accessor: 'driverId',
         Cell: ({ value }) => (
           <DriverTeamDisplay
             driverId={value}
@@ -93,57 +91,45 @@ const PitStopTable = ({
     useTable({ columns, data: pitstopsByRaceidList }, useSortBy);
 
   return (
-    <div className="py-2 align-middle min-w-full">
-      <div className="shadow overflow-hidden border-b border-zinc-200 sm:rounded-lg">
-        <table
-          {...getTableProps()}
-          className="min-w-full divide-y divide-zinc-200"
-        >
-          <thead className="bg-zinc-50">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={headerClasses(column)}
+    <div className="overflow-x-auto -mx-4 sm:mx-0">
+      <table
+        {...getTableProps()}
+        className="min-w-full text-left text-sm whitespace-nowrap"
+      >
+        <thead className="uppercase tracking-wider border-b-2 border-slate-100">
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className={headerClasses(column)}
+                >
+                  <SortedHeaderRenderer column={column} />
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()} className="divide-y divide-slate-100">
+          {rows.map((row, i) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => (
+                  <td
+                    {...cell.getCellProps()}
+                    className={cellClasses(cell.column)}
                   >
-                    <SortedHeaderRenderer column={column} />
-                  </th>
+                    {cell.render('Cell')}
+                  </td>
                 ))}
               </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className={i % 2 === 0 ? 'bg-white' : 'bg-zinc-50'}
-                >
-                  {row.cells.map((cell) => (
-                    <td
-                      {...cell.getCellProps()}
-                      className={cellClasses(cell.column)}
-                    >
-                      {cell.render('Cell')}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
-};
-
-PitStopTable.propTypes = {
-  pitstopsByRaceidList: pitstopsByRaceidListType.isRequired,
-  seasondrivermainconsByYearList: PropTypes.arrayOf(
-    seasonDriverMainConsType.isRequired
-  ).isRequired,
 };
 
 export default PitStopTable;

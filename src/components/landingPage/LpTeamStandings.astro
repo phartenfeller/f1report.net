@@ -1,0 +1,69 @@
+---
+import getTeamColor from '../../util/f1TeamColors';
+
+const { constructorStandings, year } = Astro.props;
+---
+
+<div>
+  <div class="flex items-center justify-between">
+    <h2 class="mb-2 text-xl font-semibold tracking-wide text-zinc-900">
+      Constructor Standings
+    </h2>
+    <a
+      class="standard-link font-light uppercase"
+      href={`/seasons/${year}#constructor-standings`}
+      title="Constructor Standings Insights"
+    >
+      more
+      <span class="sr-only">Constructor Standings Insights</span>
+    </a>
+  </div>
+  {constructorStandings && constructorStandings.length > 0 && (
+    <div class="overflow-x-auto -mx-4 sm:mx-0">
+      <table class="min-w-full text-left text-sm whitespace-nowrap">
+        <thead class="uppercase tracking-wider border-b-2 border-slate-100">
+          <tr>
+            <th scope="col" class="px-4 py-3 font-semibold text-slate-500">
+              #
+            </th>
+            <th scope="col" class="px-4 py-3 font-semibold text-slate-500">
+              Driver
+            </th>
+            <th scope="col" class="px-4 py-3 font-semibold text-slate-500 text-right">
+              Points
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {constructorStandings.slice(0, 10).map((item, i) => {
+            // DB returns 'name' directly from join
+            const constructorName = item.name; 
+            const color = getTeamColor(constructorName);
+            return (
+              <tr>
+                <td class="px-4 py-4 font-medium tabular-nums text-slate-900">
+                  {item.position}
+                </td>
+                <td class="px-4 py-4 flex items-center font-medium text-slate-900">
+                  <div
+                    aria-hidden="true"
+                    class="mr-3 h-3 w-3 rounded-full ring-1 ring-slate-200"
+                    style={{
+                      background: color,
+                    }}
+                  />
+                  <span>
+                    {constructorName}
+                  </span>
+                </td>
+                <td class="px-4 py-4 text-right font-bold tabular-nums text-slate-900">
+                  {item.points}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>

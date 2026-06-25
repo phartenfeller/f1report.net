@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header1 from '../../components/headers/Header1.astro';
+import ConstructorStatsView from '../../components/ConstructorStatsView';
+import { 
+  getAllTimeConstructorStats, 
+  getAllTimeConstructorStatsPrepared,
+  getLegacyConstructorStats,
+  getLegacyConstructorStatsPrepared
+} from '../../lib/db';
+
+const stats = getAllTimeConstructorStats();
+const preparedStats = getAllTimeConstructorStatsPrepared();
+const legacyStats = getLegacyConstructorStats();
+const legacyPreparedStats = getLegacyConstructorStatsPrepared();
+---
+
+<Layout title="All Time Constructor Stats">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <Header1>All Time Constructor Stats</Header1>
+
+    <div class="text-zinc-600 mb-6">
+      * all points are calculated after todays rules.
+    </div>
+
+    <div class="my-6">
+        <ConstructorStatsView 
+            client:load 
+            stats={stats} 
+            legacyStats={legacyStats}
+            preparedStats={preparedStats}
+            legacyPreparedStats={legacyPreparedStats}
+        />
+    </div>
+  </div>
+</Layout>

@@ -6,23 +6,7 @@ html {
   @apply bg-slate-100 antialiased;
 }
 
-@layer components {
-  .c-table-cell {
-    @apply table-cell whitespace-nowrap px-2 py-1 text-xs text-zinc-500 md:py-4;
-  }
 
-  .c-table-heading {
-    @apply table-cell px-2 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-700;
-  }
-
-  .standard-link {
-    @apply rounded px-1 text-blue-600 underline hover:text-blue-800 focus:outline-none focus:ring-1 focus:ring-blue-500;
-  }
-
-  .black-link {
-    @apply rounded px-1 text-black underline decoration-zinc-400 hover:decoration-black focus:outline-none focus:ring-1 focus:ring-blue-300;
-  }
-}
 
 html {
   -webkit-tap-highlight-color: transparent;

@@ -1,0 +1,39 @@
+---
+const { highlightlinks } = Astro.props;
+import LinkableH2 from '../headers/LinkableH2.astro';
+import '../../styles/yt-player.css';
+
+const getVideoId = (link) => {
+    // Basic extraction
+    if (!link) return null;
+    if (link.includes('youtu.be/')) return link.split('youtu.be/')[1];
+    if (link.includes('youtube.com/watch?v=')) return link.split('v=')[1].split('&')[0];
+    return null;
+}
+
+const lines = highlightlinks ? highlightlinks.split('\n') : [];
+---
+
+{highlightlinks && (
+  <div class="md:col-span-2">
+    <LinkableH2 text="Highlights" />
+    <div class="grid grid-cols-1 gap-y-12">
+      {lines.map((link) => {
+          const id = getVideoId(link);
+          if (!id) return null;
+
+          return (
+            <div class="aspect-w-16 aspect-h-9" key={id}>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${id}`}
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                class="rounded shadow-lg"
+              />
+            </div>
+          );
+      })}
+    </div>
+  </div>
+)}

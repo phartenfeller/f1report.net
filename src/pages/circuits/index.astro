@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CircuitsTable from '../../components/CircuitsTable.jsx';
+import { getAllCircuitsWithStats, getAllDriversSimple, getAllConstructorsSimple } from '../../lib/db';
+
+const circuits = getAllCircuitsWithStats();
+const drivers = getAllDriversSimple();
+const constructors = getAllConstructorsSimple();
+
+// Helper to look up names from stats
+function getName(statJson: string, list: any[], idField: string, nameField: string) {
+  if (!statJson) return null;
+  try {
+    const data = JSON.parse(statJson);
+    if (!Array.isArray(data) || data.length === 0) return null;
+    
+    // Find rank 1
+    const first = data.find(d => parseInt(d.rank) === 1);
+    if (!first) return null;
+    
+    // Find item in list
+    // The stat JSON keys might differ slightly (driverId vs driverid), handle loosely
+    // In Gatsby: parseInt(driverid) === parseInt(first.driverId)
+    // In DB: driverId is number.
+    const targetId = parseInt(first[idField] || first[idField.toLowerCase()]);
+    
+    const item = list.find(i => i[idField] === targetId);
+    return item ? item[nameField] : null;
+    
+  } catch (e) {
+    console.error("Error parsing stat JSON", e);
+    return null;
+  }
+}
+
+const tableData = circuits.map((c: any) => ({
+  name: c.name,
+  country: c.country,
+  circuitRef: c.circuitRef,
+  raceCount: c.raceCount,
+  mostDriverWins: getName(c.mostDriverWins, drivers, 'driverId', 'driverDisplayName'),
+  mostCostructorWins: getName(c.mostCostructorWins, constructors, 'constructorId', 'name')
+}));
+
+---
+
+<Layout title="F1 Circuits">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold text-slate-900 mb-6">All Circuits</h1>
+    
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <CircuitsTable client:load data={tableData} />
+    </div>
+  </div>
+</Layout>

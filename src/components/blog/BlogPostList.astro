@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+
+const { blogposts } = Astro.props;
+---
+
+<div class="mx-4 mt-4 space-y-4 md:mx-8 md:mt-12">
+  {blogposts.map((post: any) => (
+    <a
+      href={`/blog/${post.id}`}
+      class="flex flex-col md:flex-row w-full rounded-md ring ring-slate-100 transition-colors hover:bg-red-100 focus:outline-none focus:ring-red-500 no-underline group overflow-hidden"
+    >
+        <div class="mx-auto md:mx-0 p-4 shrink-0 flex items-center justify-center bg-zinc-50 md:bg-transparent">
+           {post.data.titleImage && (
+              <Image
+                src={post.data.titleImage}
+                alt={post.data.titleImageAlt || post.data.title}
+                width={250}
+                class="max-w-[250px] w-auto h-auto rounded object-cover shadow-sm md:shadow-none"
+              />
+           )}
+        </div>
+        <div class="flex flex-col p-4 md:p-6 md:flex-grow min-w-0 justify-center">
+          <h2 class="title-font mb-2 text-2xl font-medium text-zinc-900 group-hover:text-red-700 transition-colors">
+            {post.data.title}
+          </h2>
+          <p class="leading-relaxed text-zinc-800 line-clamp-3">
+            {post.data.description}
+          </p>
+          <div class="flex items-center text-zinc-600 mt-3 md:mt-auto pt-2">
+            <time datetime={post.data.date.toString()} class="text-sm font-semibold uppercase tracking-wider">
+              {new Date(post.data.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+          </div>
+        </div>
+    </a>
+  ))}
+</div>

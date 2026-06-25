@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /license-info
+
+Sitemap: https://f1report.net/sitemap-index.xml

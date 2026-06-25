@@ -1,0 +1,59 @@
+---
+import { HiMail } from 'react-icons/hi';
+import { FaTwitter, FaGithub } from 'react-icons/fa';
+---
+
+<footer class="bg-slate-100">
+  <div class="mx-auto max-w-7xl overflow-hidden py-12 px-4 sm:px-6 lg:px-8">
+    <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+      <div class="px-5 py-2">
+        <a href="/about" class="text-base text-zinc-600 hover:text-zinc-900">
+          About
+        </a>
+      </div>
+
+      <div class="px-5 py-2">
+        <a href="https://hartenfeller.dev/imprint" class="text-base text-zinc-600 hover:text-zinc-900">
+          Imprint
+        </a>
+      </div>
+
+      <div class="px-5 py-2">
+        <a href="https://hartenfeller.dev/privacy" class="text-base text-zinc-600 hover:text-zinc-900">
+          Privacy Policy
+        </a>
+      </div>
+    </nav>
+    <div class="mt-8 flex justify-center space-x-6">
+      <a href="https://twitter.com/f1report_net" class="text-zinc-400 hover:text-zinc-600">
+        <span class="sr-only">Twitter</span>
+        <FaTwitter className="h-6 w-6" />
+      </a>
+
+      <a href="https://github.com/phartenfeller/f1report.net" class="text-zinc-400 hover:text-zinc-600">
+        <span class="sr-only">GitHub</span>
+        <FaGithub className="h-6 w-6" />
+      </a>
+
+      <a href="mailto:hello@f1report.net" class="text-zinc-400 hover:text-zinc-600">
+        <span class="sr-only">E-Mail</span>
+        <HiMail className="h-6 w-6" />
+      </a>
+    </div>
+    <p class="mt-8 text-center text-xs text-zinc-600">
+      No Cookies are used
+    </p>
+    <p class="mt-8 text-center text-xs text-zinc-600">
+      This website is unofficial and is not associated in any way with the /
+      Formula 1 companies. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD /
+      CHAMPIONSHIP, GRAND PRIX and related marks are trade marks of Formula
+      One / Licensing B.V.
+    </p>
+    <p class="mt-8 text-center text-base text-zinc-700">
+      © {new Date().getFullYear()}, Built by{' '}
+      <a href="https://hartenfeller.dev" class="underline hover:text-zinc-400">
+        Philipp Hartenfeller
+      </a>
+    </p>
+  </div>
+</footer>

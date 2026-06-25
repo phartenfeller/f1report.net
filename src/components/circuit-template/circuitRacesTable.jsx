@@ -1,10 +1,9 @@
-import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
-import { raceType } from '../../types';
-import SortableTable from '../sortableTable';
-import TBD from '../tbd';
-import TeamDisplay from '../teamDisplay/teamDisplay';
+import SortableTable from '../SortableTable';
+import TBD from '../TBD';
+// We need links. In React we use <a> or simple links because we are in Astro Island mostly.
+// But to use internal routing nicely, <a> is fine for MPA.
+import TeamDisplay from '../teamDisplay/TeamDisplay';
 
 const defaultSort = [
   {
@@ -24,36 +23,43 @@ const CircuitRacesTable = ({ racesByCircuitidList }) => {
       {
         Header: 'Year',
         accessor: 'year',
-        // eslint-disable-next-line react/prop-types
         Cell: ({ value }) => (
-          <Link to={`/seasons/${value}`} className="standard-link">
+          <a href={`/seasons/${value}`} className="standard-link hover:underline text-blue-600">
             {value}
-          </Link>
+          </a>
         ),
       },
       {
         Header: 'Winner (Driver)',
-        accessor: 'resultsByRaceidList[0].driverByDriverid.driverDisplayName',
+        // Accessor handles nested path? react-table supports dot notation.
+        // My query returns flat "winnerDriver".
+        accessor: 'winnerDriver',
         showAt: 'sm',
-        // eslint-disable-next-line react/prop-types
         Cell: ({ value }) => (value ? <>{value}</> : <TBD />),
       },
       {
         Header: 'Winner (Constructor)',
-        accessor: 'resultsByRaceidList[0].constructorTeamByConstructorid.name',
+        accessor: 'winnerConstructor',
         showAt: 'md',
-        // eslint-disable-next-line react/prop-types
         Cell: ({ value }) =>
           value ? <TeamDisplay teamName={value} /> : <TBD />,
       },
       {
         Header: 'More Info',
-        accessor: 'raceSlug',
-        // eslint-disable-next-line react/prop-types
-        Cell: ({ value }) => (
-          <Link to={`/races/${value}`} className="standard-link">
+        // In my query, I should have raceSlug.
+        accessor: 'race_slug', 
+        // Wait, check db.ts query. "r.*"
+        // races table has race_slug column?
+        // Let's check schema.
+        // schema: race_slug text.
+        // My getAllRaces returns race_slug as raceSlug.
+        // My getRacesByCircuitId returns "r.*". 
+        // Row objects will have "race_slug" or "raceSlug"? Depending on DB driver mapping.
+        // Bun's sqlite usually returns column names as is. So "race_slug".
+        Cell: ({ row }) => (
+           <a href={`/races/${row.original.raceSlug || row.original.race_slug}`} className="standard-link hover:underline text-blue-600">
             Race Details
-          </Link>
+          </a>
         ),
       },
     ],
@@ -69,10 +75,6 @@ const CircuitRacesTable = ({ racesByCircuitidList }) => {
       />
     </div>
   );
-};
-
-CircuitRacesTable.propTypes = {
-  racesByCircuitidList: PropTypes.arrayOf(raceType).isRequired,
 };
 
 export default CircuitRacesTable;

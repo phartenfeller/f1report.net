@@ -1,0 +1,125 @@
+---
+import { getCollection, render } from 'astro:content';
+import { getImage } from 'astro:assets';
+import Layout from "../../layouts/Layout.astro";
+import { Image } from 'astro:assets';
+import PostStats from '../../components/blog/PostStats.astro';
+import BlogTable from '../../components/blog/BlogTable.jsx';
+import BlogBarChart from '../../components/blog/BlogBarChart.jsx';
+import slugify from '../../util/slugify';
+import { blogPostingNode, canonicalUrlFor } from '../../util/jsonld';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.data.slug || post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Rough estimate for timeToRead
+const wordCount = post.body ? post.body.split(/\s+/g).length : 0;
+const timeToRead = Math.ceil(wordCount / 200);
+
+const formattedDate = post.data.date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+});
+
+const titleId = slugify(post.data.title);
+
+// JSON-LD: BlogPosting node. Reuse the post's title image as the article image
+// (1200x630, matching the OG card), or fall back to the layout's default OG image.
+const { canonicalUrl } = canonicalUrlFor(Astro.url, Astro.site);
+let blogImageUrl: string | undefined;
+if (post.data.titleImage) {
+  const img = await getImage({ src: post.data.titleImage, width: 1200, height: 630, format: 'jpeg' });
+  blogImageUrl = new URL(img.src, Astro.site).href;
+}
+const blogJsonLd = blogPostingNode({
+  canonicalUrl,
+  title: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  imageUrl: blogImageUrl,
+});
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  jsonLd={[blogJsonLd]}
+>
+  <div class="max-w-screen flex flex-grow overflow-x-auto bg-slate-100">
+    <article class="m-auto flex-row-reverse bg-white px-2 pt-4 pb-6 shadow lg:flex lg:px-8 lg:pt-12 w-full max-w-[1200px]">
+      
+      {/* Sidebar / Meta */}
+      <div class="flex-grow border-slate-200 lg:w-[330px] lg:max-w-[330px] lg:border-l lg:pl-6">
+        <div class="prose prose-slate mb-5 flex h-full flex-col px-2 md:px-4 lg:prose-lg lg:mb-0 lg:px-0">
+          <div class="flex-grow text-zinc-700 ">
+            <PostStats
+              date={post.data.date}
+              formattedDate={formattedDate}
+              timeToRead={timeToRead}
+              tags={[]}
+            />
+          </div>
+          <div class="hidden space-y-5 lg:block">
+            {/* RSS Link - TODO implement RSS */}
+            <a href="/rss.xml" class="flex items-center text-zinc-600 hover:text-zinc-900">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mr-3 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z" />
+                    <path d="M4 9a1 1 0 011-1 4 4 0 014 4 1 1 0 11-2 0 4 4 0 00-4-4z" />
+                    <path d="M6 15a1 1 0 100 2 1 1 0 000-2z" />
+                </svg>
+              RSS Feed
+            </a>
+            <a href={`#${titleId}`} class="flex items-center text-zinc-600 hover:text-zinc-900">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mr-3 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              Back to top
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div class="prose prose-slate px-2 prose-img:rounded-md md:px-4 lg:prose-xl lg:mr-6 lg:px-0 max-w-none lg:w-[calc(100%-350px)]">
+        <header class="mb-6">
+          <h1
+            class="scroll-mt-32 font-yrsa text-2xl font-bold tracking-tight text-zinc-900 lg:!text-6xl"
+            id={titleId}
+          >
+            {post.data.title}
+          </h1>
+        </header>
+        <main class="">
+          <div class="my-4 text-zinc-800 italic">{post.data.description}</div>
+          
+          {post.data.titleImage && (
+              <Image
+                src={post.data.titleImage}
+                class="max-h-96 w-full object-cover"
+                alt={post.data.titleImageAlt || ""}
+              />
+          )}
+          
+          {post.data.titleImageSource && post.data.titleImageSource.text && post.data.titleImageSource.href ? (
+            <div class="text-base mt-2 mb-8">
+              <a href={post.data.titleImageSource.href} class="text-zinc-500 no-underline hover:underline">
+                [Source: {post.data.titleImageSource.text}]
+              </a>
+            </div>
+          ) : null}
+
+          <Content components={{ BlogTable, BlogBarChart }} />
+        </main>
+      </div>
+    </article>
+  </div>
+</Layout>

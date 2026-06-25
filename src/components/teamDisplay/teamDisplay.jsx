@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import getTeamColor from '../../util/f1TeamColors';
 
@@ -19,16 +18,6 @@ const TeamDisplay = ({ teamName, textClasses = '' }) => {
       <span className={textClasses}>{teamName}</span>
     </div>
   );
-};
-
-TeamDisplay.propTypes = {
-  teamName: PropTypes.string,
-  textClasses: PropTypes.string,
-};
-
-TeamDisplay.defaultProps = {
-  teamName: null,
-  textClasses: '',
 };
 
 export default TeamDisplay;

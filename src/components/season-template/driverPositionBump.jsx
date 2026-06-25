@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveBump } from '@nivo/bump';
-import { raceType, seasonDriverMainConsType } from '../../types';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getColor(obj) {
@@ -10,7 +8,7 @@ function getColor(obj) {
 
 function tooltip({ serie }) {
   return (
-    <div className="inline-flex items-center bg-white px-3 py-1 rounded shadow-lg">
+    <div className="inline-flex items-center bg-white px-3 py-1 rounded shadow-lg text-black">
       <div
         className="rounded-full h-4 w-4 mr-2"
         style={{ background: serie.color }}
@@ -21,48 +19,53 @@ function tooltip({ serie }) {
 }
 
 const DriverPositionBump = ({
-  racesByYearList,
+  driverStandingsBySeason,
   seasondrivermainconsByYearList,
 }) => {
   const data = [];
-  for (let i = 0; i < racesByYearList.length; i += 1) {
-    const race = racesByYearList[i];
-    const { round, driverstandingsByRaceidList } = race;
+  
+  // We need to group by driver
+  // driverStandingsBySeason has all stats.
+  // We want to construct series: { id: driverName, color, data: [{x: round, y: position}] }
 
-    // sometimes there race results where everybody has 0 pts. filter them out
-    let pointsInRound = 0;
-    for (let j = 0; j < race.driverstandingsByRaceidList.length; j += 1) {
-      pointsInRound += race.driverstandingsByRaceidList[j].points;
-    }
+  // First identify all drivers that have at least one valid result in a round where total points > 0
+  // Iterate rounds
+  const rounds = [...new Set(driverStandingsBySeason.map(s => s.round))].sort((a,b) => a-b);
+  
+  // Pre-calculate points per round to determine if we skip it (like in original code)
+  const pointsInRound = {};
+  rounds.forEach(round => {
+     const stats = driverStandingsBySeason.filter(s => s.round == round);
+     pointsInRound[round] = stats.reduce((acc, curr) => acc + curr.points, 0);
+  });
 
-    if (pointsInRound !== 0) {
-      for (let j = 0; j < driverstandingsByRaceidList.length; j += 1) {
-        const { driverid, position } = driverstandingsByRaceidList[j];
+  const processedDrivers = new Set();
+  
+  // Sort standings by round ensures we process in order? check.
+  
+  driverStandingsBySeason.forEach(stat => {
+      if (pointsInRound[stat.round] === 0) return;
 
-        const driverInfo = seasondrivermainconsByYearList.find(
-          (s) => s.driverid === driverid
-        );
+      const driverId = stat.driverId;
+      const driverInfo = seasondrivermainconsByYearList.find(s => s.driverId === driverId);
+      const driverName = driverInfo?.driverDisplayName || stat.driverDisplayName;
+      const teamName = driverInfo?.teamName;
 
-        const driver = driverInfo?.driverByDriverid?.driverDisplayName;
-        const index = data.findIndex((drivers) => drivers.id === driver);
-
-        if (index === -1) {
-          const team = driverInfo?.constructorTeamByConstructorid?.name;
-
-          data.push({
-            id: driver,
-            color: getTeamColor(team),
-            data: [{ x: round, y: position }],
-          });
-        } else {
-          data[index].data.push({
-            x: round,
-            y: position,
-          });
-        }
+      let series = data.find(d => d.id === driverName);
+      if (!series) {
+          series = {
+              id: driverName,
+              color: getTeamColor(teamName),
+              data: []
+          };
+          data.push(series);
       }
-    }
-  }
+      
+      series.data.push({
+          x: stat.round,
+          y: stat.position
+      });
+  });
 
   return (
     <div style={{ height: '800px' }}>
@@ -110,12 +113,6 @@ const DriverPositionBump = ({
       />
     </div>
   );
-};
-
-DriverPositionBump.propTypes = {
-  racesByYearList: PropTypes.arrayOf(raceType).isRequired,
-  seasondrivermainconsByYearList: PropTypes.arrayOf(seasonDriverMainConsType)
-    .isRequired,
 };
 
 export default DriverPositionBump;

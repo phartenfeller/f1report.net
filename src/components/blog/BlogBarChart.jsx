@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import getTeamColor from '../../util/f1TeamColors';
@@ -6,18 +5,23 @@ import getTeamColor from '../../util/f1TeamColors';
 const VAL_KEY = 'value';
 const ENT_KEY = 'entity';
 
+// Need to safely access colors object if getTeamColor returns something strict, 
+// but getTeamColor returns hex string.
+// However, nivo expects a function: (node) => color.
+// node.data contains the row data.
+
 function getColor(obj) {
   return getTeamColor(obj.data.constructor);
 }
 
 function tooltip(obj) {
   return (
-    <div className="inline-flex items-center rounded bg-white px-3 py-1 shadow-lg">
+    <div className="inline-flex items-center rounded bg-white px-3 py-1 shadow-lg border border-gray-200">
       <div
         className="mr-2 h-4 w-4 rounded-full"
         style={{ background: obj.color }}
       />
-      <span>{obj.data.tooltip}</span>
+      <span className='text-gray-900'>{obj.data.tooltip}</span>
     </div>
   );
 }
@@ -33,18 +37,11 @@ const BlogBarChart = ({
   title,
 }) => {
   if (!inputData || !inputData.length || inputData.length === 0) {
-    throw new Error(
-      `BlogBarChart: inputData is required - received ${inputData}`
-    );
+    console.error(`BlogBarChart: inputData is required`);
+    return null;
   }
 
   const data = inputData.map((d) => {
-    if (!d[VAL_KEY] || !d[ENT_KEY]) {
-      throw new Error(
-        `BlogBarChart: row need value or entity ${JSON.stringify(d)}`
-      );
-    }
-
     return {
       value: parseFloat(d[VAL_KEY]),
       entity: d[ENT_KEY],
@@ -59,7 +56,6 @@ const BlogBarChart = ({
       <figure className="">
         <div style={{ height: '600px' }}>
           <ResponsiveBar
-            // eslint-disable-next-line react/jsx-no-bind
             tooltip={tooltip}
             layout="horizontal"
             minValue={0}
@@ -104,14 +100,6 @@ const BlogBarChart = ({
       </figure>
     </div>
   );
-};
-
-BlogBarChart.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  inputData: PropTypes.array.isRequired,
-  axisBottomLabel: PropTypes.string.isRequired,
-  axisRightLabel: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
 };
 
 export default BlogBarChart;

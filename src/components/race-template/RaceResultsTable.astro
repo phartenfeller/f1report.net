@@ -1,0 +1,46 @@
+---
+import TeamDisplay from '../TeamDisplay.astro';
+const { results } = Astro.props;
+
+// Sort by positionOrder to be safe
+const sorted = results ? [...results].sort((a, b) => a.positionOrder - b.positionOrder) : [];
+---
+
+<div class="overflow-x-auto -mx-4 sm:mx-0">
+  <table class="min-w-full text-left text-sm whitespace-nowrap">
+    <thead class="uppercase tracking-wider border-b-2 border-slate-100">
+      <tr>
+        <th scope="col" class="px-4 py-3 font-semibold text-slate-500">Pos</th>
+        <th scope="col" class="px-4 py-3 font-semibold text-slate-500">No</th>
+        <th scope="col" class="px-4 py-3 font-semibold text-slate-500">Driver</th>
+        <th scope="col" class="px-4 py-3 font-semibold text-slate-500 hidden sm:table-cell">Team</th>
+        <th scope="col" class="px-4 py-3 font-semibold text-slate-500 hidden md:table-cell">Laps</th>
+        <th scope="col" class="px-4 py-3 font-semibold text-slate-500 text-right hidden sm:table-cell">Grid</th>
+        <th scope="col" class="px-4 py-3 font-semibold text-slate-500 text-right">Time/Status</th>
+        <th scope="col" class="px-4 py-3 font-semibold text-slate-500 text-right hidden sm:table-cell">Points</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {sorted.map((res, i) => (
+        <tr class="transition-colors">
+          <td class="px-4 py-4 font-medium tabular-nums text-slate-900">{res.positionText}</td>
+          <td class="px-4 py-4 text-slate-500 tabular-nums">{res.driverNumber}</td>
+          <td class="px-4 py-4 font-semibold text-slate-900">
+              <span class="md:hidden">{res.code}</span>
+              <span class="hidden md:inline">{res.driverDisplayName}</span>
+          </td>
+          <td class="px-4 py-4 hidden sm:table-cell text-slate-600">
+              <TeamDisplay teamName={res.teamName} />
+          </td>
+          <td class="px-4 py-4 hidden md:table-cell tabular-nums text-slate-600">{res.laps}</td>
+          <td class="px-4 py-4 hidden sm:table-cell text-right tabular-nums text-slate-600">{res.grid}</td>
+          <td class="px-4 py-4 text-right font-medium tabular-nums text-slate-900">
+              {res.time || res.status}
+
+          </td>
+          <td class="px-4 py-4 hidden sm:table-cell text-right font-bold tabular-nums text-slate-900">{res.points}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

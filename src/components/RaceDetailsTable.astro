@@ -1,0 +1,57 @@
+---
+import CircuitLink from './links/CircuitLink.astro';
+import TeamDisplay from './TeamDisplay.astro';
+import TBD from './TBD.astro';
+
+const { races } = Astro.props;
+---
+
+<div class="overflow-x-auto -mx-4 sm:mx-0">
+  <div class="inline-block min-w-full align-middle">
+    <div class="overflow-hidden">
+      <table class="min-w-full text-left text-sm whitespace-nowrap">
+        <thead class="uppercase tracking-wider border-b-2 border-slate-100">
+          <tr>
+            <th class="px-4 py-3 font-semibold text-slate-500 text-left">#</th>
+            <th class="px-4 py-3 font-semibold text-slate-500 text-left">Race</th>
+            <th class="px-4 py-3 font-semibold text-slate-500 text-left hidden sm:table-cell">Circuit</th>
+            <th class="px-4 py-3 font-semibold text-slate-500 text-left hidden lg:table-cell">Winner (Driver)</th>
+            <th class="px-4 py-3 font-semibold text-slate-500 text-left hidden lg:table-cell">Winner (Constructor)</th>
+            <th class="px-4 py-3 font-semibold text-slate-500 text-left hidden md:table-cell">Date</th>
+            <th class="px-4 py-3 font-semibold text-slate-500"> </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {races.map((race, i) => (
+            <tr>
+              <td class="px-4 py-4 font-medium tabular-nums text-slate-900">{race.round}</td>
+              <td class="px-4 py-4 font-medium text-slate-900">{race.name}</td>
+              <td class="px-4 py-4 hidden sm:table-cell text-slate-600">
+                <CircuitLink 
+                  name={race.circuitName || race.circuitByCircuitid?.name} 
+                  circuitref={race.circuitRef || race.circuitByCircuitid?.ref || race.circuitByCircuitid?.circuitref} 
+                  location={race.location || race.circuitByCircuitid?.location} 
+                  country={race.country || race.circuitByCircuitid?.country} 
+                />
+              </td>
+              <td class="px-4 py-4 hidden lg:table-cell text-slate-900">
+                {race.winnerDriver ? race.winnerDriver : <TBD />}
+              </td>
+              <td class="px-4 py-4 hidden lg:table-cell text-slate-600">
+                {race.winnerConstructor ? <TeamDisplay teamName={race.winnerConstructor} /> : <TBD />}
+              </td>
+              <td class="px-4 py-4 hidden md:table-cell tabular-nums text-slate-600">{race.date}</td>
+              <td class="px-4 py-4 text-right">
+                {!race.raceSlug?.match(/^[0-9]+-tba$/) && (
+                    <a href={`/races/${race.raceSlug}`} class="text-blue-600 hover:text-blue-800 hover:underline">
+                        Details
+                    </a>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ResponsiveBump } from '@nivo/bump';
-import { raceType } from '../../types';
 import getTeamColor from '../../util/f1TeamColors';
 
 function getColor(obj) {
@@ -10,7 +8,7 @@ function getColor(obj) {
 
 function tooltip({ serie }) {
   return (
-    <div className="inline-flex items-center bg-white px-3 py-1 rounded shadow-lg">
+    <div className="inline-flex items-center bg-white px-3 py-1 rounded shadow-lg text-black">
       <div
         className="rounded-full h-4 w-4 mr-2"
         style={{ background: serie.color }}
@@ -20,41 +18,37 @@ function tooltip({ serie }) {
   );
 }
 
-const ConstructorPositionBump = ({ racesByYearList }) => {
+const ConstructorPositionBump = ({ constructorStandingsBySeason }) => {
   const data = [];
-  for (let i = 0; i < racesByYearList.length; i += 1) {
-    const race = racesByYearList[i];
-    const { round, constructorstandingsByRaceidList } = race;
+  
+  const rounds = [...new Set(constructorStandingsBySeason.map(s => s.round))].sort((a,b) => a-b);
+  
+  const pointsInRound = {};
+  rounds.forEach(round => {
+     const stats = constructorStandingsBySeason.filter(s => s.round == round);
+     pointsInRound[round] = stats.reduce((acc, curr) => acc + curr.points, 0);
+  });
 
-    // sometimes there race results where everybody has 0 pts. filter them out
-    let pointsInRound = 0;
-    for (let j = 0; j < race.constructorstandingsByRaceidList.length; j += 1) {
-      pointsInRound += race.constructorstandingsByRaceidList[j].points;
-    }
+  constructorStandingsBySeason.forEach(stat => {
+      if (pointsInRound[stat.round] === 0) return;
 
-    if (pointsInRound !== 0) {
-      for (let j = 0; j < constructorstandingsByRaceidList.length; j += 1) {
-        const { position, constructorTeamByConstructorid } =
-          constructorstandingsByRaceidList[j];
-        const { name } = constructorTeamByConstructorid;
+      const teamName = stat.name;
 
-        const index = data.findIndex((teams) => teams.id === name);
-
-        if (index === -1) {
-          data.push({
-            id: name,
-            color: getTeamColor(name),
-            data: [{ x: round, y: position }],
-          });
-        } else {
-          data[index].data.push({
-            x: round,
-            y: position,
-          });
-        }
+      let series = data.find(d => d.id === teamName);
+      if (!series) {
+          series = {
+              id: teamName,
+              color: getTeamColor(teamName),
+              data: []
+          };
+          data.push(series);
       }
-    }
-  }
+      
+      series.data.push({
+          x: stat.round,
+          y: stat.position
+      });
+  });
 
   return (
     <div style={{ height: '600px' }}>
@@ -102,10 +96,6 @@ const ConstructorPositionBump = ({ racesByYearList }) => {
       />
     </div>
   );
-};
-
-ConstructorPositionBump.propTypes = {
-  racesByYearList: PropTypes.arrayOf(raceType).isRequired,
 };
 
 export default ConstructorPositionBump;

@@ -1,0 +1,130 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { clsx } from 'clsx';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import defaultOgImage from '../images/f1report-hero.jpg';
+import { buildGraph, canonicalUrlFor } from '../util/jsonld';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noMarginTop?: boolean;
+  noHeader?: boolean;
+  noMarginSides?: boolean;
+  noMarginBottom?: boolean;
+  contentSite?: boolean;
+  noIndex?: boolean;
+  /** Social-share image. Defaults to the site hero. Pass a page-specific image (e.g. a blog title image) to override. */
+  image?: ImageMetadata;
+  /** Page-specific JSON-LD nodes merged into the site-wide `@graph`. */
+  jsonLd?: Record<string, unknown>[];
+  /** Override the WebPage node `@type` (e.g. "CollectionPage", "ProfilePage"). */
+  jsonLdType?: string;
+  /** `@id` of a graph node to expose as the WebPage's `mainEntity`. */
+  jsonLdMainEntityId?: string;
+}
+
+const {
+  title = "F1 Report",
+  description = "Data for every Formula 1 race ever",
+  noMarginTop = false,
+  noHeader = false,
+  noMarginSides = false,
+  noMarginBottom = false,
+  contentSite = false,
+  noIndex = false,
+  image = defaultOgImage,
+  jsonLd = [],
+  jsonLdType,
+  jsonLdMainEntityId
+} = Astro.props;
+
+const siteTitle = "F1 Report";
+// Match Gatsby's `%s | F1 Report` title template (pipe separator).
+const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
+
+// Canonical URL matching prod's indexed form: no `.html`, no trailing slash
+// (root stays `/`). `build.format: 'file'` leaves `.html` on Astro.url.pathname.
+const { canonicalPath, canonicalUrl } = canonicalUrlFor(Astro.url, Astro.site);
+
+// Build-time optimized social-share image (1200px wide JPEG, ~1.91:1 card ratio).
+const ogImg = await getImage({ src: image, width: 1200, height: 630, format: "jpeg" });
+const ogImageUrl = new URL(ogImg.src, Astro.site).href;
+
+// JSON-LD structured data: site-wide WebSite + Person + WebPage + breadcrumb,
+// plus any page-specific nodes. Skipped on noindex pages (e.g. 404).
+const jsonLdGraph = noIndex
+  ? null
+  : buildGraph({
+      canonicalUrl,
+      canonicalPath,
+      title,
+      description,
+      webPageType: jsonLdType,
+      webPageMainEntityId: jsonLdMainEntityId,
+      pageNodes: jsonLd,
+    });
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/f1report-icon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    <link rel="canonical" href={canonicalUrl} />
+    {noIndex && <meta name="robots" content="noindex" />}
+
+    {/* Open Graph (raw title, matching Gatsby's seo.jsx where the template only applied to <title>) */}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content={String(ogImg.attributes.width ?? 1200)} />
+    <meta property="og:image:height" content={String(ogImg.attributes.height ?? 630)} />
+
+    {/* Twitter Card */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@f1reportxyz" />
+    <meta name="twitter:creator" content="@phartenfeller" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {jsonLdGraph && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLdGraph).replace(/</g, "\\u003c")}
+      />
+    )}
+
+    <script
+        async
+        defer
+        data-domain="f1report.net"
+        src="/script.js"
+      />
+  </head>
+  <body class="flex flex-col min-h-screen bg-slate-50 text-slate-800 text-lg leading-relaxed antialiased">
+    {!noHeader && <Header siteTitle="F1 Report" />}
+    <main
+      class={clsx(
+        'flex-grow ',
+        !noMarginTop && 'mt-5',
+        !noMarginSides && !contentSite && 'mx-6',
+        !noMarginSides && contentSite && 'w-full max-w-5xl mx-auto px-6',
+        !noMarginBottom && 'mb-24'
+      )}
+    >
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
