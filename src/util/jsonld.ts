@@ -174,12 +174,20 @@ export function sportsEventNode({
   canonicalUrl,
   name,
   startDate,
+  endDate,
+  description,
+  image,
   location,
+  performers,
 }: {
   canonicalUrl: string;
   name: string;
   startDate?: string;
+  endDate?: string;
+  description?: string;
+  image?: string;
   location?: { name?: string; country?: string; locality?: string };
+  performers?: string[];
 }): JsonLdNode {
   const node: JsonLdNode = {
     "@type": "SportsEvent",
@@ -187,8 +195,22 @@ export function sportsEventNode({
     name,
     sport: "Formula 1",
     url: canonicalUrl,
+    // Races run as scheduled; F1 events are in-person at the circuit.
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    organizer: {
+      "@type": "Organization",
+      name: "Formula 1",
+      url: "https://www.formula1.com/",
+    },
   };
   if (startDate) node.startDate = startDate;
+  if (endDate) node.endDate = endDate;
+  if (description) node.description = description;
+  if (image) node.image = [image];
+  if (performers && performers.length) {
+    node.performer = performers.map((p) => ({ "@type": "Person", name: p }));
+  }
   if (location?.name || location?.country || location?.locality) {
     const address: JsonLdNode = { "@type": "PostalAddress" };
     if (location.country) address.addressCountry = location.country;

@@ -15,6 +15,8 @@ import {
   getCircuitById
 } from '../../lib/db';
 import { sportsEventNode, canonicalUrlFor } from '../../util/jsonld';
+import { getImage } from 'astro:assets';
+import heroImage from '../../images/f1report-hero.jpg';
 
 // Components
 import RaceHeader from '../../components/race-template/RaceHeader.astro';
@@ -112,15 +114,29 @@ const pirelliData = {
 // JSON-LD: model the race as a SportsEvent held at the circuit.
 const { canonicalUrl } = canonicalUrlFor(Astro.url, Astro.site);
 const startDate = race.time ? `${race.date}T${race.time}Z` : race.date;
+// Estimate the end as ~2h after lights out; fall back to the date when no time.
+const endDate = race.time
+  ? new Date(new Date(startDate).getTime() + 2 * 60 * 60 * 1000).toISOString()
+  : race.date;
+// No per-race images exist; use the site hero as the event image (absolute URL).
+const eventImg = await getImage({ src: heroImage, width: 1200, height: 630, format: 'jpeg' });
+const eventImageUrl = new URL(eventImg.src, Astro.site).href;
+const performers = results
+  .map((r: any) => r.driverDisplayName)
+  .filter(Boolean);
 const raceJsonLd = sportsEventNode({
   canonicalUrl,
   name: pageTitle,
   startDate,
+  endDate,
+  description,
+  image: eventImageUrl,
   location: {
     name: circuit?.name,
     country: circuit?.country,
     locality: circuit?.location,
   },
+  performers,
 });
 ---
 
