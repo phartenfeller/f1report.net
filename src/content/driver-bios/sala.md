@@ -1,0 +1,1 @@
+Adrian Campos's second Formula 1 venture, the short-lived Bravo F1 project, aimed to enter the 1993 season with the Spanish driver Adrián Campos, but was abandoned before its debut. The car, designed by Nick Wirth, never raced. The team's concept was resurrected by Campos in 1999 as Campos Grand Prix, which later became HRT F1 Team.

@@ -1,0 +1,1 @@
+A promising American talent, Eddie Keegan made a brief but impactful entry into Formula 1. Competing in an era of rapid technological change, Keegan showcased raw speed and adaptability. His career, though short-lived, hinted at significant potential, and he remains a notable figure among those who raced in the sport's earlier, more dangerous years.

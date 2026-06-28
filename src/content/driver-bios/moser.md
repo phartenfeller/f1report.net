@@ -1,0 +1,1 @@
+Bob Moser was a Swiss privateer who made a single Formula 1 start at his home Grand Prix in 1961. Driving his own Cooper T51, he failed to qualify for the race, held at the demanding Bremgarten circuit. Moser's brief F1 foray highlights the era of enthusiastic, independent racers who often tackled the pinnacle of motorsport with limited resources.

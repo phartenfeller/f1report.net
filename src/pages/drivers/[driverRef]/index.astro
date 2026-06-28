@@ -2,11 +2,12 @@
 import Layout from '../../../layouts/Layout.astro';
 import Header1 from '../../../components/headers/Header1.astro';
 import AnalyticsData from '../../../components/AnalyticsData';
-import { 
+import {
   getDriverByRef,
   getDriverAnalytics,
   getAllDriversSimple
 } from '../../../lib/db';
+import { getDriverBioHtml } from '../../../lib/driverBio';
 import { athleteNode, canonicalUrlFor } from '../../../util/jsonld';
 
 export async function getStaticPaths() {
@@ -24,6 +25,7 @@ if (!driver) {
 }
 
 const analytics = getDriverAnalytics(driver.driverId);
+const bioHtml = getDriverBioHtml(driver.driverRef, driver.driverId);
 
 // JSON-LD: model the driver as a Person/Athlete, exposed as the page's mainEntity.
 // `getDriverByRef` is `SELECT *`, so nationality/url exist at runtime though the
@@ -46,7 +48,14 @@ const driverJsonLd = athleteNode({
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <Header1>{`${driver.forename} ${driver.surname}`}</Header1>
-    
+
+    {bioHtml && (
+      <div
+        class="mt-4 max-w-3xl text-lg leading-relaxed text-slate-700 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_strong]:text-slate-900"
+        set:html={bioHtml}
+      />
+    )}
+
     <div class="mt-8">
         {analytics ? (
             <AnalyticsData client:load data={analytics} />

@@ -30,6 +30,7 @@
     "astro-pagefind": "^2.0.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "marked": "^18.0.5",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-icons": "^5.5.0",

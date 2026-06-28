@@ -512,3 +512,47 @@ export function getLegacyConstructorAnalytics(legacyId: number) {
   const res = db.query("SELECT json FROM legacy_con_analytics WHERE legacy_id = ?").get(legacyId) as { json: string } | null;
   return res ? JSON.parse(res.json) : null;
 }
+
+/**
+ * Stats used to resolve the {{driver_*}} placeholders in driver bio markdown.
+ * Four come from dri_alltime_stats; titles are derived from driverStandings
+ * (the driver's position after the final race of each season).
+ */
+export interface DriverBioStats {
+  races: number;
+  wins: number;
+  podiums: number;
+  poles: number;
+  titles: number;
+}
+
+export function getDriverBioStats(driverId: number): DriverBioStats {
+  const s = db
+    .query(
+      "SELECT races, wins, podiums, poles FROM dri_alltime_stats WHERE driverid = ?"
+    )
+    .get(driverId) as
+    | { races: number; wins: number; podiums: number; poles: number }
+    | null;
+
+  const titlesRow = db
+    .query(
+      `WITH last_race AS (
+         SELECT year, MAX(round) AS mr FROM races GROUP BY year
+       )
+       SELECT COUNT(*) AS titles
+       FROM driverStandings ds
+       JOIN races ra ON ra.raceId = ds.raceId
+       JOIN last_race lr ON lr.year = ra.year AND lr.mr = ra.round
+       WHERE ds.driverId = ? AND ds.position = 1`
+    )
+    .get(driverId) as { titles: number } | null;
+
+  return {
+    races: s?.races ?? 0,
+    wins: s?.wins ?? 0,
+    podiums: s?.podiums ?? 0,
+    poles: s?.poles ?? 0,
+    titles: titlesRow?.titles ?? 0,
+  };
+}
