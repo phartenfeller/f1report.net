@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import SortableTable from './SortableTable';
+import DriverLink from './links/DriverLink.jsx';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { FunnelIcon } from '@heroicons/react/20/solid'; // Updated import for v2
 
@@ -74,6 +75,9 @@ export default function AllTimeStatsTable({ data }) {
         Header: 'Driver',
         accessor: 'driverDisplayName',
         className: 'font-semibold',
+        Cell: ({ value, row }) => (
+          <DriverLink name={value} driverRef={row.original.driverRef} />
+        ),
       },
       {
         Header: 'Points',

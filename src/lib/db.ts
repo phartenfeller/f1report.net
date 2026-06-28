@@ -11,6 +11,7 @@ export interface DriverStanding {
   positionText: string;
   wins: number;
   driverDisplayName: string;
+  driverRef: string;
 }
 
 export interface ConstructorStanding {
@@ -64,6 +65,7 @@ export function getAllRacesWithWinners() {
       `SELECT r.*, r.race_slug as raceSlug,
     c.name as circuitName, c.circuitRef, c.country, c.location,
     wd.driver_display_name as winnerDriver,
+    wd.driverRef as winnerDriverRef,
     wc.name as winnerConstructor
     FROM races r
     JOIN circuits c ON r.circuitId = c.circuitId
@@ -146,7 +148,7 @@ export function getLapTimesByRaceId(raceId: number) {
 export function getPitStopsByRaceId(raceId: number) {
   return db
     .query(
-      `SELECT p.*, d.driver_display_name as driverDisplayName 
+      `SELECT p.*, d.driver_display_name as driverDisplayName, d.driverRef
        FROM pitStops p
        JOIN drivers d ON p.driverId = d.driverId
        WHERE p.raceId = ?
@@ -206,7 +208,7 @@ export function getSeasonLastRace(year: number) {
 export function getDriverStandings(raceId: number) {
   return db
     .query(
-      `SELECT ds.*, d.driver_display_name as driverDisplayName 
+      `SELECT ds.*, d.driver_display_name as driverDisplayName, d.driverRef
        FROM driverStandings ds
        JOIN drivers d ON ds.driverId = d.driverId
        WHERE ds.raceId = ?
@@ -339,6 +341,7 @@ export function getRacesByYear(year: number) {
     SELECT r.*, r.race_slug as raceSlug,
     c.name as circuitName, c.circuitRef, c.country, c.location,
     wd.driver_display_name as winnerDriver,
+    wd.driverRef as winnerDriverRef,
     wc.name as winnerConstructor
     FROM races r
     JOIN circuits c ON r.circuitId = c.circuitId
@@ -389,6 +392,7 @@ export function getRacesByCircuitId(circuitId: number) {
     SELECT r.*, 
     wd.driver_display_name as winnerDriver,
     wd.driverId as winnerDriverId,
+    wd.driverRef as winnerDriverRef,
     wc.name as winnerConstructor,
     wc.constructorId as winnerConstructorId
     FROM races r

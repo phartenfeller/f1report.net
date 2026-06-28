@@ -1,5 +1,6 @@
 import React from 'react';
 import TeamDisplay from '../teamDisplay/DriverTeamDisplay';
+import DriverLink from '../links/DriverLink.jsx';
 
 const DriverStandingsTable = ({
   standings,
@@ -31,7 +32,7 @@ const DriverStandingsTable = ({
           <tr key={s.driverId}>
             <td className="px-4 py-4 font-medium tabular-nums text-slate-900">{s.position}</td>
             <td className="px-4 py-4 font-medium text-slate-900">
-              {s.driverDisplayName}
+              <DriverLink name={s.driverDisplayName} driverRef={s.driverRef} />
             </td>
             <td className="hidden px-4 py-4 md:table-cell text-slate-600">
               <TeamDisplay

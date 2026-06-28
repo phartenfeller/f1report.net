@@ -1,5 +1,6 @@
 ---
 import CircuitLink from './links/CircuitLink.astro';
+import DriverLink from './links/DriverLink.astro';
 import TeamDisplay from './TeamDisplay.astro';
 import TBD from './TBD.astro';
 
@@ -35,7 +36,7 @@ const { races } = Astro.props;
                 />
               </td>
               <td class="px-4 py-4 hidden lg:table-cell text-slate-900">
-                {race.winnerDriver ? race.winnerDriver : <TBD />}
+                {race.winnerDriver ? <DriverLink name={race.winnerDriver} driverRef={race.winnerDriverRef} /> : <TBD />}
               </td>
               <td class="px-4 py-4 hidden lg:table-cell text-slate-600">
                 {race.winnerConstructor ? <TeamDisplay teamName={race.winnerConstructor} /> : <TBD />}

@@ -1,5 +1,6 @@
 ---
 import TeamDisplay from '../TeamDisplay.astro';
+import DriverLink from '../links/DriverLink.astro';
 const { results } = Astro.props;
 
 // Sort by positionOrder to be safe
@@ -26,8 +27,8 @@ const sorted = results ? [...results].sort((a, b) => a.positionOrder - b.positio
           <td class="px-4 py-4 font-medium tabular-nums text-slate-900">{res.positionText}</td>
           <td class="px-4 py-4 text-slate-500 tabular-nums">{res.driverNumber}</td>
           <td class="px-4 py-4 font-semibold text-slate-900">
-              <span class="md:hidden">{res.code}</span>
-              <span class="hidden md:inline">{res.driverDisplayName}</span>
+              <span class="md:hidden"><DriverLink name={res.code} driverRef={res.driverRef} /></span>
+              <span class="hidden md:inline"><DriverLink name={res.driverDisplayName} driverRef={res.driverRef} /></span>
           </td>
           <td class="px-4 py-4 hidden sm:table-cell text-slate-600">
               <TeamDisplay teamName={res.teamName} />

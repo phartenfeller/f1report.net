@@ -9,10 +9,10 @@ import { getAllTimeDriverStats, getAllTimeDriverStatsPrepared } from '../../lib/
 const statsList = getAllTimeDriverStats();
 const preparedStats = getAllTimeDriverStatsPrepared();
 
-// Create driver lookup map
+// Create driver lookup map (name + ref so cards can link to driver pages)
 const driverMap = new Map();
 statsList.forEach((s: any) => {
-  driverMap.set(s.driverid, s.driverDisplayName);
+  driverMap.set(s.driverid, { name: s.driverDisplayName, ref: s.driverRef });
 });
 
 // Parse prepared stats
@@ -24,7 +24,9 @@ preparedStats.forEach((item: any) => {
     if (Array.isArray(list)) {
       list.forEach(p => {
         if (p.driverId) {
-          p.driverDisplayName = driverMap.get(p.driverId) || 'Unknown';
+          const d = driverMap.get(p.driverId);
+          p.driverDisplayName = d?.name || 'Unknown';
+          p.driverRef = d?.ref;
         }
       });
     }

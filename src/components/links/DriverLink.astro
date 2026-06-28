@@ -1,0 +1,16 @@
+---
+// Links a driver name to their detail page. Falls back to plain text when no
+// driverRef is available (e.g. LEFT JOIN winner with no result yet).
+const { name, driverRef } = Astro.props;
+---
+
+{driverRef ? (
+  <a
+    href={`/drivers/${driverRef}`}
+    class="text-blue-600 hover:text-blue-800 hover:underline"
+  >
+    {name}
+  </a>
+) : (
+  <span>{name}</span>
+)}

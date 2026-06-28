@@ -1,4 +1,5 @@
 ---
+import DriverLink from '../links/DriverLink.astro';
 const { driverStandings, year } = Astro.props;
 ---
 
@@ -47,7 +48,7 @@ const { driverStandings, year } = Astro.props;
                     background: driver.teamColor,
                   }}
                 />
-                <span>{driver.driverDisplayName}</span>
+                <DriverLink name={driver.driverDisplayName} driverRef={driver.driverRef} />
               </td>
               <td class="px-4 py-4 text-right font-bold tabular-nums text-slate-900">
                 {driver.points}

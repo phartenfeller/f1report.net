@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSortBy, useTable } from 'react-table';
 import DriverTeamDisplay from '../teamDisplay/DriverTeamDisplay';
+import DriverLink from '../links/DriverLink.jsx';
 
 const NO_FILL = `#D1D5DB`;
 const FILL = `#374151`;
@@ -56,6 +57,9 @@ const PitStopTable = ({
       {
         Header: 'Driver',
         accessor: 'driverDisplayName',
+        Cell: ({ value, row }) => (
+          <DriverLink name={value} driverRef={row.original.driverRef} />
+        ),
       },
       {
         Header: 'Constructor',

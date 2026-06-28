@@ -26,6 +26,7 @@ const sortedList = (list as any[]).sort((a: any, b: any) => a.rank - b.rank);
       <CardRank
         rank={p.rank}
         name={p.driverDisplayName || p.name}
+        driverRef={p.driverRef}
         value={p[accessor]}
         last={i === list.length - 1}
       />

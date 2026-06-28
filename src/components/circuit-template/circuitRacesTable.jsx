@@ -4,6 +4,7 @@ import TBD from '../TBD';
 // We need links. In React we use <a> or simple links because we are in Astro Island mostly.
 // But to use internal routing nicely, <a> is fine for MPA.
 import TeamDisplay from '../teamDisplay/TeamDisplay';
+import DriverLink from '../links/DriverLink.jsx';
 
 const defaultSort = [
   {
@@ -35,7 +36,12 @@ const CircuitRacesTable = ({ racesByCircuitidList }) => {
         // My query returns flat "winnerDriver".
         accessor: 'winnerDriver',
         showAt: 'sm',
-        Cell: ({ value }) => (value ? <>{value}</> : <TBD />),
+        Cell: ({ value, row }) =>
+          value ? (
+            <DriverLink name={value} driverRef={row.original.winnerDriverRef} />
+          ) : (
+            <TBD />
+          ),
       },
       {
         Header: 'Winner (Constructor)',
